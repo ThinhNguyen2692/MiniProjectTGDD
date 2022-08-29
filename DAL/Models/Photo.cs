@@ -14,6 +14,10 @@ namespace DAL.Models
         public string PhotoPath { get; set; } = null!;
         public string? PhotoDescription { get; set; }
 
+        public Photo(string PhotoPath)
+        {
+            this.PhotoPath = PhotoPath;
+        }
         public virtual ICollection<ProductPhoto> ProductPhotos { get; set; }
     }
 }

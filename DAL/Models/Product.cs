@@ -23,6 +23,18 @@ namespace DAL.Models
         public string? ProductDescription { get; set; }
         public DateTime? ReleaseTime { get; set; }
 
+        public Product(string productId, string prouctName, string productType, string productBrand, string productPhoto, string? productDescription, DateTime? releaseTime)
+        {
+            ProductId = productId;
+            ProuctName = prouctName;
+            ProductType = productType;
+            ProductBrand = productBrand;
+            ProductPhoto = productPhoto;
+            ProductDescription = productDescription;
+            ReleaseTime = releaseTime;
+           
+        }
+
         public virtual ProductBrand ProductBrandNavigation { get; set; } = null!;
         public virtual ProductType ProductTypeNavigation { get; set; } = null!;
         public virtual ICollection<Comment> Comments { get; set; }

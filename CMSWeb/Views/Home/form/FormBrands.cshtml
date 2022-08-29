@@ -1,0 +1,66 @@
+﻿
+
+<div class="content-wrapper">
+    <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4></h4>
+                <h4 class="card-title">Nhập thông tin thương hiệu mới</h4>
+                
+                <form class="forms-sample" id="form-brands" method="post" enctype="multipart/form-data" action="/Home/AddBrands">
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Mã thương hiệu</label>
+                        <input type="text" class="form-control" id="BransId" name="BransId" />
+                        <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Error...
+                    </div>
+                    
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Tên thương hiệu</label>
+                        <input type="text" class="form-control" id="BrandsName" name="BrandsName"/>
+                         <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Error...
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <h2>Upload Image</h2>
+                        @Html.TextBox("fileImage", "", new { type = "file", accept = "image/*" })
+                        <br />
+                        <img id="preview" src="#" width="auto" height="auto" class="hidden" />
+
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nhập mô tả cho</label>
+                        <textarea style="height: 100px;" name="BrandsDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." ></textarea>
+                    </div>
+                    <div class="form-group">
+                        <select name="status" id="status">
+                            <option value="1">Trạng thái bình thường</option>
+                            <option value="0">Tạm ngưng kinh doanh</option>
+                        </select>
+                    </div>
+                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                    <button type="reset" class="btn btn-light">Làm mới</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</div>

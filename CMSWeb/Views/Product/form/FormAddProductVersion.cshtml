@@ -1,0 +1,86 @@
+﻿
+
+<div class="content-wrapper">
+    <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
+                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/">
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Mã sản phẩm</label>
+                        <input type="text" class="form-control" readonly value="@ViewBag.ProductId" id="ProductID" name="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
+                        <input type="text" class="form-control" id="VersionID" name="VersionID" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tên phiên bản sản phẩm</label>
+                        <input type="text" value="@ViewBag.Productname" class="form-control" id="VersionName" name="VersionName" />
+
+                    </div>
+                    <div class="form-group">
+                        <label>Giá sản phẩm</label>
+                        <input type="number" class="form-control" name="" id="VersionPrice" min="100" max="9000000000" step="100000" value="100000">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <select class="form-control" name="VersionStatus" id="VersionStatus">
+                            <option value="1">Trạng thái bình thường</option>
+                            <option value="0">Ngưng khinh doanh</option>
+                        </select>
+                    </div>
+
+                    @{
+
+                        foreach (var item in ViewBag.DataSpecification)
+                        {
+
+                                                <div class="tag-informationType">
+
+                                                    <h3>@item.SpecificationsName</h3>
+                                                    <br />
+                                                    <br />
+                                                    @{
+
+                                    foreach (var value in ViewBag.DataProperty)
+                                    {
+                                        if (item.SpecificationsId == value.SpecificationsId)
+                                        {
+                                                                                    <h4 data-dataproperty="@value.PropertiesId" class="DataProperty" style="margin-left: 20px;">@value.PropertiesName </h4>
+                                                                                    <label><input style="width:500px;" value="" class="form-control InputProperty" type="text" />  </label> <label class="data-input" data-input="@value.PropertiesDescription"><h4>@value.PropertiesDescription</h4></label>
+                                        }
+                                    }
+                                                    }
+
+
+                                                </div>
+                        }
+                    }
+
+                    <div>
+                        <h3>
+                            Số lượng
+                        </h3>
+                        @{
+                            foreach (var item in ViewBag.ProductColorItem)
+                            {
+                                                    <h3 data-colorid="@item.ColorId" class="list-color-id">Mã màu: @item.ColorId </h3>
+                                                    <label> <h4>@item.ColorDescription</h4> <input style="width:500px;" min="0" max="9000000000" step="100" value="0" class="form-control input-quantity" type="number" /></label>
+                            }
+                        }
+
+                    </div>
+                     <br />
+                    <button type="reset" class=" btn btn-gradient-primary me-2">Làm mới</button>
+
+                </form>
+                <br />
+                <button class="btn btn-gradient-primary me-2" onclick="addProductversion()">Thêm mới</button>
+            </div>
+        </div>
+    </div>
+</div>

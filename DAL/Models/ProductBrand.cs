@@ -10,6 +10,7 @@ namespace DAL.Models
             Products = new HashSet<Product>();
         }
 
+
         public string BrandId { get; set; } = null!;
         public string BrandName { get; set; } = null!;
         public string BrandPhoto { get; set; } = null!;
@@ -17,5 +18,14 @@ namespace DAL.Models
         public int? BrandStatus { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
+
+        public ProductBrand(string id, string name, string photo, string des, int status)
+        {
+            BrandId = id;
+            BrandName = name;
+            BrandPhoto = photo;
+            BrandDescription = des;
+            BrandStatus = status;
+        }
     }
 }

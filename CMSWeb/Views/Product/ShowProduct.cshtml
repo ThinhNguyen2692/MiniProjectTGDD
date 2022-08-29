@@ -1,0 +1,60 @@
+﻿
+<div class="content-wrapper">
+    <div class="page-header">
+        <h4>Sản phẩm</h4>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Sản phâm</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol>
+        </nav>
+    </div>
+    <div></div>
+    <div style="padding-bottom: 10px;">
+        <a class="nav-link" asp-controller="Product" asp-action="FormAddProduct">
+            <button type="button" class="btn btn-outline-danger">
+                Thêm sản phẩm
+            </button>
+        </a>
+    </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;"> </th>
+                        <th style="width: 20%;"> Tên sản phẩm </th>
+                        <th style="width: 20%;"> Giá (vnd)</th>
+                        <th style="width: 20%;"> Trạng thái </th>
+                        <th style="width: 20%;"> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in ViewBag.data)
+                        {
+                            <tr>
+                                <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="/images/@item.Product.ProductPhoto"/> </th>
+                                <th> @item.VersionName </th>
+                                <th> @item.ProductPrice</th>
+                                @switch(@item.ProductStatus){
+                                    case 1:
+                                        <th> Đang kinh doanh </th>
+                                        break;
+                                        case 0:
+                                        <th> Tạm ngưng kinh doanh </th>
+                                        break;
+                                }
+                                <th> <a href="/Product/ShowDetailProduct?id=@item.VersionId">Xem chi tiết </a></th>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

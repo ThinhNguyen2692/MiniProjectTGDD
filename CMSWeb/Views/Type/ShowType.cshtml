@@ -1,0 +1,52 @@
+﻿
+<div class="content-wrapper">
+    <div class="page-header">
+        <h4>Ngành hàng</h4>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Ngành hàng</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol>
+        </nav>
+    </div>
+    <div></div>
+    <div style="padding-bottom: 10px;">
+        <a class="nav-link" asp-controller="Type" asp-action="Formtype">
+            <button type="button" class="btn btn-outline-danger">
+                Thêm ngành hàng
+            </button>
+        </a>
+    </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th> <h4>Ngành hàng</h4></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in ViewBag.ReadTypes)
+                        {
+                            <tr>
+                        <th> <h5>@item.Typename</h5></th>
+                        <th> 
+                           <a class="btn btn-outline-danger" href="/ShowTypeDetail?typeid=@item.Typeid">Cập nhật</a>
+                        </th>
+                    </tr>
+                        }
+                    }
+                  <tr>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

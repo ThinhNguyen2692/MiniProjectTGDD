@@ -15,6 +15,23 @@ namespace DAL.Models
         public string PropertiesName { get; set; } = null!;
         public string? PropertiesDescription { get; set; }
 
+        public InformationProperty( int specificationsId, string propertiesName, string? propertiesDescription)
+        {
+          
+            SpecificationsId = specificationsId;
+            PropertiesName = propertiesName;
+            PropertiesDescription = propertiesDescription;
+          
+        }
+        public InformationProperty(int PropertiesId, int specificationsId, string propertiesName, string? propertiesDescription)
+        {
+
+            this.PropertiesId = PropertiesId;
+            SpecificationsId = specificationsId;
+            PropertiesName = propertiesName;
+            PropertiesDescription = propertiesDescription;
+
+        }
         public virtual ProductSpecification Specifications { get; set; } = null!;
         public virtual ICollection<PropertiesValue> PropertiesValues { get; set; }
     }

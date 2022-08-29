@@ -96,7 +96,7 @@ namespace DAL.Models
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.HasKey(e => e.CustomerPhone)
-                    .HasName("PK__customer__CE0EE0E72BE8550E");
+                    .HasName("PK__customer__CE0EE0E774B66467");
 
                 entity.ToTable("customers");
 
@@ -276,7 +276,7 @@ namespace DAL.Models
             modelBuilder.Entity<InformationProperty>(entity =>
             {
                 entity.HasKey(e => e.PropertiesId)
-                    .HasName("PK__informat__E0FD831CAA050908");
+                    .HasName("PK__informat__E0FD831CE6584F4E");
 
                 entity.ToTable("information_properties");
 
@@ -369,7 +369,7 @@ namespace DAL.Models
             modelBuilder.Entity<ProductBrand>(entity =>
             {
                 entity.HasKey(e => e.BrandId)
-                    .HasName("PK__product___5E5A8E27F20E8AD8");
+                    .HasName("PK__product___5E5A8E278910C8EB");
 
                 entity.ToTable("product_brands");
 
@@ -400,7 +400,7 @@ namespace DAL.Models
             modelBuilder.Entity<ProductColor>(entity =>
             {
                 entity.HasKey(e => e.ColorId)
-                    .HasName("PK__product___1143CECB184C27DE");
+                    .HasName("PK__product___1143CECB0BDCA804");
 
                 entity.ToTable("product_color");
 
@@ -457,7 +457,7 @@ namespace DAL.Models
             modelBuilder.Entity<ProductSpecification>(entity =>
             {
                 entity.HasKey(e => e.SpecificationsId)
-                    .HasName("PK__product___C095C1DEDB6969E2");
+                    .HasName("PK__product___C095C1DE44558099");
 
                 entity.ToTable("product_specifications");
 
@@ -487,7 +487,7 @@ namespace DAL.Models
             modelBuilder.Entity<ProductType>(entity =>
             {
                 entity.HasKey(e => e.Typeid)
-                    .HasName("PK__product___F0528D027452C4D9");
+                    .HasName("PK__product___F0528D02FFC4BADE");
 
                 entity.ToTable("product_types");
 
@@ -505,7 +505,7 @@ namespace DAL.Models
             modelBuilder.Entity<ProductVersion>(entity =>
             {
                 entity.HasKey(e => e.VersionId)
-                    .HasName("PK__product___07A5886973A9CC17");
+                    .HasName("PK__product___07A5886919556EC0");
 
                 entity.ToTable("product_version");
 
@@ -543,7 +543,7 @@ namespace DAL.Models
             modelBuilder.Entity<PropertiesValue>(entity =>
             {
                 entity.HasKey(e => e.ValueId)
-                    .HasName("PK__properti__0FECE2828BEF6E99");
+                    .HasName("PK__properti__0FECE2825ED8756B");
 
                 entity.ToTable("properties_value");
 
@@ -577,7 +577,7 @@ namespace DAL.Models
             modelBuilder.Entity<PurchaseOrder>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__purchase__465962296AE35758");
+                    .HasName("PK__purchase__46596229963E6AF7");
 
                 entity.ToTable("purchase_order");
 
@@ -638,7 +638,7 @@ namespace DAL.Models
             modelBuilder.Entity<PurchaseOrderDetail>(entity =>
             {
                 entity.HasKey(e => e.OrderDetail)
-                    .HasName("PK__purchase__3850B013B8C07274");
+                    .HasName("PK__purchase__3850B0139588FCF5");
 
                 entity.ToTable("purchase_order_detail");
 
