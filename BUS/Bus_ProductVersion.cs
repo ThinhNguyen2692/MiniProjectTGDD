@@ -8,14 +8,25 @@ using DAL.Models;
 
 namespace BUS
 {
-    public class Bus_ProductVersion
+    public interface IBusProductVersion
     {
-        Dal_ProductVersion dal_ProductVersion = new Dal_ProductVersion();
-        Dal_ProductColor Dal_ProductColor = new Dal_ProductColor();
-        Dal_Product Dal_Product = new Dal_Product();   
-        Dal_PropertyValue Dal_PropertyValue = new Dal_PropertyValue();
-        Dal_VersionQuantity Dal_VersionQuantity = new Dal_VersionQuantity();
-        Dal_productphotos Dal_productphotos = new Dal_productphotos(); 
+        public bool AddProductVersion(ProductVersion productVersion);
+        public ProductVersion DalReadProduct(string id);
+        public void DelProductVerion(string id);
+        public List<ProductVersion> DalReadProductAll();
+    }
+    public class Bus_ProductVersion:IBusProductVersion
+    {
+       public static IDalProductVersion dal_ProductVersion;
+        private static Bus_ProductVersion bus_Product;
+
+        public static Bus_ProductVersion GetBusProduct(IDalProductVersion dalProductVersion)
+        {
+            dal_ProductVersion = dalProductVersion;
+            if(bus_Product == null) { bus_Product = new Bus_ProductVersion(); }
+            return bus_Product;
+
+        }
         
         // Thêm phiên bản sản phẩm
         public bool AddProductVersion(ProductVersion productVersion)
@@ -27,6 +38,20 @@ namespace BUS
        
 
         //lấy chi tiết thông tin sản phẩm
-        public Product DalReadProduct(string id) { return dal_ProductVersion.DalReadProduct(id); }
+        public ProductVersion DalReadProduct(string id) { return dal_ProductVersion.DalReadProduct(id); }
+
+
+        /// <summary>
+        /// Lấy danh sách  tất cả sản phẩm
+        /// </summary>
+        /// <returns>danh sách sản phẩm</returns>
+        public List<ProductVersion> DalReadProductAll() { return dal_ProductVersion.DalReadProductAll(); }
+
+
+        public void DelProductVerion(string id)
+        {
+            dal_ProductVersion.DelProductVerion(id);
+        }
+
     }
 }

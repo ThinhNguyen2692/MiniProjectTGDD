@@ -1,9 +1,17 @@
-﻿
+﻿@using DAL.Models;
+@using CMSWeb.Models;
+@model ListModel
 
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
+                @switch (Model.message)
+                {
+                    case "Brandsfalse": <div class="alert alert-error">Cập nhật thất bại</div> break;
+                    case "BrandsTrue": <div class="alert alert-success">Cập nhật thành công</div> break;
+                    default: <div></div> break;
+                }
                 
                 <h4 class="card-title">Nhập thông tin thương hiệu mới</h4>
                 
@@ -11,18 +19,18 @@
 
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã thương hiệu</label>
-                        <input type="text" name="BransId" class="form-control" readonly  value="@ViewBag.DetailBrands.BrandId">
+                        <input type="text" name="BrandId" class="form-control" readonly  value="@Model.productBrand.BrandId">
                         
                     </div>
                     
                     <div class="form-group">
                         <label for="exampleInputEmail1">Tên thương hiệu</label>
-                        <input type="text" class="form-control" id="BrandsName" name="BrandsName" value="@ViewBag.DetailBrands.BrandName">
+                        <input type="text" class="form-control" id="BrandName" name="BrandName" value="@Model.productBrand.BrandName">
                          <div class="valid-feedback">
-                        Looks good!
+                        Chính xác.
                     </div>
                     <div class="invalid-feedback">
-                        Error...
+                       Không được bỏ trống
                     </div>
                     </div>
                     <div class="form-group">
@@ -32,17 +40,26 @@
                           @Html.TextBox("fileImage", "", new { type = "file", accept = "image/*" })
                         <br />
                         <br />
-                        <img id="preview" src="/images/@ViewBag.DetailBrands.BrandPhoto" width="auto" height="auto" class="hidden" />
+                        <img id="preview" src="/images/@Model.productBrand.BrandPhoto" width="auto" height="auto" class="hidden" />
                          <br />
                         <br />
-                        <input type="text" name="imageName" value="@ViewBag.DetailBrands.BrandPhoto" readonly />
+                        <input type="text" name="BrandPhoto" value="@Model.productBrand.BrandPhoto" readonly />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nhập mô tả cho</label>
-                        <textarea style="height: 100px;" name="BrandsDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." >@ViewBag.DetailBrands.BrandDescription</textarea>
+                        <textarea style="height: 100px;" name="BrandDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." >@Model.productBrand.BrandDescription</textarea>
                     </div>
                     <div class="form-group">
-                        <select name="status" id="status"> 
+                        <select name="BrandStatus" id="BrandStatus"> 
+                            @{
+                                switch(@Model.productBrand.BrandStatus)
+                                {
+                                    case 1: <option value="1">Trạng thái bình thường</option>
+                                        break;
+                                        case 0: <option value="0">Tạm ngưng kinh doanh</option>
+                                        break;
+                                }   
+                            }
                             <option value="1">Trạng thái bình thường</option>
                             <option value="0">Tạm ngưng kinh doanh</option>
                         </select>

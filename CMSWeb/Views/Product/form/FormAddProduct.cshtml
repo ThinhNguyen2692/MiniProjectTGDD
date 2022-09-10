@@ -1,26 +1,41 @@
 ﻿@using DAL.Models;
 @using CMSWeb.Models;
-@model ModelTam
+@model ListModel
 
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4></h4>
+                @switch (Model.message)
+                {
+                    case "addproductfale": <div class="alert alert-success">Cập nhật thất bại</div> break;
+                    default: <div></div> break;
+                }
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
                 <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/AddProduct">
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input type="text" class="form-control" id="" name="ProductId" />
+                        <input type="text" class="form-control" id="ProductId" name="ProductId" />
+                         <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Mã thương hiệu: a-z,A-Z,0-9 
+                        </div>
                     </div>
                     <div class="form-group">
                         <label >Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="" name="ProductName"/>
-                       
+                        <input type="text" class="form-control" id="ProuctName" name="ProuctName"/>
+                         <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
                     </div>
                      <div class="form-group">
                          <label >Ngành hàng</label>
-                        <select class="form-control" name="TypeId" id="">
+                        <select class="form-control" name="ProductType" id="ProductType">
                            @{
                                 foreach (var item in Model.productType)
                                 {
@@ -31,14 +46,13 @@
                     </div> 
                     <div class="form-group">
                          <label >Thương hiệu</label>
-                        <select class="form-control" name="BrandsId" id="">
+                        <select class="form-control" name="ProductBrand" id="ProductBrand">
                             @{
                                 foreach (var item in Model.productBrands)
                                 {
                                     <option value="@item.BrandId">@item.BrandName</option>
                                 }
                             }
-                            
                         </select>
                     </div>
                     <div class="form-group">
@@ -47,7 +61,6 @@
                         @Html.TextBox("fileImage", "", new { type = "file", accept = "image/*" })
                         <br />
                         <img id="preview" src="#" width="auto" height="auto" class="hidden" />
-
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nhập mô tả cho</label>
@@ -55,8 +68,7 @@
                     </div>
                      <div class="form-group">
                         <label >Thời gian ra mắt</label>
-                        <input type="date" value="" class="form-control" id="" name="ProductDate"/>
-                       
+                        <input type="date" value="" class="form-control" id="ReleaseTime" name="ReleaseTime"/>
                     </div>
                      <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>

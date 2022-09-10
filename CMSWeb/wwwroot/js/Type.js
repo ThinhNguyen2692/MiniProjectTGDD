@@ -2,8 +2,6 @@
 function UpdataSpecification(id, typeid) {
 
     const intputSpecificaltion = document.querySelector('.intputSpecification-' + id);
-   
-    console.log("eifu");
     $.ajax({
         type: "POST",
         url: "/UpdataSpecification",
@@ -88,14 +86,4 @@ $('#addType').click(function () {
 
 
 
-const formAddSpecifitication = document.querySelector('#form-add-Specification');
-const SpecificationName = document.querySelector('#SpecificationName');
 
-formAddSpecifitication.addEventListener("submit", function (e) {
-    if (SpecificationName.value == "") {
-        setError(SpecificationName);
-        e.preventDefault();
-    } else {
-        setTrue(bransId);
-    }
-});

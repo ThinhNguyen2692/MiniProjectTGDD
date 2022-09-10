@@ -12,13 +12,12 @@ namespace DAL.Models
 
         public VersionQuantity() { }
 
-        public VersionQuantity(int Id, string VersionId, string ColorName, int? Quantity)
+        public VersionQuantity(int Id, string VersionId,  int? Quantity, int colorId)
         {
             this.Id = Id;
             this.VersionId = VersionId;
             this.Quantity = Quantity;
-            Color = new ProductColor();
-            Color.ColorDescription = ColorName;
+            this.ColorId = colorId;
         }
 
         public virtual ProductColor Color { get; set; } = null!;

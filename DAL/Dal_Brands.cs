@@ -6,71 +6,114 @@ using System.Threading.Tasks;
 using DAL.Models;
 namespace DAL
 {
-     public class Dal_Brands
+    public interface IDalBrands
     {
-        //thêm thương hiệu
-        public bool DalAddBrands(ProductBrand brand)
+        public bool DalAddBrand(ProductBrand productBrand);
+        public string DalRemoveBrand(string id);
+        public List<ProductBrand> DalGetBrand();
+        public ProductBrand GetBrandById(string id);
+        public bool DalUpdateBrands(ProductBrand name);
+        public List<ProductBrand> DalGetbrandsByStatus();
+        public bool CheckProduct(string BrandsId);
+    }
+    public class Dal_Brands : IDalBrands
+    {
+        public MiniProjectTGDDContext context;
+        public Dal_Brands(MiniProjectTGDDContext context)
         {
-            var context = new MiniProjectTGDDContext();
-            context.ProductBrands.Add(brand);
+            this.context = context;
+        }
 
-            context.SaveChanges();
+        
+
+        //thêm thương hiệu
+        public bool DalAddBrand(ProductBrand brand)
+        {
+            if (GetBrandById(brand.BrandId) == null)
+            {
+
+                context.ProductBrands.Add(brand);
+                context.SaveChanges();
+            }
+            else
+            {
+                return false;
+            }
 
             return true;
         }
         //Đọc toàn bộ dữ liệu
-        public List<ProductBrand> ReadBrandsAll()
+        public List<ProductBrand> DalGetBrand()
         {
+          
             List<ProductBrand> result = new List<ProductBrand>();
             //Khong dung try catch 
-            
-                var context = new MiniProjectTGDDContext();
-                var list = context.ProductBrands.OrderByDescending(b => b.BrandStatus).ToList();
-                result.AddRange(list);
-                return list;
+
+           
+            var list = context.ProductBrands.OrderByDescending(b => b.BrandStatus).ToList();
+            result.AddRange(list);
+            return list;
         }
 
         //Xóa thương hiệu
-        public string DeleteBrands(string id)
+        public string DalRemoveBrand(string id)
         {
             // đương đẫn xóa hình logo
-            string path;
-            
-                var context = new MiniProjectTGDDContext();
-                var data = context.ProductBrands.First(c => c.BrandId == id);
+            string path = null;
+           
+            var data = context.ProductBrands.FirstOrDefault(c => c.BrandId == id);
+            if (data != null)
+            {
                 path = data.BrandPhoto;
                 context.Remove(data);
                 context.SaveChanges();
-           
+            }
+               
             return path;
         }
 
         //lây thông tin chi tiết thương hiệu
-        public ProductBrand BrandsDetail(string id)
+        public ProductBrand GetBrandById(string id)
         {
-                var context = new MiniProjectTGDDContext();
-                var data = context.ProductBrands.First(c => c.BrandId == id);
-            return data;
+          
+            if (context.ProductBrands.FirstOrDefault(c => c.BrandId == id) != null)
+            {
+                return context.ProductBrands.First(c => c.BrandId == id);
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
 
         //Cập nhật thông tin thương hiệu
         public bool DalUpdateBrands(ProductBrand brand)
         {
-                var context = new MiniProjectTGDDContext();
-                context.ProductBrands.Update(brand);
-                context.SaveChanges();
+            context = new MiniProjectTGDDContext();
+            context.ProductBrands.Update(brand);
+            context.SaveChanges();
             return true;
         }
 
         //Đọc dữ liệu thương hiệu đang kinh doanh
-        public List<ProductBrand> ReadBrandsStatus()
+        public List<ProductBrand> DalGetbrandsByStatus()
         {
-                var context = new MiniProjectTGDDContext();
-                var list = context.ProductBrands.Where(b => b.BrandStatus == 1).ToList();
+            
+            var list = context.ProductBrands.Where(b => b.BrandStatus == 1).ToList();
             return list;
 
         }
+
+        //kiểm tra sản phẩm thương hiệu
+        public bool CheckProduct(string BrandsId)
+        {
+            var list = context.Products.Where(b => b.ProductBrand == BrandsId).ToList();
+            if(list.Count == 0) { return true; }
+            return false;
+        }
+
 
     }
 }

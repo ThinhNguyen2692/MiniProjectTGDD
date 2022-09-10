@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DAL;
+using DAL.Models;
+
+namespace BUS
+{
+     public interface IBusCustomer
+    {
+
+        public List<Customer> GetCustomers();
+        public Customer UpdateCustomer(Customer customer);
+        public Customer GetCustomerByphone(string NumberPhone);
+    }
+
+    public class Bus_Customer: IBusCustomer
+    {
+        private static Bus_Customer bus_Customer;
+        private static IDalCustomer dal_Customer;
+
+        public static Bus_Customer GetCustomer(IDalCustomer dalCustomer)
+        {
+            dal_Customer = dalCustomer;
+            if(bus_Customer == null) { bus_Customer = new Bus_Customer(); }
+            return bus_Customer;
+        }
+
+        //lấy danh sách khách hàng
+         public List<Customer> GetCustomers()
+        {
+            return dal_Customer.GetCustomers();
+        }
+
+        //cập nhật thông tin khách hàng
+        public Customer UpdateCustomer(Customer customer)
+        {
+            return dal_Customer.UpdateCustomer(customer);
+
+        }
+
+        //lấy thông tin 1 khách hàng
+        public Customer GetCustomerByphone(string NumberPhone)
+        {
+            return dal_Customer.GetCustomerByphone(NumberPhone);
+
+        }
+    }
+}

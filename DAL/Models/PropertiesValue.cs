@@ -12,14 +12,13 @@ namespace DAL.Models
 
         public PropertiesValue() { }
 
-      public PropertiesValue(int valueId, string versionId, int propertiesId, string? value, string PropertiesName)
+      public PropertiesValue(int valueId, string versionId, int propertiesId, string? value)
         {
             ValueId = valueId;
             VersionId = versionId;
             PropertiesId = propertiesId;
             Value = value;
-            Properties = new InformationProperty();
-            Properties.PropertiesName = PropertiesName;
+           
         }
 
         public virtual InformationProperty Properties { get; set; } = null!;

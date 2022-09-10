@@ -1,108 +1,134 @@
-﻿
-
+﻿@using DAL.Models;
+@using CMSWeb.Models;
+@model ListModel;
 <div class="content-wrapper">
-    <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
-        <div class="card">
+    <div style="width: 1300px; margin: auto;" class="grid-margin stretch-card">
+        <div class="card ">
             <div class="card-body">
-                
-                   
-                    <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/AddProduct">
-                        <div class="form-group">
-                            <label for="exampleInputUsername1">Mã sản phẩm</label>
-                            <input type="text" value="@ViewBag.data.ProductId" readonly class="form-control" id="" name="ProductId" />
+
+                <h2 style="text-align:center">Thông tin chi tiết sản phẩm</h2>
+                <div>
+                    <a href="/FormAddPhoto?ProductIdVersion=@Model.productVersionDetail.VersionId&ProductNameVersion=@Model.productVersionDetail.VersionName" class="btn btn-gradient-primary">Thêm ảnh cho sản phẩm</a>  <button class="btn btn-gradient-primary">Xem hình</button>  <a href="/DeleteProductVerSion?versionId=@Model.productVersionDetail.VersionId&productId=@Model.productVersionDetail.ProductId" class="btn btn-outline-danger" id="deleteProduct">Xóa</a>
+                    <!-- The Modal -->
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label >Tên sản phẩm</label>
-                            <input type="text" value="@ViewBag.data.Product.ProuctName" class="form-control" id="" name="ProductName"/>
-                           
-                        </div>
-                         <div class="form-group">
-                             <label >Ngành hàng</label>
+                    </div>
+
+                </div>
+                <br />
+                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/UpdateProduct">
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Mã sản phẩm</label>
+                        <input type="text" value="@Model.product.ProductId" readonly class="form-control" id="" name="ProductId" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tên sản phẩm</label>
+                        <input type="text" value="@Model.product.ProuctName" class="form-control" id="" name="ProductName" />
+
+                    </div>
+                    <div class="form-group">
+                        <label>Ngành hàng</label>
                         @{
-                            foreach (var item in ViewBag.DataType)
+                            foreach (var item in Model.productType)
                             {
-                                if (item.Typeid == ViewBag.data.Product.ProductType)
+                                if (item.Typeid == Model.product.ProductType)
                                 {
-                                            <input type="text" class="form-control" readonly value="@item.Typename" id="" name=""/>
+                                    <input type="text" class="form-control" readonly value="@item.Typeid" id="ProductType" name="ProductType" />
                                 }
                             }
                         }
-                        </div> 
-                        <div class="form-group">
-                             <label >Thương hiệu</label>
-                           @{
-                            foreach (var item in ViewBag.DataBrands)
+                    </div>
+                    <div class="form-group">
+                        <label>Mã thương hiệu</label>
+                        <br />
+                        @{
+                            foreach (var item in Model.productBrands)
                             {
-                                if (item.BrandId == ViewBag.data.Product.ProductBrand)
+                                if (item.BrandId == Model.product.ProductBrand)
                                 {
-                                            <input type="text" class="form-control" readonly value="@item.BrandName" id="" name=""/>
+                                    
+                                    <input type="text" class="form-control" readonly value="@item.BrandId" id="ProductBrand" name="ProductBrand" />
                                 }
                             }
                         }
-                        </div>
-                        <div class="form-group">
-                            <label>Chọn hình: </label>
-                            <br />
-                            @Html.TextBox("fileImage", "", new { type = "file", accept = "image/*" })
-                            <br />
-                            <img id="preview" src="/images/@ViewBag.data.Product.ProductPhoto" width="auto" height="auto" class="hidden" />
+                    </div>
 
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Mô tả cho</label>
-                            <textarea style="height: 100px;" name="ProductDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." >@ViewBag.data.Product.ProductDescription</textarea>
-                        </div>
-                         <div class="form-group">
-                            <label >Thời gian ra mắt</label>
-                            <input type="date" value="@ViewBag.data.Product.ReleaseTime.ToString("yy/MM/yyyy")" class="form-control" id="" name="ProductDate"/>
-                        </div>
-                         <button type="submit" id="btn-submit"  class="btn btn-gradient-primary md-2">Cập nhật</button>
-                    </form>
-                    <br />
-                    <br />
-                    <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/">
-                       <h3>Thông tin </h3>
-                        <div class="form-group">
-                            <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
-                            <input type="text" class="form-control" value="@ViewBag.data.VersionId" readonly id="VersionID" name="VersionID" />
-                        </div>
-                        <div class="form-group">
-                            <label>Tên phiên bản sản phẩm</label>
-                            <input type="text" value="@ViewBag.data.VersionName" class="form-control" id="VersionName" name="VersionName" />
+                    <div class="form-group">
+                        <label>Chọn hình: </label>
+                        <br />
+                        @Html.TextBox("fileImage", "", new { type = "file", accept = "image/*" })
+                        <br />
+                        <img id="preview" src="/images/@Model.product.ProductPhoto" width="auto" height="auto" class="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Mô tả cho</label>
+                        <textarea style="height: 100px;" name="ProductDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu...">@Model.product.ProductDescription</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Thời gian ra mắt</label>
+                        @{
+                            DateTime datetime = (DateTime)Model.product.ReleaseTime;
+                        }
+                        <input type="date" value="@datetime.ToString("yyyy-MM-dd")" class="form-control" id="ReleaseTime" name="ReleaseTime" />
+                    </div>
+                    <h3>Thông tin </h3>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
+                        <input type="text" class="form-control" value="@Model.productVersionDetail.VersionId" readonly id="VersionId" name="VersionId" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tên phiên bản sản phẩm</label>
+                        <input type="text" value="@Model.productVersionDetail.VersionName" class="form-control" id="VersionName" name="VersionName" />
 
-                        </div>
-                        <div class="form-group">
-                            <label>Giá sản phẩm</label>
-                            <input type="number" class="form-control" name="" id="VersionPrice" min="100" max="9000000000" step="100000" value="@ViewBag.data.ProductPrice">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá sản phẩm</label>
+                        <input type="number" class="form-control" name="ProductPrice" id="ProductPrice" min="100" max="9000000000" step="100" value="@Model.productVersionDetail.ProductPrice">
 
-                        </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label>Trạng thái</label>
-                            <select class="form-control" name="VersionStatus" id="VersionStatus">
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <select class="form-control" name="ProductStatus" id="ProductStatus">
                             @{
-                                if(@ViewBag.data.ProductStatus == 1)
+                                if (@Model.productVersionDetail.ProductStatus == 1)
                                 {
-                                            <option value="1">Trạng thái bình thường</option>
+                                    <option value="1">Trạng thái bình thường</option>
                                 }
                             }
-                                <option value="1">Trạng thái bình thường</option>
-                                <option value="0">Ngưng khinh doanh</option>
-                            </select>
-                        </div>
+                            <option value="1">Trạng thái bình thường</option>
+                            <option value="0">Ngưng khinh doanh</option>
+                        </select>
+                    </div>
 
-                       
+
 
                     @{
-                        
-                        foreach (var item in ViewBag.ProperyValue)
+
+                        foreach (var item in Model.propertiesValues)
                         {
-
-                                    <div class="tag-informationType">
-
-                                        <h3> @item.Properties.PropertiesName </h3>
-                                        <label><input style="width:500px; margin-right:40px;" value="@item.Value" class="form-control InputProperty" type="text" />   <a href="" class="btn btn-gradient-primary" >Cập nhật</a></label>
-                                    </div>
+                            <div class="tag-informationType">
+                             <label>  @item.Properties.PropertiesName :  <input style="width:100px; margin-right:40px;" value=" @item.Properties.PropertiesId" name="PropertiesId" readonly class="form-control InputProperty" type="text" /> </label> 
+                                <label>  Mã : <input style="width:100px; margin-right:40px;" value="@item.ValueId" name="ValueId" readonly class="form-control InputProperty" type="text" /> </label> 
+                                <label> Thông tin:<input style="width:400px; margin-right:40px;" value="@item.Value" name="Value" class="form-control InputProperty" type="text" /></label>
+                                </div>
                         }
                     }
 
@@ -111,22 +137,24 @@
                             Số lượng
                         </h3>
                         @{
-                            foreach (var item in ViewBag.DataQuantity)
+                            foreach (var item in Model.versionQuantities)
                             {
-                                                            <h3  class="list-color-id">Mã màu: @item.Color.ColorDescription </h3>
-                                                            <label><input style="width:500px;" min="0" max="9000000000" step="100" value="@item.Quantity" class="form-control input-quantity" type="number" /></label>
+                              <label>Mã: <input style="width:100px;" readonly value="@item.Id" class="form-control input-quantity" type="number" name="Id" /></label>
+                              <label>@item.Color.ColorDescription: <input style="width:100px;" readonly value="@item.ColorId" class="form-control input-quantity" type="number" name="ColorId" /></label>
+                                <label>Số lượng: <input style="width:300px;" min="0" max="9000000000" step="100" value="@item.Quantity" name="Quantity" class="form-control input-quantity" type="number" /></label>
                             }
                         }
 
                     </div>
-                         <br />
-                        
+                    <br />
 
-                    </form>
-                   
-                    <a href="/DeleteProductVerSion?id=@ViewBag.data.VersionId" class=" btn btn-gradient-primary">Làm mới</a>
-                
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật thông tin</button>
+                </form>
+
+                <br />
+               
             </div>
+
         </div>
     </div>
 </div>

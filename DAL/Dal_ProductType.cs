@@ -7,12 +7,35 @@ using DAL.Models;
 
 namespace DAL
 {
-    public class Dal_ProductType
+    public interface IDaltype
     {
-        MiniProjectTGDDContext context = new MiniProjectTGDDContext();
+       bool DalAddType(ProductType type);
+        bool DalUpdateType(ProductType type);
+        ProductType ReadType(string id);
+        List<ProductType> ReadTypes();
+        public void deletetype(string typeid);
+
+    }
+    public class Dal_ProductType:IDaltype
+    {
+
+        public MiniProjectTGDDContext context;
+
+        public Dal_ProductType(MiniProjectTGDDContext context)
+        {
+            this.context = context;
+        }
+
+
+        //Thêm ngành hàng
         public bool DalAddType(ProductType type)
-        {  
-                context.ProductTypes.Add(type);
+        {
+          
+            if (ReadType(type.Typeid) != null)
+            {
+                return false;
+            }
+            context.ProductTypes.Add(type);
                 context.SaveChanges();
             return true;
         }
@@ -20,9 +43,9 @@ namespace DAL
         //Cập nhật thông tin ngành hàng
         public bool DalUpdateType(ProductType type)
         {
-            
-                context.ProductTypes.Update(type);
-                context.SaveChanges();
+            context = new MiniProjectTGDDContext();
+            context.Update(type);
+            context.SaveChanges();
             return true;
         }
 
@@ -30,29 +53,27 @@ namespace DAL
         //lấy 1 loại sản phẩm 
         public ProductType ReadType(string id)
         {
-            
-                var item = context.ProductTypes.First(t => t.Typeid == id);
-                
+          
+            var item = context.ProductTypes.FirstOrDefault(t => t.Typeid == id);       
             return item;
         }
 
         //lấy danh sách ngành hàng
         public List<ProductType> ReadTypes()
         {
-                var context = new MiniProjectTGDDContext();
-                var data = context.ProductTypes.ToList();
+          
+            var data = context.ProductTypes.ToList();
             return data;
         }
 
         //Xóa ngành hàng
-        public bool deletetype(string typeid)
+        public void deletetype(string typeid)
         {
-            
+            //kiểm tra sản phẩm ngành hàng
                 var item = context.ProductTypes.First(t => t.Typeid == typeid);
                 context.ProductTypes.Remove(item);
                 context.SaveChanges();
-          
-            return true;
+             
         }
 
     }

@@ -19,13 +19,6 @@ namespace DAL.Models
 
         public virtual ICollection<Product> Products { get; set; }
 
-        public ProductBrand(string id, string name, string photo, string des, int status)
-        {
-            BrandId = id;
-            BrandName = name;
-            BrandPhoto = photo;
-            BrandDescription = des;
-            BrandStatus = status;
-        }
+        
     }
 }

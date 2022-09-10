@@ -29,11 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <None Include="wwwroot\js\Product.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\Product.js" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

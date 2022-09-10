@@ -1,15 +1,29 @@
-﻿
+﻿@using DAL.Models;
+@using CMSWeb.Models;
+@model ListModel
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Nhập ngành hàng mới</h4>
-                
+                @{
+                    if (Model.message != null)
+                    {
+                         if(String.Compare(Model.message, "true") == 0)
+                    {
+                        <div class="alert alert-success">Xóa thành công</div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">Xóa thất bại</div>
+                    }
+                    }
+                }
                 <form class="forms-sample" action="/UpdateType" method="post" id="form-add-type">
 
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã ngành hành</label>
-                        <input type="text" class="form-control" readonly id="TypeId" name="TypeId" value="@ViewBag.DataType.Typeid" />
+                        <input type="text" class="form-control" readonly id="TypeId" name="TypeId" value="@Model.productTypeDetail.Typeid" />
                         <div class="valid-feedback">
                         Looks good!
                     </div>
@@ -21,7 +35,7 @@
                     
                     <div class="form-group">
                         <label for="exampleInputEmail1">Ngành hàng</label>
-                        <input type="text" class="form-control" value="@ViewBag.DataType.Typename" id="TypeName" name="TypeName"/>
+                        <input type="text" class="form-control" value="@Model.productTypeDetail.Typename" id="TypeName" name="TypeName"/>
                          <div class="valid-feedback">
                         Looks good!
                     </div>
@@ -30,25 +44,25 @@
                     </div>
                     </div>
                         <a class="btn btn-outline-danger" id="addType">Cập nhật</a>
-                        <a class="btn btn-outline-danger" href="/FormSpecification?typeid=@ViewBag.DataType.Typeid">Thêm</a>
-                        <a class="btn btn-outline-danger" href="/DeleteType?typeid=@ViewBag.DataType.Typeid">Xóa</a>
+                        <a class="btn btn-outline-danger" href="/FormSpecification?typeid=@Model.productTypeDetail.Typeid">Thêm</a>
+                        <a class="btn btn-outline-danger" href="/DeleteType?typeid=@Model.productTypeDetail.Typeid">Xóa</a>
 
                 </form>
 
                 @{
-                    foreach (var item in ViewBag.DataSpecification)
+                    foreach (var item in Model.productSpecifications)
                     {
                          <div class="tag-informationType">
                    
-                    <label>Mã: <input class="form-control" readonly style="width: 100px;" value="@item.SpecificationsId" type="text" /></label>  <label style="margin-left: 30px;margin-right: 370px;" >Thông số:  <input class="form-control intputSpecification-@item.SpecificationsId" value="@item.SpecificationsName" type="text" /></label> <a class="btn btn-outline-danger" onclick="UpdataSpecification(@item.SpecificationsId,'@ViewBag.DataType.Typeid')">Cập nhật</a> <a href="/ShowFormSpecification?idSpecification=@item.SpecificationsId&TypeId=@ViewBag.DataType.Typeid" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@item.SpecificationsId&typeid=@ViewBag.DataType.Typeid" class="btn btn-outline-danger">Xóa</a>
+                    <label>Mã: <input class="form-control" readonly style="width: 100px;" value="@item.SpecificationsId" type="text" /></label>  <label style="margin-left: 30px;margin-right: 370px;" >Thông số:  <input class="form-control intputSpecification-@item.SpecificationsId" value="@item.SpecificationsName" type="text" /></label> <a class="btn btn-outline-danger" onclick="UpdataSpecification(@item.SpecificationsId,'@Model.productTypeDetail.Typeid')">Cập nhật</a> <a href="/ShowFormSpecification?idSpecification=@item.SpecificationsId&TypeId=@Model.productTypeDetail.Typeid" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@item.SpecificationsId&typeid=@Model.productTypeDetail.Typeid" class="btn btn-outline-danger">Xóa</a>
                     <br />
                     <br />
                             @{
-                                foreach (var value in ViewBag.DataProperty)
+                                foreach (var value in Model.information)
                                 {
                                     if (value.SpecificationsId == item.SpecificationsId)
                                     {
-                                         <label style="margin-left: 20px;">Mã: <input style="width: 100px;" class="form-control" value="@value.PropertiesId" readonly type="text" /></label>  <label style="margin-left: 30px;margin-right: 30px;" >Thuộc tính:  <input value="@value.PropertiesName" class="form-control InputProperty-@value.PropertiesId" type="text" /></label> <label style="margin-right: 340px;">Đơn vị: <input style="width: 100px;" class="form-control Input-@value.PropertiesId" value="@value.PropertiesDescription" type="text" /></label> <a onclick="UpdateProperty(@value.PropertiesId, @item.SpecificationsId)" class="btn btn-outline-danger">Cập nhật</a> <a href="/DeleteProperty?id=@value.PropertiesId&typeid=@ViewBag.DataType.Typeid" class="btn btn-outline-danger">Xoá</a>
+                                         <label style="margin-left: 20px;">Mã: <input style="width: 100px;" class="form-control" value="@value.PropertiesId" readonly type="text" /></label>  <label style="margin-left: 30px;margin-right: 30px;" >Thuộc tính:  <input value="@value.PropertiesName" class="form-control InputProperty-@value.PropertiesId" type="text" /></label> <label style="margin-right: 340px;">Đơn vị: <input style="width: 100px;" class="form-control Input-@value.PropertiesId" value="@value.PropertiesDescription" type="text" /></label> <a onclick="UpdateProperty(@value.PropertiesId, @item.SpecificationsId)" class="btn btn-outline-danger">Cập nhật</a> <a href="/DeleteProperty?id=@value.PropertiesId&typeid=@Model.productTypeDetail.Typeid" class="btn btn-outline-danger">Xoá</a>
                                     }   
                                    
                         }

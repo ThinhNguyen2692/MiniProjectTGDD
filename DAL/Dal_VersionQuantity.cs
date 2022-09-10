@@ -4,73 +4,88 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class Dal_VersionQuantity
+    public interface IDalVersionQuantity
     {
-        //Thêm số lượng sản phẩm cho version
+        public bool AddVersionQuantity(VersionQuantity versionQuantity);
+        public List<VersionQuantity> ReadQuantity(string id);
+        public bool DelQuantyti(string id);
+        public bool CheckQuantity(List<VersionQuantity> versionQuantities);
+    }
+    public class Dal_VersionQuantity : IDalVersionQuantity
+    {
+        private static Dal_VersionQuantity dalVersionQuantity;
+        private MiniProjectTGDDContext context = new MiniProjectTGDDContext();
+        public static Dal_VersionQuantity Instance
+        {
+            get{
+                if (dalVersionQuantity == null) { dalVersionQuantity = new Dal_VersionQuantity(); }
+                return dalVersionQuantity;
+            }
+        }
+
+        /// <summary>
+        /// Thêm số lượng sản phẩm cho version
+        /// </summary>
+        /// <param name="versionQuantity">Dữ liệu thêm</param>
+        /// <returns>thêm thành công</returns>
         public bool AddVersionQuantity(VersionQuantity versionQuantity)
         {
-            try
-            {
                 var context = new MiniProjectTGDDContext();
                 context.VersionQuantities.Add(versionQuantity);
                 context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return false;
-                throw;
-            }
             return true;
         }
 
-        //Lây danh sách số lượng
+        /// <summary>
+        /// lấy danh sách số lượng
+        /// </summary>
+        /// <param name="id">mã phiên bản sản phẩm</param>
+        /// <returns></returns>
 
         public List<VersionQuantity> ReadQuantity(string id)
         {
-            List<VersionQuantity> result = new List<VersionQuantity>();
-            try
-            {
-                var context = new MiniProjectTGDDContext();
-                var data = context.VersionQuantities.Join(context.ProductColors, q => q.ColorId, i => i.ColorId, (q, i) => new
-                {
-                    QuantityId = q.Id,
-                    VersionID = q.VersionId,
-                    colorName = i.ColorDescription,
-                    Qauntity = q.Quantity,
-                   
-                }).Where(p => p.VersionID == id).ToList();
-
-                foreach (var item in data)
-                {
-                    result.Add(new VersionQuantity(item.QuantityId, item.VersionID, item.colorName, item.Qauntity));
-                }
-
-            }
-            catch (Exception)
-            {
-                return null;
-                throw;
-            }
-            return result;
+               
+                var data = context.VersionQuantities.Where(v => v.VersionId == id).Include(q => q.Color).ToList(); 
+            return data;
         }
 
+
+        /// <summary>
+        /// Hàm xóa thông tin số lượng sản phẩm
+        /// </summary>
+        /// <param name="id">mã phiên bản sản phẩm</param>
+        /// <returns>true xóa thành công</returns>
+        /// <returns>true không thể xóa</returns>
         public bool DelQuantyti(string id)
         {
+          
+            var data = context.VersionQuantities.Where(c => c.VersionId == id).ToList();
 
-            try
-            {
-                var context = new MiniProjectTGDDContext();
-                var data = context.VersionQuantities.First(c => c.VersionId == id);
-                context.Remove(data);
-                context.SaveChanges();
-            }
-            catch (Exception)
-            {
+            if(CheckQuantity(data) == false || data.Count == 0) { return false; }
+            context.VersionQuantities.RemoveRange(data);
+            context.SaveChanges();
+            return true;
+        }
 
-                return false;
+        /// <summary>
+        /// kiểm tra số lượng sản phẩm
+        /// </summary>
+        /// <param name="versionQuantities">danh sách cần kiểm tra để xóa</param>
+        /// <returns>true được xóa</returns>
+        /// <returns>false không được xóa</returns>
+        public bool CheckQuantity(List<VersionQuantity> versionQuantities)
+        {
+            // kiểm tra số lượng còn tồn kho
+            foreach (var item in versionQuantities)
+            {
+                if (item.Quantity > 0)
+                {
+                    return false;
+                }
             }
             return true;
         }

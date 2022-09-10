@@ -11,6 +11,7 @@ namespace DAL.Models
         {
         }
 
+
         public MiniProjectTGDDContext(DbContextOptions<MiniProjectTGDDContext> options)
             : base(options)
         {
@@ -37,6 +38,7 @@ namespace DAL.Models
         public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<VersionQuantity> VersionQuantities { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

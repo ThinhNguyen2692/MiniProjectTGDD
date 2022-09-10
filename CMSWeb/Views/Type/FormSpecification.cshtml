@@ -1,4 +1,4 @@
-﻿
+﻿@model string;
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
@@ -10,7 +10,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã ngành hàng</label>
-                        <input type="text" class="form-control" readonly name="TypeId" value="@ViewBag.Id"/>
+                        <input type="text" class="form-control" readonly name="TypeId" value="@Model" />
                         <div class="valid-feedback">
                         Looks good!
                     </div>
@@ -20,17 +20,17 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Tên thông số</label>
-                        <input type="text" class="form-control" id="SpecificationName" name="SpecificationName"/>
+                        <input type="text" class="form-control" id="SpecificationsName" name="SpecificationsName"/>
                          <div class="valid-feedback">
                         Looks good!
                     </div>
                     <div class="invalid-feedback">
-                        Error...
+                        không được bỏ trống
                     </div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Mô tả</label>
-                        <input type="text" class="form-control" name="DescriptionSpecification"/>
+                        <input type="text" class="form-control" name="SpecificationsDescription"/>
                     </div>
                      <button type="submit" id="btn-add-Type" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
@@ -39,6 +39,8 @@
                  <br />
                  <a class="btn btn-outline-danger" href="/Formtype">Kết thúc nhập</a>  
             </div>
+            <br />
+
         </div>
     </div>
 </div>

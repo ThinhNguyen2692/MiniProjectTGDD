@@ -8,38 +8,46 @@ using DAL.Models;
 
 namespace BUS
 {
-    
-     public class Bus_ProductType
+    public interface IBusProductType
     {
-        Dal_ProductType dal_ProductType = new Dal_ProductType();
+        public bool BusAddType(ProductType type);
+        public bool BusUpdateType(ProductType type);
+        public List<ProductType> ReadAll();
+        public ProductType BusReadType(string id);
+        public void deletetype(string typeid);
+
+    }
+     public class Bus_ProductType:IBusProductType
+    {
+        public IDaltype daltype;
+        public Bus_ProductType(IDaltype daltype) { this.daltype = daltype; }
 
         //thêm ngành hàng
-        public bool BusAddType(string TypeID, string TypeName)
+        public bool BusAddType(ProductType type)
         {
-            ProductType type = new ProductType(TypeID, TypeName);
-            return dal_ProductType.DalAddType(type);
+            return daltype.DalAddType(type);
         }
 
         //Cập nhật thông tin ngành hàng
         public bool BusUpdateType(ProductType type)
         {
-            return dal_ProductType.DalUpdateType(type);
+            return daltype.DalUpdateType(type);
         }
 
         // lấy danh sách ngành hàng
         public List<ProductType> ReadAll()
         {
-            return dal_ProductType.ReadTypes();
+            return daltype.ReadTypes();
         }
         //lay 1 ngành hàng
         public ProductType BusReadType(string id)
         {
-            return dal_ProductType.ReadType(id);
+            return daltype.ReadType(id);
         }
         //xóa ngành hàng
-        public bool deletetype(string typeid)
+        public void deletetype(string typeid)
         {
-            return dal_ProductType.deletetype(typeid);
+             daltype.deletetype(typeid);
         }
     }
     

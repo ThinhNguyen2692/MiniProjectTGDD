@@ -7,41 +7,58 @@ using DAL;
 using DAL.Models;
 namespace BUS
 {
-     public class Bus_Brands
+    public interface IBrands
     {
-        Dal_Brands dal_Brands = new DAL.Dal_Brands();
-        public bool BusAddBrands(string brandsId, string brandsName, string photo, string brandsDescripton, int status)
-        {
-            ProductBrand brand = new ProductBrand(brandsId, brandsName, photo, brandsDescripton, status);
-            
-            return dal_Brands.DalAddBrands(brand);
+        public bool AddBrands(ProductBrand productBrand);
+        public List<ProductBrand> GetProductBrands();
+        public ProductBrand GetBrandById(string id);
+        public string? RemoveBrand(string brandsId);
+        public bool UpdateBrands(ProductBrand productBrand);
+        public List<ProductBrand> DalGetbrandsByStatus();
+
+    }
+     public class Bus_Brands:IBrands
+    {
+
+
+        private static IDalBrands iDalBrands;
+       
+        public Bus_Brands(IDalBrands dalBrands) { iDalBrands = dalBrands; }
+
+        public bool AddBrands(ProductBrand productBrand)
+        {   
+            return iDalBrands.DalAddBrand(productBrand);
         }
 
-        public List<ProductBrand> ReadBrandsAll()
+        public List<ProductBrand> GetProductBrands()
         {
-            return dal_Brands.ReadBrandsAll();
+            return iDalBrands.DalGetBrand();
         }
-        public string DeleteBrands(string brandsId)
+        public string? RemoveBrand(string brandsId)
         {
-            return dal_Brands.DeleteBrands(brandsId);
+            if(iDalBrands.CheckProduct(brandsId) == false)
+            {
+                return null;
+            }
+            return iDalBrands.DalRemoveBrand(brandsId);
         }
 
-        public ProductBrand BrandsDetail(string id)
+        public ProductBrand GetBrandById(string id)
         {
-            return dal_Brands.BrandsDetail(id);
+            return iDalBrands.GetBrandById(id);
         }
 
-        public bool BusUpdateBrands(string brandsId, string brandsName, string photo, string brandsDescripton, int status)
+        public bool UpdateBrands(ProductBrand productBrand)
         {
-            ProductBrand brand = new ProductBrand(brandsId, brandsName, photo, brandsDescripton, status);
-
-            return dal_Brands.DalUpdateBrands(brand);
+            return iDalBrands.DalUpdateBrands(productBrand);
         }
 
         //Đọc dữ liệu thương hiệu đang kinh doanh
-        public List<ProductBrand> ReadBrandsStatus()
+        public List<ProductBrand> DalGetbrandsByStatus()
         {
-            return dal_Brands.ReadBrandsStatus();
+            return iDalBrands.DalGetbrandsByStatus();
         }
+
+
     }
 }

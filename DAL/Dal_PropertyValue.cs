@@ -8,17 +8,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class Dal_PropertyValue
+    public interface IDalPropertyValue
     {
-        MiniProjectTGDDContext context = new MiniProjectTGDDContext();
+        public bool AddPropertyValue(PropertiesValue propertiesValue);
+        public List<PropertiesValue> ReadValue(string id);
+        public void DeletePropertyValue(string id);
+    }
+    public class Dal_PropertyValue:IDalPropertyValue
+    {
+        private static Dal_PropertyValue propertyValue;
+        private MiniProjectTGDDContext context = new MiniProjectTGDDContext();
+
+        public static Dal_PropertyValue Instance
+        {
+            get
+            {
+                if (propertyValue == null) { propertyValue = new Dal_PropertyValue(); }
+                return propertyValue;
+            }
+        }
+
         //them thông tin thông số cho sản phẩm
         public bool AddPropertyValue(PropertiesValue propertiesValue)
         {
-            
-                
                 context.PropertiesValues.Add(propertiesValue);
                 context.SaveChanges();
-           
             return true;
         }
 
@@ -26,19 +40,22 @@ namespace DAL
 
         public List<PropertiesValue> ReadValue(string id)
         {
-            var data = context.PropertiesValues.Include(p => p.Properties).ToList();
+            var data = context.PropertiesValues.Where(pv => pv.VersionId == id).Include(p => p.Properties).ToList();
            
             return data;
         }
 
-        // Xóa du 
-        public bool DeletePropertyValue(string id)
+        /// <summary>
+        /// Xóa dư liệu thông tin của version
+        /// </summary>
+        /// <param name="id">Mã phiên bản sản phẩm</param>
+        /// <returns>true xóa thành công</returns>
+        public void DeletePropertyValue(string id)
         {
-                var data = context.PropertiesValues.First(c => c.VersionId == id);
-                context.Remove(data);
+                var data = context.PropertiesValues.Where(c => c.VersionId == id).ToList();
+                context.PropertiesValues.RemoveRange(data);
             context.SaveChanges();
           
-            return true;
         }
     }
 }

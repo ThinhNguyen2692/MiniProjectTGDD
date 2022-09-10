@@ -8,9 +8,24 @@ using DAL.Models;
 
 namespace BUS
 {
-    public class Bus_versionQuantity
+    public interface IBusQuanity
     {
-        Dal_VersionQuantity dal_VersionQuantity = new Dal_VersionQuantity();
+        public bool AddVersionQuantity(VersionQuantity[] versionQuantities);
+        public List<VersionQuantity> ReadQuantity(string id);
+        public bool DelQuantyti(string id);
+    }
+    public class Bus_versionQuantity:IBusQuanity
+    {
+        private static IDalVersionQuantity dal_VersionQuantity ;
+        private static Bus_versionQuantity busVersionQuantity;
+
+        public static Bus_versionQuantity GetVersionQuantity()
+        {
+            if(busVersionQuantity == null) { busVersionQuantity = new Bus_versionQuantity(); }
+            return busVersionQuantity;
+        }
+
+        
 
         public bool AddVersionQuantity(VersionQuantity[] versionQuantities)
         {
@@ -29,5 +44,17 @@ namespace BUS
         {
             return dal_VersionQuantity.ReadQuantity(id);
         }
+
+        /// <summary>
+        /// dữ liệu số lượng sản phẩm
+        /// </summary>
+        /// <param name="id">mã version sản phẩm</param>
+        /// <returns></returns>
+        public bool DelQuantyti(string id)
+        {
+            return dal_VersionQuantity.DelQuantyti(id);
+        }
+
+
     }
 }

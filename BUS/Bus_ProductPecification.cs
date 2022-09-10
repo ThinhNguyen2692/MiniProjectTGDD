@@ -8,35 +8,49 @@ using DAL.Models;
 
 namespace BUS
 {
-    
-    public class Bus_ProductPecification
+    public interface IBusProductPecification
     {
-        Dal_ProductPecification dal_ProductPecification = new Dal_ProductPecification();
+        public int BusAddProductPecification(ProductSpecification productSpecification);
+        public List<ProductSpecification> ReadSpecification(string id);
+        public bool UpdateSpecificatio(ProductSpecification specification);
+        public bool DeleteSpecification(int specification) ;
+        public void DeleteSpecificationType(string typeid) ; 
 
+
+
+    }
+
+    public class Bus_ProductPecification:IBusProductPecification
+    {
+        private static Bus_ProductPecification _instance ;
+        private static IDalProductPecification iDalProductPecification;
+        public static Bus_ProductPecification GetBus_ProductPecification(IDalProductPecification dalProductPecification) {
+            iDalProductPecification = dalProductPecification;
+            if(_instance == null) { _instance = new Bus_ProductPecification(); }
+            return _instance; }
         //thêm thông số ky thuật
-        public int BusAddProductPecification(string TypeId, string name, string Description)
+        public int BusAddProductPecification(ProductSpecification productSpecification)
         {
-            ProductSpecification productSpecification = new ProductSpecification(TypeId, name, Description);
-            return dal_ProductPecification.DalAddProductPecification(productSpecification);
+            return iDalProductPecification.DalAddProductPecification(productSpecification);
         }
 
         // lấy danh sách thông số theo type
         public List<ProductSpecification> ReadSpecification(string id)
         {
-            return dal_ProductPecification.ReadSpecification(id);
+            return iDalProductPecification.ReadSpecification(id);
         }
         
         //cập nhật thông số
         public bool UpdateSpecificatio(ProductSpecification specification)
         {
-            return dal_ProductPecification.UpdateSpecificatio(specification);
+            return iDalProductPecification.UpdateSpecificatio(specification);
         }
 
         //Xóa thông số 
-        public bool DeleteSpecification(int specification) { return dal_ProductPecification.DeleteSpecification(specification); }
+        public bool DeleteSpecification(int specification) { return iDalProductPecification.DeleteSpecification(specification); }
 
         // Xóa thông số theo type id
-        public bool DeleteSpecificationType(string typeid) { return dal_ProductPecification.DeleteSpecificationType(typeid); }
+        public void DeleteSpecificationType(string typeid) { iDalProductPecification.DeleteSpecificationType(typeid); }
 
 
     }

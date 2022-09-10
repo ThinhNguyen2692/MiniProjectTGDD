@@ -1,4 +1,4 @@
-﻿    //hàm thay đổi htm thông báo ký nhập sai
+﻿//hàm thay đổi htm thông báo ký nhập sai
     function setError(input) {
         input.classList.add('is-invalid');
         input.classList.remove('is-valid');
@@ -18,16 +18,21 @@ function checkTen(inputVaule) {
     const regex = /^.+$/; // không được bỏ trống
     return regex.test(inputVaule);
 }
+
+
+
 const formDemo = document.querySelector('#form-brands');
 const bransId = document.querySelector('#BransId');
 const bransName = document.querySelector('#BrandsName');
 const bransImage = document.getElementById('preview');
+const fileImage = document.getElementById('fileImage');
 
 if (formDemo) {
 
     formDemo.addEventListener("submit", function (e) {
         if (bransName.value == "") {
             setError(bransName);
+            
             e.preventDefault();
         } else {
             console.log(bransName.value);
@@ -43,21 +48,17 @@ if (formDemo) {
             alert("Chưa chọn hình");
             e.preventDefault();
         }
+      
+        
     });
 }
 
 
 
-
-
-
-
-
-
 ////form nhập thông tin ngành hàng (3 form)
 const formAddType = document.querySelector('#form-add-type');
-const TypeId = document.querySelector('#TypeId');
-const TypeName = document.querySelector('#TypeName');
+const TypeId = document.querySelector('#Typeid');
+const TypeName = document.querySelector('#Typename');
 
 formAddType.addEventListener("submit", function (e) {
 
@@ -75,12 +76,4 @@ formAddType.addEventListener("submit", function (e) {
         setTrue(bransId);
     }
 });
-
-
-
-
-
-
-
-
 

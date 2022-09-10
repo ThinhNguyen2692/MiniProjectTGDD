@@ -15,13 +15,7 @@ namespace DAL.Models
         public string ColorPath { get; set; } = null!;
         public string? ColorDescription { get; set; }
 
-        public ProductColor( string productId, string colorPath, string? colorDescription)
-        {
-            ProductId = productId;
-            ColorPath = colorPath;
-            ColorDescription = colorDescription;
-        }
-
+       
         public virtual Product Product { get; set; } = null!;
         public virtual ICollection<VersionQuantity> VersionQuantities { get; set; }
     }

@@ -1,0 +1,103 @@
+﻿@using DAL.Models;
+@using CMSWeb.Models;
+@model ListModel
+
+<div class="content-wrapper">
+    <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                
+                <h2 style="text-align:center;" class="card-title">Nhập thông tin khách hàng</h2>
+                 @switch (Model.message)
+                {
+                    case "updatecustomertrue": <div class="alert alert-success">Cập nhật thành công</div> break;
+                    default: <div></div> break;
+                }
+                <form class="forms-sample" id="form-brands" method="post" enctype="multipart/form-data" action="/UpdateCustomer">
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Số điện thoại</label>
+                        <input type="text" class="form-control" id="CustomerPhone" value="@Model.customer.CustomerPhone" readonly    placeholder="Nhập số điện thoại" name="CustomerPhone" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Mã thương hiệu: a-z,A-Z,0-9
+                        </div>
+                    </div>
+                   
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Tên khách hàng</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên khách hàng" value="@Model.customer.CustomerName" id="CustomerName" name="CustomerName" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+
+                       <div class="form-group">
+                        <label for="exampleInputEmail1">Tỉnh - Thành phố</label>
+                        <input type="text" class="form-control" placeholder="" value="@Model.customer.ProvinceCity" id="ProvinceCity" name="ProvinceCity" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+
+                       <div class="form-group">
+                        <label for="exampleInputEmail1">Quận - huyện</label>
+                        <input type="text" class="form-control" placeholder="" value="@Model.customer.District" id="District" name="District" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+
+                    
+                       <div class="form-group">
+                        <label for="exampleInputEmail1">Xã</label>
+                        <input type="text" class="form-control" placeholder="" value="@Model.customer.CommuneWard" id="CommuneWard" name="CommuneWard" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+
+                    
+                       <div class="form-group">
+                        <label for="exampleInputEmail1">Địa chỉ</label>
+                        <input type="text" class="form-control" placeholder="" value="@Model.customer.CustomerAddress" id="CustomerAddress" name="CustomerAddress" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Lần cuối đăng nhập</label>
+                        <input type="text" class="form-control" placeholder="" readonly value="@Model.customer.RegistrationTime" id="RegistrationTime" name="RegistrationTime" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+                   
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                    <button type="reset" class="btn btn-light">Làm mới</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

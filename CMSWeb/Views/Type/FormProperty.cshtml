@@ -1,44 +1,40 @@
-﻿
+﻿@model string[];
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4></h4>
                 <h4 class="card-title">Nhập thông tin thông số kỹ thuật  pr</h4>
                 <form class="forms-sample" id="form-add-properties" method="post" enctype="multipart/form-data" action="/AddProperty">
                     <div class="form-group">
+                        <label for="exampleInputUsername1">Mã ngành hàng</label>
+                        <input type="text" class="form-control" readonly name="TypeId" value="@Model[1]" />
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputUsername1">Mã thông số</label>
-                        <input type="text" class="form-control" readonly name="SpecificationId" value="@ViewBag.Id" />
+                        <input type="text" class="form-control" readonly name="SpecificationsId" value="@Model[0]" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Tên thuộc tính</label>
                         <input type="text" class="form-control" id="PropertiesName" name="PropertiesName" />
                         <div class="valid-feedback">
-                            Looks good!
+                            Chính xác!
                         </div>
                         <div class="invalid-feedback">
-                            Error...
+                           Không được bỏ trống
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Đơn vị</label>
-                        <input type="text" class="form-control" name="PropertiesDescription" value="null"/>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            Error...
-                        </div>
+                        <input type="text" class="form-control" name="PropertiesDescription" value=""/>
+                        
                     </div>
                     <button type="submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
                 </form>
                 <br />       
-                        <a class="btn btn-outline-danger" href="/FormSpecification">Kết thúc nhập</a>
-                         <a class="btn btn-outline-danger" href="/ShowTypeDetail?typeid=@ViewBag.TypeId">Xem chi tiết</a>
-                    
-                
-            </div>
+                        <a class="btn btn-outline-danger" href="/FormSpecification?TypeId=@Model[1]">Kết thúc nhập</a>
+                         <a class="btn btn-outline-danger"href="/ShowTypeDetail?typeid=@Model[1]">Xem chi tiết</a>
+             </div>
         </div>
     </div>
 </div>

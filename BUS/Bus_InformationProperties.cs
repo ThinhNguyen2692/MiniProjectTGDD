@@ -8,30 +8,44 @@ using DAL.Models;
 
 namespace BUS
 {
-    public class Bus_InformationProperties
+
+    public interface IBusInformationProperties
     {
-        Dal_InformationProperties informationProperties = new Dal_InformationProperties();  
-        
-        
+        public void BusAddInformationProperties(InformationProperty informationProperty);
+        public List<InformationProperty> ReadProperty(string id);
+        public void UpDateProperty(InformationProperty property);
+        public bool DalDeleteProperty(int property);
+        public bool DalDeletePropertySpecification(int SpecificationID);
+        public bool DeletePropertyType(string id);
+    }
+
+    public class Bus_InformationProperties:IBusInformationProperties
+    {
+        private static Bus_InformationProperties _instance = new Bus_InformationProperties();
+        private static IDalInformationProperties iDalInformationProperties;
+        public static Bus_InformationProperties GetBus_InformationProperties(IDalInformationProperties dalInformationProperties) { 
+            
+            iDalInformationProperties = dalInformationProperties;
+            return _instance; }
         // thêm thuộc tính
-        public void BusAddInformationProperties(int SpecificationId, string PropertiesName, string PropertiesDescription)
+        public void BusAddInformationProperties(InformationProperty informationProperty)
         {
-             informationProperties.AddInformationProperties(new InformationProperty(SpecificationId, PropertiesName,PropertiesDescription));
+            iDalInformationProperties.AddInformationProperties(informationProperty);
         }
 
         //lấy thuộc tính theo loại
         public List<InformationProperty> ReadProperty(string id)
         {
-            return informationProperties.ReadProperty(id);
+            return iDalInformationProperties.ReadProperty(id);
         }
         public void UpDateProperty(InformationProperty property)
         {
-             informationProperties.DalUpdateProperty(property);
+            iDalInformationProperties.DalUpdateProperty(property);
         }
 
-        public bool DalDeleteProperty(int property) { return informationProperties.DalDeleteProperty(property); }
-        public void DalDeletePropertySpecification(int SpecificationID) {  informationProperties.DalDeletePropertySpecification(SpecificationID); }
-        public bool DeletePropertyType(string id) { return informationProperties.DeletePropertyType(id); }
+        public bool DalDeleteProperty(int property) { return iDalInformationProperties.DalDeleteProperty(property); }
+        public bool DalDeletePropertySpecification(int SpecificationID) { return iDalInformationProperties.DalDeletePropertySpecification(SpecificationID); }
+        public bool DeletePropertyType(string id) { return iDalInformationProperties.DeletePropertyType(id); }
 
 
     }

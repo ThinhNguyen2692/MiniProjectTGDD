@@ -1,5 +1,4 @@
 ﻿function addProductversion() {
-
     //id san phẩm
     let ProductID = $('#ProductID').val();
     //id phiên bản sản phẩm
@@ -10,8 +9,7 @@
     let VersionPrice = $('#VersionPrice').val();
     //trạng thái sản phẩm
     let VersionStatus = $('#VersionStatus').val();
-
-
+    //Thêm phiên bản sản phẩm
     $.ajax({
         type: "POST",
         url: "/AddVersionProduct",
@@ -32,17 +30,17 @@
                 const InputPropertys = document.querySelectorAll('.InputProperty');
                 // don vi thuoc tinh
                 const DataInput = document.querySelectorAll('.data-input');
+
                 let VersionProductid = $('#VersionID').val();
                 let valueProperty = [];
-
+                //vòng lập tạo đối tượng
                 for (let i = 0; i < InputPropertys.length; i++) {
                     let val = InputPropertys[i].value;
                     val = val + DataInput[i].dataset.input;
                     let oj = { VersionId: VersionProductid, PropertiesId: DataProperty[i].dataset.dataproperty, Value: val };
                     valueProperty.push(oj);
                 }
-                console.log(valueProperty);
-
+                //ajax thêm thông tin thông số kỹ thuật
                 $.ajax({
                     type: "POST",
                     url: "/AddPropertyValue",
@@ -55,14 +53,13 @@
                             const ListColorId = document.querySelectorAll('.list-color-id');
                             let valueQuantity = [];
 
+                            //vòng lặp lấy thông tin số lượng sản phẩm
                             for (let i = 0; i < ListQuantity.length; i++) {
-
                                 let quantity = ListQuantity[i].value;
                                 let color = ListColorId[i].dataset.colorid;
                                 let oj = { VersionId: Versionid, ColorId: color, Quantity: quantity };
                                 valueQuantity.push(oj);
                             }
-
                             $.ajax({
                                 type: "POST",
                                 url: "/AddVersionQuantity",
@@ -70,24 +67,19 @@
                                 data: { versionQuantity: valueQuantity },
                                 success: function (data) {
                                     if (data == true) {
-                                        alert("Thêm hinh thành công");
+                                        alert("Thêm sản phẩm thành công");
                                     } else {
-                                        alert("Thêm hinh thất bại");
+                                        alert("Cập nhật số lượng cho sản phẩm thất bại");
                                     }
                                 },
                                 error: function () {
-                                    alert("Thêm hinh thất bại");
+                                    alert("Cập nhật số lượng cho sản phẩm thất bại");
                                 }
                             });
                         } else {
-                            alert("Thêm thuoc tinh thất bại");
+                            alert("Thêm thông tin thông số kỹ thuật sản phẩm thất bại");
                         }
                     },
-                    error: function () {
-                        alert("Thêm thuoc tinh thất bại");
-                    }
-
-
                 });
             } else {
                 alert("Thêm sản phẩm thất bại");
@@ -97,10 +89,11 @@
             alert("Thêm sản phẩm thất bại");
         }
     });
+}
 
 
-   
-
-   
-    console.log(valueQuantity);
+if ($('#deleteProduct')) {
+    $('#deleteProduct').click(function () {
+        $('#preview').attr("src", "#");
+    });
 }

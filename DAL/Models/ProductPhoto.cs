@@ -9,6 +9,8 @@ namespace DAL.Models
         public string VersionId { get; set; } = null!;
         public int PhotoId { get; set; }
 
+        public ProductPhoto() { }
+
        public ProductPhoto(string VersionId, int PhotoId)
         {
             this.VersionId = VersionId;
