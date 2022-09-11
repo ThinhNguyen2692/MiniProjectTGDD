@@ -1,6 +1,7 @@
 ﻿@using DAL.Models;
 @using CMSWeb.Models;
-@model ListModel
+@using CMSWeb.ViewModels.ProductTypeViewModel;
+@model ListProductTypeViewModel;
 <div class="content-wrapper">
     <div class="page-header">
        
@@ -33,7 +34,7 @@
                 </thead>
                 <tbody>
                     @{
-                        foreach (var item in Model.productType)
+                        foreach (var item in Model.listproductTypes)
                         {
                             <tr>
                         <th> <h5>@item.Typename</h5></th>

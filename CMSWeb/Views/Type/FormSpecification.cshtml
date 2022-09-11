@@ -1,4 +1,5 @@
-﻿@model string;
+﻿@using CMSWeb.ViewModels.ProductTypeViewModel;
+@model CreateProductPecification;
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
@@ -6,31 +7,26 @@
                 <h4></h4>
                 <h4 class="card-title">Nhập thông số kỹ thuật SP</h4>
                 
-                <form class="forms-sample" id="form-add-Specification" method="post" enctype="multipart/form-data" action="/AddSpecification">
+                <form class="forms-sample" id="form-add-Specification" method="post" enctype="multipart/form-data" asp-controller="Type" asp-action="AddSpecification" >
 
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Mã ngành hàng</label>
-                        <input type="text" class="form-control" readonly name="TypeId" value="@Model" />
-                        <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Error...
-                    </div>
+                        <label asp-for="@Model.typeId">Mã ngành hàng</label>
+                        <input asp-for="@Model.typeId" class="form-control SpecificationId" readonly   />
+                        
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Tên thông số</label>
-                        <input type="text" class="form-control" id="SpecificationsName" name="SpecificationsName"/>
+                        <label asp-for="@Model.ProductPecificationName">Tên thông số</label>
+                        <input  class="form-control SpecificationName" asp-for="@Model.ProductPecificationName"/>
                          <div class="valid-feedback">
-                        Looks good!
+                         Chính xác
                     </div>
                     <div class="invalid-feedback">
                         không được bỏ trống
                     </div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Mô tả</label>
-                        <input type="text" class="form-control" name="SpecificationsDescription"/>
+                        <label asp-for="@Model.ProductPecificationDrecription">Mô tả</label>
+                        <input  class="form-control" asp-for="@Model.ProductPecificationDrecription"/>
                     </div>
                      <button type="submit" id="btn-add-Type" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>

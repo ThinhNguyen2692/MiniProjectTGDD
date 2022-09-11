@@ -16,18 +16,17 @@ namespace DAL
         bool DalDeleteProperty(int property);
         bool DalDeletePropertySpecification(int SpecificationID);
         bool DeletePropertyType(string id);
+        public string GetTypeIdByProperty(int PropertyId);
     }
     public class Dal_InformationProperties:IDalInformationProperties
     {
-        private static Dal_InformationProperties informationProperties;
 
-        public MiniProjectTGDDContext context = new MiniProjectTGDDContext();
 
-        public static Dal_InformationProperties GetInformationProperties()
+        public MiniProjectTGDDContext context;
+
+        public Dal_InformationProperties (MiniProjectTGDDContext miniProjectTGDDContext)
         {
-
-            if(informationProperties == null) { informationProperties = new Dal_InformationProperties(); }
-            return informationProperties;
+               context = miniProjectTGDDContext;
         }
 
         //Thêm thông tin thuộc tính
@@ -101,6 +100,12 @@ namespace DAL
                 return true;
             }
             return false;
+        }
+
+        public string GetTypeIdByProperty(int PropertyId)
+        {
+            var TypeId = context.InformationProperties.Where(i => i.PropertiesId == PropertyId).Include(i => i.Specifications.TypeId).Select(i => i.Specifications.TypeId).ToString();
+            return TypeId;
         }
     }
 }

@@ -15,17 +15,14 @@ namespace DAL
         bool UpdateSpecificatio(ProductSpecification specification);
         bool DeleteSpecification(int specification);
         public void DeleteSpecificationType(string typeid);
+        public string GetTypeIdBySpecification(int SpecificationId);
     }
 
     public class Dal_ProductPecification : IDalProductPecification
     {
-        private static Dal_ProductPecification ProductSpecification;
-        private static MiniProjectTGDDContext context = new MiniProjectTGDDContext();
-        public static Dal_ProductPecification GetsPecification()
-        {
-            if (ProductSpecification == null) { ProductSpecification = new Dal_ProductPecification(); }
-            return ProductSpecification;
-        }
+
+        private MiniProjectTGDDContext context;
+       public Dal_ProductPecification(MiniProjectTGDDContext miniProjectTGDDContext) { context = miniProjectTGDDContext; }
         //Thêm thông số ngành hàng
         public int DalAddProductPecification(ProductSpecification type)
         {
@@ -75,6 +72,13 @@ namespace DAL
             context.SaveChanges();
         }
 
-
+        public string GetTypeIdBySpecification(int SpecificationId)
+        {
+            var data = context.ProductSpecifications.FirstOrDefault(s => s.SpecificationsId == SpecificationId);
+            var TypeId = data.TypeId;
+            return TypeId;
+        }
     }
+
 }
+

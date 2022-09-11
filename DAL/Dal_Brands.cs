@@ -18,7 +18,7 @@ namespace DAL
     }
     public class Dal_Brands : IDalBrands
     {
-        public MiniProjectTGDDContext context;
+        private MiniProjectTGDDContext context;
         public Dal_Brands(MiniProjectTGDDContext context)
         {
             this.context = context;
@@ -74,7 +74,7 @@ namespace DAL
         //lây thông tin chi tiết thương hiệu
         public ProductBrand GetBrandById(string id)
         {
-                return context.ProductBrands.First(c => c.BrandId == id);
+                return context.ProductBrands.FirstOrDefault(c => c.BrandId == id);
         }
 
 

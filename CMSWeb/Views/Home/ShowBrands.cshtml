@@ -1,5 +1,6 @@
 ﻿@using DAL.Models;
 @using CMSWeb.ViewModels;
+@using CMSWeb.ViewModels.ProductBrandsViewModel;
 @model BrandsViewModel;
 
 <div class="content-wrapper">
@@ -52,14 +53,8 @@
                                             @item.BrandName
                                         </td>
                                         @{
-                                    if (@item.BrandStatus == 1)
-                                    {
-                                                        <td>Đang kinh doanh</td>
-                                    }
-                                    else
-                                    {
-                                                        <td>Tạm ngưng kinh doanh</td>
-                                    }
+                                   
+                                             <td>@Model.GetStatus(item.BrandStatus)</td>
                                         }
                                         <td style=" width:200px;">
                                             <div class="Action">

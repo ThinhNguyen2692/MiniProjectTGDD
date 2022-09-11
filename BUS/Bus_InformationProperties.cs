@@ -17,16 +17,14 @@ namespace BUS
         public bool DalDeleteProperty(int property);
         public bool DalDeletePropertySpecification(int SpecificationID);
         public bool DeletePropertyType(string id);
+
     }
 
-    public class Bus_InformationProperties:IBusInformationProperties
+    public class Bus_InformationProperties : IBusInformationProperties
     {
-        private static Bus_InformationProperties _instance = new Bus_InformationProperties();
-        private static IDalInformationProperties iDalInformationProperties;
-        public static Bus_InformationProperties GetBus_InformationProperties(IDalInformationProperties dalInformationProperties) { 
-            
-            iDalInformationProperties = dalInformationProperties;
-            return _instance; }
+        private IDalInformationProperties iDalInformationProperties;
+
+        public Bus_InformationProperties(IDalInformationProperties dalInformationProperties) { iDalInformationProperties = dalInformationProperties; }
         // thêm thuộc tính
         public void BusAddInformationProperties(InformationProperty informationProperty)
         {
@@ -46,7 +44,6 @@ namespace BUS
         public bool DalDeleteProperty(int property) { return iDalInformationProperties.DalDeleteProperty(property); }
         public bool DalDeletePropertySpecification(int SpecificationID) { return iDalInformationProperties.DalDeletePropertySpecification(SpecificationID); }
         public bool DeletePropertyType(string id) { return iDalInformationProperties.DeletePropertyType(id); }
-
-
     }
+       
 }

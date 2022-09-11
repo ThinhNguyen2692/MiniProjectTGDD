@@ -81,23 +81,36 @@ if (formDemo) {
 
 ////form nhập thông tin ngành hàng (3 form)
 const formAddType = document.querySelector('#form-add-type');
-const TypeId = document.querySelector('#Typeid');
-const TypeName = document.querySelector('#Typename');
+const TypeId = document.querySelector('.TypeId');
+const TypeName = document.querySelector('.TypeName');
 
-formAddType.addEventListener("submit", function (e) {
+if (formAddType) {
 
+    if (TypeName) {
+        TypeName.addEventListener("keyup", function (e) {
+            if (TypeName.value == "") {
+                setError(TypeName);
 
-    if (TypeName.value == "") {
-        setError(TypeName);
-        e.preventDefault();
-    } else {
-        setTrue(bransName);
+            } else {
+
+                setTrue(TypeName);
+            }
+        })
     }
-    if (!checkCode(TypeId.value)) {
-        setError(TypeId);
-        e.preventDefault();
-    } else {
-        setTrue(bransId);
-    }
-});
+
+    formAddType.addEventListener("submit", function (e) {
+        if (TypeName.value == "") {
+            setError(TypeName);
+            e.preventDefault();
+        } else {
+            setTrue(bransName);
+        }
+        if (!checkCode(TypeId.value)) {
+            setError(TypeId);
+            e.preventDefault();
+        } else {
+            setTrue(bransId);
+        }
+    });
+}
 

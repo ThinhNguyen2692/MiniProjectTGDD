@@ -1,42 +1,46 @@
-﻿@model  bool;
+﻿@using DAL.Models;
+@using CMSWeb.ViewModels;
+@using CMSWeb.ViewModels.ProductTypeViewModel;
+@model CreateProductType
 
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 @{
-                    if(Model == true)
+                    switch (Model.message)
                     {
-                         <div class="alert alert-success">Thêm mới thất bại</div>
-                    }
+                         case true: <div class="alert alert-danger">Thêm thất bại: mã ngành hàng đã tồn tại</div> break;
+                        default: break;
+                    }   
                 }
-               
+
                 <h4 class="card-title">Nhập ngành hàng mới</h4>
-                
-                <form class="forms-sample" action="/AddType" method="post" id="form-add-type">
+
+                <form class="forms-sample" asp-action="AddBrands" asp-controller="Type" asp-action="AddType" method="post" id="form-add-type">
 
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Mã ngành hàng</label>
-                        <input type="text" class="form-control" id="Typeid" name="Typeid" />
+                        <label asp-for="@Model.typeId" >Mã ngành hàng</label>
+                        <input class="form-control TypeId" asp-for="@Model.typeId" />
                         <div class="valid-feedback">
-                        Chính xác
-                    </div>
-                    <div class="invalid-feedback">
-                       Mã: a-z, A-Z, 0-9
-                    </div>
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Mã: a-z, A-Z, 0-9
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Tên ngành hàng</label>
-                        <input type="text" class="form-control" id="Typename" name="Typename"/>
-                         <div class="valid-feedback">
-                        Looks good!
+                        <label asp-for="@Model.typeName">Tên ngành hàng</label>
+                        <input  class="form-control TypeName" asp-for="@Model.typeName"/>
+                        <div class="valid-feedback">
+                           Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
                     </div>
-                    <div class="invalid-feedback">
-                        Không được bỏ trống
-                    </div>
-                    </div>
-                 
-                     <button id="btn-add-Type" class="btn btn-gradient-primary me-2">Thêm mới</button>
+
+                    <button id="btn-add-Type" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
                 </form>
 

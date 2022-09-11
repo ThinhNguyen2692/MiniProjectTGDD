@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS;
 using DAL.Models;
-using CMSWeb.ViewModels;
 using Newtonsoft.Json;
+using CMSWeb.Models.ProductBrands;
+using CMSWeb.ViewModels.ProductBrandsViewModel;
 
 namespace CMSWeb.Controllers
 {
@@ -61,21 +62,21 @@ namespace CMSWeb.Controllers
         //Thêm thương hiệu
         [HttpPost]
         [Route("AddBrands")]
-        public IActionResult AddBrands(CreateBrands createBrands)
+        public IActionResult AddBrands(AddBrandsViewModel addBrandsViewModel)
         {
-            AddBrandsViewModel addBrandsViewModel = new AddBrandsViewModel();  
+           
             //Kiểm tra mã sản phẩm đã tồn tại
-            if(GetProductBrandById(createBrands._brand.BrandId) != null)
+            if(GetProductBrandById(addBrandsViewModel.createBrands.BrandId) != null)
             {
-                addBrandsViewModel.createBrands = createBrands;
+              
                 addBrandsViewModel.message = "BrandsIdfales";
                 return View("form/FormBrands", addBrandsViewModel);
             }
-            createBrands._brand.BrandPhoto = createBrands.fileImage.FileName;
-            if (bus_Brands.AddBrands(createBrands._brand) == true)
+            addBrandsViewModel.createBrands.BrandPhoto = addBrandsViewModel.fileImage.FileName;
+            if (bus_Brands.AddBrands(addBrandsViewModel.createBrands) == true)
             {
                 addBrandsViewModel.message = "BrandsTrue";
-                    AddFileImage(createBrands.fileImage);
+                    AddFileImage(addBrandsViewModel.fileImage);
             }
             
             return View("form/FormBrands", addBrandsViewModel);
@@ -98,8 +99,7 @@ namespace CMSWeb.Controllers
             var brandsView = new BrandsViewModel();
             if (bus_Brands.CheckProduct(id)== true)
             {
-                
-                string? path = bus_Brands.RemoveBrand(id);
+                string path = bus_Brands.RemoveBrand(id);
                 System.IO.File.Delete("wwwroot\\images\\" + path);
                 //lấy danh sách thương hiệu
                 brandsView.message = "BrandRemoveTrue";
@@ -117,7 +117,7 @@ namespace CMSWeb.Controllers
         {
             AddBrandsViewModel addBrandsViewModel = new AddBrandsViewModel();
            
-            addBrandsViewModel.createBrands._brand = GetProductBrandById(id);
+            addBrandsViewModel.createBrands = GetProductBrandById(id);
             return View("form/FormUpdateBrands", addBrandsViewModel);
         }
 
@@ -131,25 +131,26 @@ namespace CMSWeb.Controllers
         //cập nhật thông tin thương hiệu
         [HttpPost]
         [Route("UpdateBrands")]
-        public IActionResult UpdateBrands(CreateBrands createBrands)
+        public IActionResult UpdateBrands(AddBrandsViewModel addBrandsViewModel)
         {
-            AddBrandsViewModel addBrandsViewModel = new AddBrandsViewModel();
-           
-            if (createBrands.fileImage != null)
+
+            //lấy path hình cũ;
+            string path = GetProductBrandById(addBrandsViewModel.createBrands.BrandId).BrandPhoto;
+            addBrandsViewModel.createBrands.BrandPhoto = path;
+            if (addBrandsViewModel.fileImage != null)
             {
-                //lấy path hình cũ;
-                string path = GetProductBrandById(createBrands._brand.BrandId).BrandPhoto;
+                
                 DeleteImage(path);
-                AddFileImage(createBrands.fileImage);
-                createBrands._brand.BrandPhoto = createBrands.fileImage.FileName;
+                AddFileImage(addBrandsViewModel.fileImage);
+                addBrandsViewModel.createBrands.BrandPhoto = addBrandsViewModel.fileImage.FileName;
             }
-            if (bus_Brands.UpdateBrands(createBrands._brand) != true)
+            if (bus_Brands.UpdateBrands(addBrandsViewModel.createBrands) != true)
             {
                 addBrandsViewModel.message = "BrandsUpdateFalse";
                 return View("from/FormUpdateBrands", addBrandsViewModel);
             }
             addBrandsViewModel.message = "BrandsUpdateTrue";
-            addBrandsViewModel.createBrands = createBrands;
+          
             return View("form/FormUpdateBrands", addBrandsViewModel);
         }
 

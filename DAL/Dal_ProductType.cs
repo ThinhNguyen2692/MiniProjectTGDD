@@ -19,7 +19,7 @@ namespace DAL
     public class Dal_ProductType:IDaltype
     {
 
-        public MiniProjectTGDDContext context;
+        private MiniProjectTGDDContext context;
 
         public Dal_ProductType(MiniProjectTGDDContext context)
         {

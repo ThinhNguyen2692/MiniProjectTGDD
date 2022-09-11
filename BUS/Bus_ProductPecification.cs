@@ -14,20 +14,17 @@ namespace BUS
         public List<ProductSpecification> ReadSpecification(string id);
         public bool UpdateSpecificatio(ProductSpecification specification);
         public bool DeleteSpecification(int specification) ;
-        public void DeleteSpecificationType(string typeid) ; 
-
+        public void DeleteSpecificationType(string typeid) ;
+        public string GetTypeIdBySpecification(int SpecificationId);
 
 
     }
 
     public class Bus_ProductPecification:IBusProductPecification
     {
-        private static Bus_ProductPecification _instance ;
-        private static IDalProductPecification iDalProductPecification;
-        public static Bus_ProductPecification GetBus_ProductPecification(IDalProductPecification dalProductPecification) {
-            iDalProductPecification = dalProductPecification;
-            if(_instance == null) { _instance = new Bus_ProductPecification(); }
-            return _instance; }
+        private IDalProductPecification iDalProductPecification;
+
+        public Bus_ProductPecification(IDalProductPecification dalProductPecification) { iDalProductPecification = dalProductPecification; }
         //thêm thông số ky thuật
         public int BusAddProductPecification(ProductSpecification productSpecification)
         {
@@ -52,6 +49,9 @@ namespace BUS
         // Xóa thông số theo type id
         public void DeleteSpecificationType(string typeid) { iDalProductPecification.DeleteSpecificationType(typeid); }
 
-
+        public string GetTypeIdBySpecification(int SpecificationId)
+        {
+            return iDalProductPecification.GetTypeIdBySpecification(SpecificationId);
+        }
     }
 }
