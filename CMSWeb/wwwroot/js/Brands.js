@@ -22,17 +22,41 @@ function checkTen(inputVaule) {
 
 
 const formDemo = document.querySelector('#form-brands');
-const bransId = document.querySelector('#BransId');
-const bransName = document.querySelector('#BrandsName');
+const bransId = document.querySelector('.BrandId');
+const bransName = document.querySelector('.BrandName');
 const bransImage = document.getElementById('preview');
-const fileImage = document.getElementById('fileImage');
+const fileImage = document.querySelector('.fileImage');
+
+
 
 if (formDemo) {
 
+    if (bransId) {
+        bransId.addEventListener("keyup", function (e) {
+          
+            if (!checkCode(bransId.value)) {
+                setError(bransId);
+
+            } else {
+                setTrue(bransId);
+            }
+        })
+    }
+    if (bransName) {
+        bransName.addEventListener("keyup", function (e) {
+            if (bransName.value == "") {
+                setError(bransName);
+
+            } else {
+
+                setTrue(bransName);
+            }
+        })
+    }
+    
     formDemo.addEventListener("submit", function (e) {
         if (bransName.value == "") {
             setError(bransName);
-            
             e.preventDefault();
         } else {
             console.log(bransName.value);

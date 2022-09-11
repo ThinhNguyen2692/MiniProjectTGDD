@@ -1,6 +1,6 @@
 ﻿@using DAL.Models;
-@using CMSWeb.Models;
-@model ListModel
+@using CMSWeb.ViewModels;
+@model AddBrandsViewModel
 
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
@@ -8,8 +8,8 @@
             <div class="card-body">
                 @switch (Model.message)
                 {
-                    case "Brandsfalse": <div class="alert alert-error">Cập nhật thất bại</div> break;
-                    case "BrandsTrue": <div class="alert alert-success">Cập nhật thành công</div> break;
+                    case "BrandsUpdateFalse": <div class="alert alert-danger">Cập nhật thất bại</div> break;
+                    case "BrandsUpdateTrue": <div class="alert alert-success">Cập nhật thành công</div> break;
                     default: <div></div> break;
                 }
                 
@@ -18,14 +18,14 @@
                 <form class="forms-sample" id="form-brands" method="post" enctype="multipart/form-data" action="/UpdateBrands">
 
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Mã thương hiệu</label>
-                        <input type="text" name="BrandId" class="form-control" readonly  value="@Model.productBrand.BrandId">
+                        <label asp-for="@Model.createBrands._brand.BrandId">Mã thương hiệu</label>
+                        <input readonly class="form-control" asp-for="@Model.createBrands._brand.BrandId" placeholder="Nhập mã thương hiệu" />
                         
                     </div>
                     
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Tên thương hiệu</label>
-                        <input type="text" class="form-control" id="BrandName" name="BrandName" value="@Model.productBrand.BrandName">
+                       <label asp-for="@Model.createBrands._brand.BrandName">Tên thương hiệu</label>
+                        <input asp-for="@Model.createBrands._brand.BrandName" class="form-control BrandName" placeholder="Nhập tên thương hiệu" />
                          <div class="valid-feedback">
                         Chính xác.
                     </div>
@@ -33,36 +33,33 @@
                        Không được bỏ trống
                     </div>
                     </div>
+                 
                     <div class="form-group">
-                        <lable>Upload Image</lable>
-                        <br />
-                         <br />
-                          @Html.TextBox("fileImage", "", new { type = "file", accept = "image/*" })
-                        <br />
-                        <br />
-                        <img id="preview" src="/images/@Model.productBrand.BrandPhoto" width="auto" height="auto" class="hidden" />
-                         <br />
-                        <br />
-                        <input type="text" name="BrandPhoto" value="@Model.productBrand.BrandPhoto" readonly />
+                        <div class="form-group">
+                        <label asp-for="@Model.createBrands._brand.BrandDescription">Nhập mô tả cho</label>
+                        <textarea style="height: 100px;" asp-for="@Model.createBrands._brand.BrandDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..."></textarea>
+                    </div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nhập mô tả cho</label>
-                        <textarea style="height: 100px;" name="BrandDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." >@Model.productBrand.BrandDescription</textarea>
-                    </div>
-                    <div class="form-group">
-                        <select name="BrandStatus" id="BrandStatus"> 
-                            @{
-                                switch(@Model.productBrand.BrandStatus)
-                                {
-                                    case 1: <option value="1">Trạng thái bình thường</option>
-                                        break;
-                                        case 0: <option value="0">Tạm ngưng kinh doanh</option>
-                                        break;
-                                }   
+                        <label asp-for="@Model.createBrands._brand.BrandStatus">Trạng thái thương hiệu</label>
+                        <select class="form-control" asp-for="@Model.createBrands._brand.BrandStatus">
+                            @switch (Model.createBrands._brand.BrandStatus)
+                            {
+                                case 1:  <option value="1">Trạng thái bình thường</option> break;
+                                case 0:  <option value="0">Tạm ngưng kinh doanh</option> break;
+                                default : break;
                             }
                             <option value="1">Trạng thái bình thường</option>
                             <option value="0">Tạm ngưng kinh doanh</option>
                         </select>
+                    </div>
+                     <div class="form-group">
+                        <h4>Logo thương hiệu</h4>
+                        <input asp-for="@Model.createBrands.fileImage" class="fileImage" accept="image/*" />
+                        <br />
+                        <br />
+                        <img id="preview" src="/images/@Model.createBrands._brand.BrandPhoto" width="auto" height="auto" class="hidden" />
+                        
                     </div>
                      <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>

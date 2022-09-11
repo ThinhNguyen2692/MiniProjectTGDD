@@ -1,9 +1,7 @@
 ﻿@using DAL.Models;
-@using CMSWeb.Models;
-@model ListModel
-@{
-    
-}
+@using CMSWeb.ViewModels;
+@model BrandsViewModel;
+
 <div class="content-wrapper">
    
     <div class="page-header">
@@ -16,7 +14,7 @@
         </nav>
     </div>
     <div style="padding-bottom: 10px;">
-        <a class="nav-link" asp-controller="Home" asp-action="Froms">
+        <a class="nav-link" asp-controller="Home" asp-action="FormBrands">
             <button type="button" class="btn btn-outline-danger">
                 Thêm thương hiệu
             </button>
@@ -24,9 +22,10 @@
     </div>
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
-             @switch (Model.message)
+               @switch (Model.message)
                 {
-                    case "RemoveBrandsTrue": <div class="alert alert-success">Cập nhật thất bại</div> break;
+                    case "BrandRemoveFales": <div class="alert alert-danger">Xóa thất bại</div> break;
+                    case "BrandRemoveTrue": <div class="alert alert-success">Xóa thành công</div> break;
                     default: <div></div> break;
                 }
             <table class="table table-striped">
@@ -42,7 +41,7 @@
                 </thead>
                 <tbody class="value-brands">
                     @{
-                        foreach (var item in Model.productBrands)
+                        foreach (var item in Model.ProductBrands)
                         {
                                     <tr>
                                         <td class="Img-Name">

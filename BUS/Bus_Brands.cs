@@ -15,6 +15,7 @@ namespace BUS
         public string? RemoveBrand(string brandsId);
         public bool UpdateBrands(ProductBrand productBrand);
         public List<ProductBrand> DalGetbrandsByStatus();
+        public bool CheckProduct(string BrandsId);
 
     }
      public class Bus_Brands:IBrands
@@ -59,6 +60,10 @@ namespace BUS
             return iDalBrands.DalGetbrandsByStatus();
         }
 
+        public bool CheckProduct(string BrandsId)
+        {
+            return iDalBrands.CheckProduct(BrandsId);
+        }
 
     }
 }

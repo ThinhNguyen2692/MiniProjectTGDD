@@ -1,32 +1,47 @@
-﻿<div class="content-wrapper">
+﻿@using CMSWeb.ViewModels;
+@using DAL.Models;
+@model AddBrandsViewModel;
+
+
+<div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                
-                <h2 style="text-align:center;" class="card-title">Nhập thông tin thương hiệu mới</h2>
                 @{
-                    if (ViewData["message"] != null)
+                    if (Model != null)
                     {
-                        <h4 style="text-align:center; color:red;">@ViewData["message"]</h4>
+                        switch (Model.message)
+                        {
+                            case "BrandsIdfales":
+                                  <div style="color:red;">
+                                    Mã thương hiệu đã tồn tại
+                                </div>
+                                break;
+                                case"BrandsTrue":  <div class="alert alert-success">Thêm thương hiệu thành công</div> break;
+                            default: break;
+                        }
+                       
                     }
                 }
-                
-                <form class="forms-sample" id="form-brands" method="post" enctype="multipart/form-data" action="/AddBrands">
-
+                <h2 style="text-align:center;" class="card-title">Nhập thông tin thương hiệu mới</h2>
+                <form class="forms-sample" id="form-brands" method="post" enctype="multipart/form-data" asp-action="AddBrands">
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Mã thương hiệu</label>
-                        <input type="text" class="form-control" id="BransId" placeholder="Nhập mã thương hiệu" name="BrandId" />
+                        <label asp-for="@Model.createBrands._brand.BrandId">Mã thương hiệu</label>
+
+                        <input class="form-control BrandId" asp-for="@Model.createBrands._brand.BrandId" placeholder="Nhập mã thương hiệu" />
+
                         <div class="valid-feedback">
                             Chính xác
                         </div>
                         <div class="invalid-feedback">
                             Mã thương hiệu: a-z,A-Z,0-9
                         </div>
+
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Tên thương hiệu</label>
-                        <input type="text" class="form-control" placeholder="Nhập tên thương hiệu" id="BrandsName" name="BrandName" />
+                        <label asp-for="@Model.createBrands._brand.BrandName">Tên thương hiệu</label>
+                        <input asp-for="@Model.createBrands._brand.BrandName" class="form-control BrandName" placeholder="Nhập tên thương hiệu" />
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -34,22 +49,20 @@
                             Không được bỏ trống
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Nhập mô tả cho</label>
-                        <textarea style="height: 100px;" name="BrandDescription" id="BrandDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..."></textarea>
+                        <label asp-for="@Model.createBrands._brand.BrandDescription">Nhập mô tả cho</label>
+                        <textarea style="height: 100px;" asp-for="@Model.createBrands._brand.BrandDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Trạng thái thương hiệu</label>
-                        <select name="BrandStatus" class="form-control" id="BrandStatus">
+                        <label asp-for="@Model.createBrands._brand.BrandStatus">Trạng thái thương hiệu</label>
+                        <select class="form-control" asp-for="@Model.createBrands._brand.BrandStatus">
                             <option value="1">Trạng thái bình thường</option>
                             <option value="0">Tạm ngưng kinh doanh</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <h4>Logo thương hiệu</h4>
-                        @Html.TextBox("fileImage" ,"", new { type = "file", accept = "image/*" })
+                        <input asp-for="@Model.createBrands.fileImage" class="fileImage" accept="image/*" />
                         <br />
                         <br />
                         <img id="preview" src="#" width="auto" height="auto" class="hidden" />

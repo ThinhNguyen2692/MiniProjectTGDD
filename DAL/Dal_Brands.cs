@@ -60,7 +60,6 @@ namespace DAL
         {
             // đương đẫn xóa hình logo
             string path = null;
-           
             var data = context.ProductBrands.FirstOrDefault(c => c.BrandId == id);
             if (data != null)
             {
@@ -75,16 +74,7 @@ namespace DAL
         //lây thông tin chi tiết thương hiệu
         public ProductBrand GetBrandById(string id)
         {
-          
-            if (context.ProductBrands.FirstOrDefault(c => c.BrandId == id) != null)
-            {
                 return context.ProductBrands.First(c => c.BrandId == id);
-            }
-            else
-            {
-                return null;
-            }
-
         }
 
 
