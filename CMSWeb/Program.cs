@@ -25,7 +25,9 @@ builder.Services.AddSingleton<IBusProductPecification, Bus_ProductPecification>(
 builder.Services.AddSingleton<IDalInformationProperties, Dal_InformationProperties>();
 builder.Services.AddSingleton<IBusInformationProperties, Bus_InformationProperties>();
 
-
+//Customer
+builder.Services.AddSingleton<IBusCustomer, Bus_Customer>();
+builder.Services.AddSingleton<IDalCustomer, Dal_Customer>();
 
 builder.Services.AddSingleton<IDAlProduct, Dal_Product>();
 builder.Services.AddSingleton<IDalVersionQuantity, Dal_VersionQuantity>();

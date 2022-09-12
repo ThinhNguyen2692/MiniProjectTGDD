@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS;
 using DAL.Models;
-using DAL;
+using CMSWeb.ViewModels.CustomerViewModel;
 using Newtonsoft.Json;
 
 
@@ -13,12 +13,14 @@ namespace CMSWeb.Controllers
     public class CustomerController : Controller
     {
         private readonly ILogger<CustomerController> _logger;
-        public CustomerController(ILogger<CustomerController> logger)
+        private readonly IBusCustomer busCustomer;
+        public CustomerController(ILogger<CustomerController> logger, IBusCustomer busCustomer)
         {
             _logger = logger;
+            this.busCustomer = busCustomer;
         }
 
-        IBusCustomer busCustomer = Bus_Customer.GetCustomer(Dal_Customer.GetCustomer());
+       
         ListModel listModel = ListModel.GetList();
 
         public void GetListCustomer()
@@ -30,25 +32,27 @@ namespace CMSWeb.Controllers
         [Route("ShowCustomer")]
         public IActionResult ShowCustomer()
         {
-            GetListCustomer();
-            return View(listModel);
+            List<Customer> customers = busCustomer.GetCustomers();
+            
+            return View(customers);
         }
 
         [HttpGet]
         [Route("FormUpdateCustomer")]
         public IActionResult FormUpdateCustomer(string CustomerPhone)
         {
-            listModel.customer = busCustomer.GetCustomerByphone(CustomerPhone);
-            return View(listModel);
+            var Customer = new CustomerDetailViewModel();
+            Customer.createCustomer = busCustomer.GetCustomerByphone(CustomerPhone);
+            return View(Customer);
         }
 
         [HttpPost]
         [Route("UpdateCustomer")]
-        public IActionResult UpdateCustomer(Customer customer)
+        public IActionResult UpdateCustomer(CustomerDetailViewModel Customer)
         {
-            listModel.customer = busCustomer.UpdateCustomer(customer);
-            listModel.message = "updatecustomertrue";
-            return View("FormUpdateCustomer", listModel);
+            Customer.createCustomer = busCustomer.UpdateCustomer(Customer.createCustomer);
+            Customer.message = true;
+            return View("FormUpdateCustomer", Customer);
         }
 
 

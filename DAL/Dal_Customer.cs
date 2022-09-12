@@ -17,13 +17,12 @@ namespace DAL
 
     public class Dal_Customer:IDalCustomer
     {
-        private static Dal_Customer _Customer;
-        private static MiniProjectTGDDContext context =  new MiniProjectTGDDContext();
+        
+        private static MiniProjectTGDDContext context;
 
-        public static Dal_Customer GetCustomer()
+        public  Dal_Customer (MiniProjectTGDDContext miniProjectTGDDContext)
         {
-            if(_Customer == null) { _Customer = new Dal_Customer(); }
-            return _Customer;
+            context = miniProjectTGDDContext; 
         }
 
         //lấy danh sách khách hàng

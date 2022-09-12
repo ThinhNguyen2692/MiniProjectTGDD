@@ -1,6 +1,6 @@
 ﻿@using DAL.Models;
-@using CMSWeb.Models;
-@model ListModel
+@using CMSWeb.ViewModels.CustomerViewModel;
+@model CustomerDetailViewModel;
 
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
@@ -10,14 +10,14 @@
                 <h2 style="text-align:center;" class="card-title">Nhập thông tin khách hàng</h2>
                  @switch (Model.message)
                 {
-                    case "updatecustomertrue": <div class="alert alert-success">Cập nhật thành công</div> break;
+                    case true: <div class="alert alert-success">Cập nhật thành công</div> break;
                     default: <div></div> break;
                 }
-                <form class="forms-sample" id="form-brands" method="post" enctype="multipart/form-data" action="/UpdateCustomer">
+                <form class="forms-sample" id="form-brands" method="post" asp-controller="Customer" asp-action="UpdateCustomer">
 
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Số điện thoại</label>
-                        <input type="text" class="form-control" id="CustomerPhone" value="@Model.customer.CustomerPhone" readonly    placeholder="Nhập số điện thoại" name="CustomerPhone" />
+                        <label asp-for="@Model.createCustomer.CustomerPhone">Số điện thoại</label>
+                        <input  class="form-control"  asp-for="@Model.createCustomer.CustomerPhone" readonly   />
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -27,8 +27,8 @@
                     </div>
                    
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Tên khách hàng</label>
-                        <input type="text" class="form-control" placeholder="Nhập tên khách hàng" value="@Model.customer.CustomerName" id="CustomerName" name="CustomerName" />
+                        <label asp-for="@Model.createCustomer.CustomerName">Tên khách hàng</label>
+                        <input class="form-control" asp-for="@Model.createCustomer.CustomerName"/>
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -38,8 +38,8 @@
                     </div>
 
                        <div class="form-group">
-                        <label for="exampleInputEmail1">Tỉnh - Thành phố</label>
-                        <input type="text" class="form-control" placeholder="" value="@Model.customer.ProvinceCity" id="ProvinceCity" name="ProvinceCity" />
+                        <label asp-for="@Model.createCustomer.ProvinceCity">Tỉnh - Thành phố</label>
+                        <input asp-for="@Model.createCustomer.ProvinceCity" class="form-control" />
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -49,20 +49,8 @@
                     </div>
 
                        <div class="form-group">
-                        <label for="exampleInputEmail1">Quận - huyện</label>
-                        <input type="text" class="form-control" placeholder="" value="@Model.customer.District" id="District" name="District" />
-                        <div class="valid-feedback">
-                            Chính xác
-                        </div>
-                        <div class="invalid-feedback">
-                            Không được bỏ trống
-                        </div>
-                    </div>
-
-                    
-                       <div class="form-group">
-                        <label for="exampleInputEmail1">Xã</label>
-                        <input type="text" class="form-control" placeholder="" value="@Model.customer.CommuneWard" id="CommuneWard" name="CommuneWard" />
+                        <label asp-for="@Model.createCustomer.District">Quận - huyện</label>
+                        <input asp-for="@Model.createCustomer.District" class="form-control" />
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -73,8 +61,20 @@
 
                     
                        <div class="form-group">
-                        <label for="exampleInputEmail1">Địa chỉ</label>
-                        <input type="text" class="form-control" placeholder="" value="@Model.customer.CustomerAddress" id="CustomerAddress" name="CustomerAddress" />
+                        <label asp-for="@Model.createCustomer.CommuneWard">Xã</label>
+                        <input asp-for="@Model.createCustomer.CommuneWard" class="form-control"  />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+
+                    
+                       <div class="form-group">
+                        <label asp-for="@Model.createCustomer.CustomerAddress">Địa chỉ</label>
+                        <input asp-for="@Model.createCustomer.CustomerAddress" class="form-control" />
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -84,8 +84,9 @@
                     </div>
 
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Lần cuối đăng nhập</label>
-                        <input type="text" class="form-control" placeholder="" readonly value="@Model.customer.RegistrationTime" id="RegistrationTime" name="RegistrationTime" />
+                        <label asp-for="@Model.createCustomer.RegistrationTime">Lần cuối đăng nhập</label>
+                        <br />
+                        <input asp-for="@Model.createCustomer.RegistrationTime"  readonly  class="form-control"/>
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -94,7 +95,7 @@
                         </div>
                     </div>
                    
-                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
                 </form>
             </div>

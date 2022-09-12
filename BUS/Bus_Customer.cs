@@ -18,14 +18,13 @@ namespace BUS
 
     public class Bus_Customer: IBusCustomer
     {
-        private static Bus_Customer bus_Customer;
-        private static IDalCustomer dal_Customer;
+       
+        private IDalCustomer dal_Customer;
 
-        public static Bus_Customer GetCustomer(IDalCustomer dalCustomer)
+        public Bus_Customer(IDalCustomer dalCustomer)
         {
             dal_Customer = dalCustomer;
-            if(bus_Customer == null) { bus_Customer = new Bus_Customer(); }
-            return bus_Customer;
+           
         }
 
         //lấy danh sách khách hàng

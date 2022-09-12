@@ -1,6 +1,6 @@
 ﻿@using DAL.Models;
 @using CMSWeb.Models;
-@model ListModel
+@model List<Customer>;
 @{
     
 }
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                     @{
-                        foreach (var item in Model.customers)
+                        foreach (var item in Model)
                         {
                     <tr>
                         <th> @item.CustomerPhone </th>
