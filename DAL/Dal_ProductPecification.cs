@@ -12,7 +12,7 @@ namespace DAL
     {
         int DalAddProductPecification(ProductSpecification type);
         List<ProductSpecification> ReadSpecification(string id);
-        bool UpdateSpecificatio(ProductSpecification specification);
+        void UpdateSpecificatio(ProductSpecification specification);
         bool DeleteSpecification(int specification);
         public void DeleteSpecificationType(string typeid);
         public string GetTypeIdBySpecification(int SpecificationId);
@@ -31,6 +31,7 @@ namespace DAL
             return type.SpecificationsId;
         }
 
+
         // lấy danh sách thông số ngành hàng
         public List<ProductSpecification> ReadSpecification(string id)
         {
@@ -42,13 +43,15 @@ namespace DAL
         }
         //Cập nhật thông tin
 
-        public bool UpdateSpecificatio(ProductSpecification specification)
+        public void UpdateSpecificatio(ProductSpecification specification)
         {
             context = new MiniProjectTGDDContext();
             context.ProductSpecifications.Update(specification);
             context.SaveChanges();
-            return true;
         }
+
+       
+
 
         public bool DeleteSpecification(int specification)
         {

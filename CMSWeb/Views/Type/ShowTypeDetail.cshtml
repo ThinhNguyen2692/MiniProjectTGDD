@@ -5,19 +5,16 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Nhập ngành hàng mới</h4>
-                @*  @{
-                if (Model.message != null)
-                {
-                if(String.Compare(Model.message, "true") == 0)
-                {
-                <div class="alert alert-success">Xóa thành công</div>
+                @{
+                    switch (Model.message)
+                    {
+                        case true:
+                            <div class="alert alert-success">Cập nhật thành công</div>
+                            break;
+                            
+                        default: break;
+                    }
                 }
-                else
-                {
-                <div class="alert alert-success">Xóa thất bại</div>
-                }
-                }
-                }*@
                 <form class="forms-sample" asp-action="UpdataType" asp-controller="Type" method="post" id="form-add-type">
 
                     <div class="form-group">
@@ -42,34 +39,36 @@
                             Error...
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-outline-danger">Cập nhật</button>
+                   
                     <a class="btn btn-outline-danger" href="/FormSpecification?typeid=@Model.productType.Typeid">Thêm</a>
                     <a class="btn btn-outline-danger" href="/DeleteType?typeid=@Model.productType.Typeid">Xóa</a>
                    
-
-                    </form>
+                    <br />
+                    <br />
+                    <br />
+                    
 
                 @{
-                    foreach (var item in Model.productSpecifications)
+                    foreach (var item in Model.productType.ProductSpecifications)
                     {
-                            <label>Mã: <input class="form-control" readonly style="width: 100px;" asp-for="@item.SpecificationsId" /> </label>  <label style="margin-left: 30px;margin-right: 370px;">Thông số:  <input class="form-control " asp-for="@item.SpecificationsName" /></label> <a class="btn btn-outline-danger" >Cập nhật</a> <a href="/ShowFormSpecification?idSpecification=@item.SpecificationsId&TypeId=@Model.productType.Typeid" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@item.SpecificationsId&typeid=@Model.productType.Typeid" class="btn btn-outline-danger">Xóa</a>
+                           <label>Mã: <input class="form-control" readonly style="width: 100px;" asp-for="@item.SpecificationsId" /> </label>  <label style="margin-left: 30px;margin-right: 515px;">Thông số:  <input class="form-control " asp-for="@item.SpecificationsName" /></label> <a href="/ShowFormSpecification?idSpecification=@item.SpecificationsId&TypeId=@Model.productType.Typeid" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@item.SpecificationsId&typeid=@Model.productType.Typeid" class="btn btn-outline-danger">Xóa</a>
                             <br />
                             <br />
-                            
-                        foreach (var value in Model.informationPropertys)
+                        foreach (var value in item.InformationProperties)
                         {
-                            if (value.SpecificationsId == item.SpecificationsId)
-                            {
-                                    <label style="margin-left: 20px;">Mã: <input style="width: 100px;" class="form-control" value="@value.PropertiesId" readonly type="text" /></label>  <label style="margin-left: 30px;margin-right: 30px;">Thuộc tính:  <input value="@value.PropertiesName" class="form-control InputProperty-@value.PropertiesId" type="text" /></label> <label style="margin-right: 340px;">Đơn vị: <input style="width: 100px;" class="form-control Input-@value.PropertiesId" value="@value.PropertiesDescription" type="text" /></label> <a onclick="UpdateProperty(@value.PropertiesId, @item.SpecificationsId)" class="btn btn-outline-danger">Cập nhật</a> <a href="/DeleteProperty?id=@value.PropertiesId&typeid=@Model.productType.Typeid" class="btn btn-outline-danger">Xoá</a>
-                            }
+                           
+                                    <label style="margin-left: 20px;">Mã: <input style="width: 100px;" asp-for="@value.PropertiesId" class="form-control"  readonly /></label>  <label style="margin-left: 30px;margin-right: 30px;">Thuộc tính:  <input asp-for="@value.PropertiesName" class="form-control" /></label> <label style="margin-right: 485px;">Đơn vị: <input style="width: 100px;" class="form-control" asp-for="@value.PropertiesDescription" /></label> <a href="/DeleteProperty?id=@value.PropertiesId&typeid=@Model.productType.Typeid" class="btn btn-outline-danger">Xoá</a>
+                            
 
                         }
-
-
                      
                     }
                 }
-                  
+                <br />
+                <br />
+                <br />
+                   <button type="submit" class="btn btn-gradient-primary">Cập nhật</button>
+                   </form>
 
             </div>
 

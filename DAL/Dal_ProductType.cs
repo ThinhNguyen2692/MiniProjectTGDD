@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
@@ -53,8 +54,7 @@ namespace DAL
         //lấy 1 loại sản phẩm 
         public ProductType ReadType(string id)
         {
-          
-            var item = context.ProductTypes.FirstOrDefault(t => t.Typeid == id);       
+            var item = context.ProductTypes.Where(t => t.Typeid == id).Include(i => i.ProductSpecifications).ThenInclude(s => s.InformationProperties).FirstOrDefault();          
             return item;
         }
 

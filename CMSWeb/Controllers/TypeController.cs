@@ -38,15 +38,15 @@ namespace CMSWeb.Controllers
             return View("FormSpecification", Specification);
         }
 
+
         [HttpGet]
         [Route("ShowFormSpecification")]
         public IActionResult ShowFormSpecification(int idSpecification, string TypeId)
         {
-            string[] InformationId = new string[2];
-            InformationId[0] = idSpecification.ToString();
-            InformationId[1] = TypeId;
+            var InformationId = new CreateInformationProperty();
+            InformationId.SpecificationId = idSpecification;
+            InformationId.typeId = TypeId;
             return View("FormProperty", InformationId);
-            return View("FormProperty");
         }
 
         /// <summary>
@@ -129,24 +129,36 @@ namespace CMSWeb.Controllers
         {
 
             productTypeDetail.productType = Ibus_ProductType.BusReadType(typeid);
-            productTypeDetail.productSpecifications = IbusProductPecification.ReadSpecification(typeid);
-            productTypeDetail.informationPropertys = Ibus_InformationProperties.ReadProperty(typeid);
+
+            
+
         }
 
         [HttpPost]
         [Route("UpdataType")]
         public IActionResult UpdataType(ProductTypeDetail productTypeDetail)
         {
+            //lấy thông tin ngành hàng cũ
+           
+
+
             if (Ibus_ProductType.BusUpdateType(productTypeDetail.productType) == true)
             {
+                foreach (var item in productTypeDetail.productType.ProductSpecifications)
+                {
+                    IbusProductPecification.UpdateSpecificatio(item);
+                    foreach (var value in item.InformationProperties)
+                    {
+                        Ibus_InformationProperties.UpDateProperty(value);
+                    }
+                }
                 productTypeDetail.message = true;
             }
             else
             {
                 productTypeDetail.message = false;
             }
-            productTypeDetail.productSpecifications = IbusProductPecification.ReadSpecification(productTypeDetail.productType.Typeid);
-            productTypeDetail.informationPropertys = Ibus_InformationProperties.ReadProperty(productTypeDetail.productType.Typeid);
+            productTypeDetail.productType = Ibus_ProductType.BusReadType(productTypeDetail.productType.Typeid);
             return View("ShowTypeDetail", productTypeDetail);
         }
 

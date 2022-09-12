@@ -12,7 +12,7 @@ namespace BUS
     {
         public int BusAddProductPecification(ProductSpecification productSpecification);
         public List<ProductSpecification> ReadSpecification(string id);
-        public bool UpdateSpecificatio(ProductSpecification specification);
+        public void UpdateSpecificatio(ProductSpecification specification);
         public bool DeleteSpecification(int specification) ;
         public void DeleteSpecificationType(string typeid) ;
         public string GetTypeIdBySpecification(int SpecificationId);
@@ -38,9 +38,9 @@ namespace BUS
         }
         
         //cập nhật thông số
-        public bool UpdateSpecificatio(ProductSpecification specification)
+        public void UpdateSpecificatio(ProductSpecification specification)
         {
-            return iDalProductPecification.UpdateSpecificatio(specification);
+             iDalProductPecification.UpdateSpecificatio(specification);
         }
 
         //Xóa thông số 
