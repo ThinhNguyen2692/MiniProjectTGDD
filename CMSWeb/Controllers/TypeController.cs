@@ -57,9 +57,19 @@ namespace CMSWeb.Controllers
         [Route("ShowType")]
         public IActionResult ShowType()
         {
+            return View(GetListProductTypeViewModel());
+        }
+
+
+        /// <summary>
+        /// lấy danh sách ngành hàng
+        /// </summary>
+        /// <returns></returns>
+        public ListProductTypeViewModel GetListProductTypeViewModel()
+        {
             var listProducttype = new ListProductTypeViewModel();
             listProducttype.listproductTypes = Ibus_ProductType.ReadAll();
-            return View(listProducttype);
+            return listProducttype;
         }
 
         ////load trang thêm ngành hàng
@@ -119,19 +129,23 @@ namespace CMSWeb.Controllers
         [Route("ShowTypeDetail")]
         public IActionResult ShowTypeDetail(string typeid)
         {
+            var itemCheck = Ibus_ProductType.BusReadType(typeid);
+            if(itemCheck == null)
+            {
+                return View("ShowType",GetListProductTypeViewModel());
+            }
+
             var productTypeDetail = new ProductTypeDetail();
 
             GetTypeDetail(typeid, ref productTypeDetail);
+            productTypeDetail.GetProductTypeNew();
             return View(productTypeDetail);
            }
 
         public void GetTypeDetail(string typeid, ref ProductTypeDetail productTypeDetail)
         {
-
-            productTypeDetail.productType = Ibus_ProductType.BusReadType(typeid);
-
-            
-
+            productTypeDetail.createListProductSpecification = new List<ArrayProductSpectification>();
+            productTypeDetail.createProductType = Ibus_ProductType.BusReadType(typeid);
         }
 
         [HttpPost]
@@ -139,26 +153,31 @@ namespace CMSWeb.Controllers
         public IActionResult UpdataType(ProductTypeDetail productTypeDetail)
         {
             //lấy thông tin ngành hàng cũ
-           
-
-
-            if (Ibus_ProductType.BusUpdateType(productTypeDetail.productType) == true)
+            string status = "";
+            if (Ibus_ProductType.BusUpdateType(productTypeDetail.createProductType) == true)
             {
-                foreach (var item in productTypeDetail.productType.ProductSpecifications)
+                foreach (var item in productTypeDetail.createListProductSpecification)
                 {
-                    IbusProductPecification.UpdateSpecificatio(item);
-                    foreach (var value in item.InformationProperties)
+                    item.createProductSpectification.TypeId = productTypeDetail.createProductType.Typeid;
+                    IbusProductPecification.UpdateSpecificatio(item.createProductSpectification);
+                    foreach (var value in item.createArrayInformationProperty)
                     {
+                        value.SpecificationsId = item.createProductSpectification.SpecificationsId;
                         Ibus_InformationProperties.UpDateProperty(value);
                     }
+                  
                 }
-                productTypeDetail.message = true;
+                status = "UpdateTrue";
             }
             else
             {
-                productTypeDetail.message = false;
+                status = "UpdateFalse";
             }
-            productTypeDetail.productType = Ibus_ProductType.BusReadType(productTypeDetail.productType.Typeid);
+            string Typeid = productTypeDetail.createProductType.Typeid;
+             productTypeDetail = new ProductTypeDetail();
+            GetTypeDetail(Typeid, ref productTypeDetail);
+            productTypeDetail.GetProductTypeNew();
+            productTypeDetail.messageUpdate = status;
             return View("ShowTypeDetail", productTypeDetail);
         }
 
@@ -198,11 +217,12 @@ namespace CMSWeb.Controllers
             var ProductDetail = new ProductTypeDetail();
             if (Ibus_InformationProperties.DalDeleteProperty(id) != true)
             {
-                ProductDetail.message = false;
+                ProductDetail.messageDelete = "DeleteFalse";
             }
-            else { ProductDetail.message = true; }
+            else { ProductDetail.messageDelete = "DeleteTrue"; }
 
             GetTypeDetail(typeid, ref ProductDetail);
+            ProductDetail.GetProductTypeNew();
             return View("ShowTypeDetail", ProductDetail);
         }
 
@@ -215,11 +235,12 @@ namespace CMSWeb.Controllers
             var ProductDetail = new ProductTypeDetail();
             if (IbusProductPecification.DeleteSpecification(id) != true)
             {
-                ProductDetail.message = false;
+                ProductDetail.messageDelete = "DeleteFalse";
             }
-            else { ProductDetail.message = true; }
+            else { ProductDetail.messageDelete = "DeleteTrue"; }
 
             GetTypeDetail(typeid, ref ProductDetail);
+            ProductDetail.GetProductTypeNew();
             return View("ShowTypeDetail", ProductDetail);
         }
 
