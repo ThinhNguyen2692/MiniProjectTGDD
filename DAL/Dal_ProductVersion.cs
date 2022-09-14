@@ -18,12 +18,10 @@ namespace DAL
 
     public class Dal_ProductVersion:IDalProductVersion
     {
-        private static MiniProjectTGDDContext context = new MiniProjectTGDDContext();
-        private static Dal_ProductVersion _instance;
-        public static Dal_ProductVersion GetProductVersion()
+        private  MiniProjectTGDDContext context;
+        public  Dal_ProductVersion(MiniProjectTGDDContext context)
         {
-            if(_instance == null) { _instance = new Dal_ProductVersion(); }
-            return _instance;
+            this.context = context;
         }
         //Add thông tin phiên bản
         public bool AddProductVerion(ProductVersion productVersion)

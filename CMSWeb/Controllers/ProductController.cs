@@ -5,16 +5,30 @@ using BUS;
 using DAL.Models;
 using Newtonsoft.Json;
 using DAL;
+using CMSWeb.ViewModels.ProductViewModel;
 
 namespace CMSWeb.Controllers
 {
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
-
-        public ProductController(ILogger<ProductController> logger)
+        private readonly IBusProductVersion bus_ProductVersion;
+        private readonly IBusProduct bus_Product;
+        private readonly IBusProductType bus_ProductType;
+        private readonly IBrands bus_Brands;
+        private readonly IBusProductColor bus_ProductColor;
+        private readonly IBusProductPecification bus_ProductPecification;
+        private readonly IBusInformationProperties bus_InformationProperties;
+        public ProductController(ILogger<ProductController> logger, IBusInformationProperties bus_InformationProperties, IBusProductPecification bus_ProductPecification, IBusProductVersion bus_ProductVersion, IBusProduct bus_Product, IBusProductType bus_ProductType, IBrands bus_Brands, IBusProductColor bus_ProductColor)
         {
             _logger = logger;
+            this.bus_ProductVersion = bus_ProductVersion;
+            this.bus_Product = bus_Product;
+            this.bus_Brands = bus_Brands;
+            this.bus_ProductType = bus_ProductType;
+            this.bus_ProductColor = bus_ProductColor;
+            this.bus_ProductPecification = bus_ProductPecification;
+            this.bus_InformationProperties = bus_InformationProperties;
         }
 
 
@@ -35,39 +49,41 @@ namespace CMSWeb.Controllers
         ////Hiện form
 
 
-        ///// <summary>
-        ///// Lấy danh sách thương hiệu đang kinh doanh
-        ///// Lấy danh sách ngành hàng
-        ///// </summary>
-        ///// <param name="listModel"></param>
-        //public void GetTypeBrands()
-        //{
-           
-        //    listModel.productBrands = bus_Brands.DalGetbrandsByStatus();
-        //    listModel.productType = bus_ProductType.ReadAll();
-        //}
+        /// <summary>
+        /// Lấy danh sách thương hiệu đang kinh doanh
+        /// Lấy danh sách ngành hàng
+        /// </summary>
+        /// <param name="listModel"></param>
+        public void GetTypeBrands(ref AddProductViewModel addProductViewModel)
+        {
+
+            addProductViewModel.ListproductBrands = bus_Brands.DalGetbrandsByStatus();
+            addProductViewModel.ListproductTypes = bus_ProductType.ReadAll();
+        }
 
 
-        ///// <summary>
-        ///// load form nhập sản phẩm mới
-        ///// </summary>
-        ///// <returns></returns>
-        //public IActionResult FormAddProduct()
-        //{
-        //    listModel = new ListModel();
-        //    GetTypeBrands();
-        //    return View("form/FormAddProduct", listModel);
-        //}
+        /// <summary>
+        /// load form nhập sản phẩm mới
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult FormAddProduct()
+        {
+            var addProductViewModel = new AddProductViewModel();
+            GetTypeBrands(ref addProductViewModel);
+            return View("form/FormAddProduct", addProductViewModel);
+        }
 
-        ///// <summary>
-        ///// Load danh sách sản phẩm 
-        ///// </summary>
-        ///// <returns>trả về danh sách tất cả sản phẩm (chỉ lấy dữ liệu cần)</returns>
-        //public IActionResult ShowProduct()
-        //{
-        //    listModel.productVersion = bus_ProductVersion.DalReadProductAll();
-        //    return View(listModel);
-        //}
+        /// <summary>
+        /// Load danh sách sản phẩm 
+        /// </summary>
+        /// <returns>trả về danh sách tất cả sản phẩm (chỉ lấy dữ liệu cần)</returns>
+        public IActionResult ShowProduct()
+        {
+            
+            var listProductVersions = bus_ProductVersion.DalReadProductAll();
+
+            return View(listProductVersions);
+        }
         ///// <summary>
         ///// load form thêm hình cho sản phẩm
         ///// </summary>
@@ -84,17 +100,17 @@ namespace CMSWeb.Controllers
         //}
 
 
-        ///// <summary>
-        ///// lưu ảnh vào folder
-        ///// </summary>
-        ///// <param name="fileImage">file hình cần thêm vào</param>
-        //public void AddFileImage(IFormFile fileImage)
-        //{
-        //    string fileName = fileImage.FileName;
-        //    string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
-        //    var stream = new FileStream(upLoad, FileMode.Create);
-        //    fileImage.CopyToAsync(stream);
-        //}
+        /// <summary>
+        /// lưu ảnh vào folder
+        /// </summary>
+        /// <param name="fileImage">file hình cần thêm vào</param>
+        public void AddFileImage(IFormFile fileImage)
+        {
+            string fileName = fileImage.FileName;
+            string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+            var stream = new FileStream(upLoad, FileMode.Create);
+            fileImage.CopyToAsync(stream);
+        }
 
         ///// <summary>
         ///// Thêm product
@@ -104,23 +120,25 @@ namespace CMSWeb.Controllers
         ///// <returns>load form thêm màu cho sản phẩm nếu thêm hình thành công</returns>
 
 
-        //[HttpPost]
-        //[Route("AddProduct")]
-        //public IActionResult AddProduct(Product product, IFormFile fileImage)
-        //{
-        //    product.ProductPhoto = fileImage.FileName;
-        //    if (bus_Product.CheckProduct(product.ProductId) == true)
-        //    {
-        //    bus_Product.AddProduct(product);
-        //    AddFileImage(fileImage);
-        //    string ProductId = product.ProductId;
-        //    return View("form/FormAddColor", ProductId);
-        //    }
-        //    GetTypeBrands();
-        //    listModel.message = "addproductfale";
-        //    listModel.product = product;
-        //    return View("form/FormAddProduct", listModel);
-        //}
+        [HttpPost]
+        [Route("AddProduct")]
+        public IActionResult AddProduct(AddProductViewModel addProductViewModel)
+        {
+            addProductViewModel.ProductItem.ProductPhoto = addProductViewModel.FileImage.FileName;
+            if (bus_Product.CheckProduct(addProductViewModel.ProductItem.ProductId) == true)
+            {
+                bus_Product.AddProduct(addProductViewModel.ProductItem);
+                AddFileImage(addProductViewModel.FileImage);
+                var viewColor = new AddColorProduct();
+                viewColor.ProductId = addProductViewModel.ProductItem.ProductId;
+                return View("form/FormAddColor", viewColor);
+            }
+            GetTypeBrands(ref addProductViewModel);
+            addProductViewModel.messageAdd = true;
+           
+            
+            return View("form/FormAddProduct", addProductViewModel);
+        }
 
         //[HttpPost]
         //[Route("CheckProductId")]
@@ -130,38 +148,37 @@ namespace CMSWeb.Controllers
         //}
 
 
-        ///// <summary>
-        ///// Thêm màu cho sản phẩm
-        ///// </summary>
-        ///// <param name="productColor">Model dữ liệu màu</param>
-        ///// <param name="fileImage">file hình màu sản phẩm</param>
-        ///// <returns>next form thêm phiên bản sản phẩm</returns>
-        //[HttpPost]
-        //[Route("AddProductColor")]
-        //public IActionResult AddProductColor(ProductColor productColor, IFormFile fileImage)
-        //{
-        //    productColor.ColorPath = fileImage.FileName;
-        //    if (bus_ProductColor.AddProductColor(productColor) == true)
-        //    {
-        //        AddFileImage(fileImage);
+        /// <summary>
+        /// Thêm màu cho sản phẩm
+        /// </summary>
+        /// <param name="productColor">Model dữ liệu màu</param>
+        /// <param name="fileImage">file hình màu sản phẩm</param>
+        /// <returns>next form thêm phiên bản sản phẩm</returns>
+        [HttpPost]
+        [Route("AddProductColor")]
+        public IActionResult AddProductColor(AddColorProduct addColorProduct)
+        {
+            addColorProduct.ProductColorItem.ColorPath = addColorProduct.Fileimage.FileName;
+            addColorProduct.ProductColorItem.ProductId = addColorProduct.ProductId;
+            if (bus_ProductColor.AddProductColor(addColorProduct.ProductColorItem) == true)
+            {
+                AddFileImage(addColorProduct.Fileimage);
+            }
+            return View("form/FormAddColor", addColorProduct);
+        }
 
-        //    }
-        //    string ProductId = productColor.ProductId;
-        //    return View("form/FormAddColor", ProductId);
-        //}
-
-        //[HttpGet]
-        //[Route("FormAddProductVersion")]
-        //public IActionResult FormAddProductVersion(string productId)
-        //{
-        //    var Product = bus_Product.BusReadProduct(productId);
-
-        //    listModel.productSpecifications = bus_ProductPecification.ReadSpecification(Product.ProductType);
-        //    listModel.information = bus_InformationProperties.ReadProperty(Product.ProductType);
-        //    listModel.productColor = bus_ProductColor.BusReadProductColors(Product.ProductId);
-        //    listModel.product = Product;
-        //    return View("form/FormAddProductVersion", listModel);
-        //}
+        [HttpGet]
+        [Route("FormAddProductVersion")]
+        public IActionResult FormAddProductVersion(string productId)
+        {
+            var Product = bus_Product.BusReadProduct(productId);
+            var productVersionViewModeal = new ProductVersionViewModel();
+            productVersionViewModeal.productSpecifications = bus_ProductPecification.ReadSpecification(Product.ProductType);
+            productVersionViewModeal.information = bus_InformationProperties.ReadProperty(Product.ProductType);
+            productVersionViewModeal.productColor = bus_ProductColor.BusReadProductColors(Product.ProductId);
+            productVersionViewModeal.product = Product;
+            return View("form/FormAddProductVersion", productVersionViewModeal);
+        }
 
         ///// <summary>
         ///// Thêm hình cho sản phẩm

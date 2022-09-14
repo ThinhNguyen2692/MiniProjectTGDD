@@ -18,13 +18,13 @@ namespace BUS
     }
     public class Bus_ProductColor:IBusProductColor
     {
-        private static IDalProductColor dal_ProductColor;
-        private static Bus_ProductColor _instance ;
+        private IDalProductColor dal_ProductColor;
 
-        public static Bus_ProductColor GetBus_ProductColor(IDalProductColor productColor) {
-            if (_instance == null) { _instance = new Bus_ProductColor(); }
-                dal_ProductColor = productColor;
-            return _instance; }
+
+        public Bus_ProductColor(IDalProductColor dal_ProductColor)
+        {
+            this.dal_ProductColor = dal_ProductColor;
+        }
 
        
         public bool AddProductColor(ProductColor productColor)

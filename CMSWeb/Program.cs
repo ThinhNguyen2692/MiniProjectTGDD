@@ -28,8 +28,20 @@ builder.Services.AddSingleton<IBusInformationProperties, Bus_InformationProperti
 //Customer
 builder.Services.AddSingleton<IBusCustomer, Bus_Customer>();
 builder.Services.AddSingleton<IDalCustomer, Dal_Customer>();
-
+//Gift
+builder.Services.AddSingleton<IBus_Gift, Bus_Gift>();
+builder.Services.AddSingleton<IDal_Gift, Dal_Gift>();
+//product
 builder.Services.AddSingleton<IDAlProduct, Dal_Product>();
+builder.Services.AddSingleton<IBusProduct, Bus_Product>();
+builder.Services.AddSingleton<IDalProductVersion, Dal_ProductVersion>();
+builder.Services.AddSingleton<IBusProductVersion, Bus_ProductVersion>();
+//colorproduct
+builder.Services.AddSingleton<IDalProductColor, Dal_ProductColor>();
+builder.Services.AddSingleton<IBusProductColor, Bus_ProductColor>();
+
+
+
 builder.Services.AddSingleton<IDalVersionQuantity, Dal_VersionQuantity>();
 builder.Services.AddSingleton<IDalVersionQuantity, Dal_VersionQuantity>();
 

@@ -183,27 +183,32 @@
                 </a>
             </li>
              <li class="nav-item">
-                <a class="nav-link" href="/Home/ShowBrands">
+                <a class="nav-link" asp-controller="Home" asp-action="ShowBrands">
                     <span class="menu-title">Thương hiệu</span>
                     <i class="mdi mdi-format-list-bulleted menu-icon"></i>
                 </a>
             </li>
              <li class="nav-item">
-                <a class="nav-link" href="/ShowType">
+                <a class="nav-link" asp-controller="Type" asp-action="ShowType">
                     <span class="menu-title">Ngành hàng</span>
                     <i class="mdi mdi-format-list-bulleted menu-icon"></i>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="/Product/ShowProduct">
+                <a class="nav-link" asp-controller="Product" asp-action="ShowProduct">
                     <span class="menu-title">Sản phẩm</span>
                     <i style="color:red;" class="mdi mdi-cellphone-link menu-icon"></i>
                 </a>
             </li>
-
+             <li class="nav-item">
+                <a class="nav-link" asp-controller="ProductPromotion" asp-action="Index">
+                    <span class="menu-title">Khuyến mãi sản phẩm</span>
+                    <i style="color:red;" class="mdi mdi-cellphone-link menu-icon"></i>
+                </a>
+            </li>
             <li class="nav-item">
-                <a class="nav-link" href="/ShowCustomer">
+                <a class="nav-link" asp-controller="Customer" asp-action="ShowCustomer">
                     <span class="menu-title">Khách hàng</span>
                     <i style="color:red;" class="mdi mdi-cellphone-link menu-icon"></i>
                 </a>

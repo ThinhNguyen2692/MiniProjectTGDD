@@ -19,14 +19,13 @@ namespace BUS
     }
     public class Bus_Product: IBusProduct
     {
-        private static Bus_Product _instance = new Bus_Product();
 
-        public static Bus_Product GetBus_Product(IDAlProduct product) {
+        public  Bus_Product (IDAlProduct product) {
             
             dal_Product = product;
-            return _instance; }
+         }
 
-        private static IDAlProduct dal_Product ;
+        private  IDAlProduct dal_Product ;
         public void AddProduct(Product product )
         {
             DateTime dateTime  = new DateTime(0001,01,01);

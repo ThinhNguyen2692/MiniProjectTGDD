@@ -17,15 +17,11 @@ namespace BUS
     }
     public class Bus_ProductVersion:IBusProductVersion
     {
-       public static IDalProductVersion dal_ProductVersion;
-        private static Bus_ProductVersion bus_Product;
-
-        public static Bus_ProductVersion GetBusProduct(IDalProductVersion dalProductVersion)
+       private  IDalProductVersion dal_ProductVersion;
+        
+        public Bus_ProductVersion (IDalProductVersion dalProductVersion)
         {
             dal_ProductVersion = dalProductVersion;
-            if(bus_Product == null) { bus_Product = new Bus_ProductVersion(); }
-            return bus_Product;
-
         }
         
         // Thêm phiên bản sản phẩm

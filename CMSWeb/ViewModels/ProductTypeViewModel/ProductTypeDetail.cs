@@ -27,7 +27,7 @@ namespace CMSWeb.ViewModels.ProductTypeViewModel
 
         public void GetProductTypeNew()
         {
-            createListProductSpecification = new List<ArrayProductSpectification>();
+            
             foreach (var item in createProductType.ProductSpecifications)
             {
                 ArrayProductSpectification arrayProductSpectification = new ArrayProductSpectification();

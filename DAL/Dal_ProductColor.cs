@@ -16,13 +16,11 @@ namespace DAL
     }
     public class Dal_ProductColor:IDalProductColor
     {
-        private static Dal_ProductColor productColor;
-       private  MiniProjectTGDDContext context = new MiniProjectTGDDContext();
+       private  MiniProjectTGDDContext context;
 
-        public static Dal_ProductColor GetProductColor()
+        public Dal_ProductColor(MiniProjectTGDDContext context)
         {
-            if(productColor == null) { productColor = new Dal_ProductColor(); }
-            return productColor;
+            this.context = context; 
         }
         //Thêm màu cho sản phẩm
         public bool AddProductColor(ProductColor Color)

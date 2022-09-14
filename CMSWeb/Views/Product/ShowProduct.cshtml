@@ -1,6 +1,7 @@
 ﻿@using DAL.Models;
 @using CMSWeb.Models;
-@model ListModel;
+@using CMSWeb.ViewModels.ProductViewModel;
+@model List<ProductVersion>;
 <div class="content-wrapper">
     <div class="page-header">
          
@@ -47,7 +48,7 @@
                 </thead>
                 <tbody>
                    @{
-                        foreach (var item in Model.productVersion)
+                        foreach (var item in Model)
                         {
                             <tr>
                                 <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="/images/@item.Product.ProductPhoto"/> </th>
