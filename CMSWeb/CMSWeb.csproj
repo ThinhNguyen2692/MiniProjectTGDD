@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BUS\BUS.csproj" />
+    <ProjectReference Include="..\ModelProject\ModelProject.csproj" />
   </ItemGroup>
 
   <ItemGroup>

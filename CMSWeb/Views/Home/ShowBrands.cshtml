@@ -1,7 +1,5 @@
-﻿@using DAL.Models;
-@using CMSWeb.ViewModels;
-@using CMSWeb.ViewModels.ProductBrandsViewModel;
-@model BrandsViewModel;
+﻿@using ModelProject.ViewModel;
+@model List<ShowBrandsViewModel>;
 
 <div class="content-wrapper">
    
@@ -23,12 +21,12 @@
     </div>
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
-               @switch (Model.message)
+              @* @switch (Model.message)
                 {
                     case "BrandRemoveFales": <div class="alert alert-danger">Xóa thất bại</div> break;
                     case "BrandRemoveTrue": <div class="alert alert-success">Xóa thành công</div> break;
                     default: <div></div> break;
-                }
+                }*@
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -42,7 +40,7 @@
                 </thead>
                 <tbody class="value-brands">
                     @{
-                        foreach (var item in Model.ProductBrands)
+                        foreach (var item in Model)
                         {
                                     <tr>
                                         <td class="Img-Name">
@@ -54,15 +52,13 @@
                                         </td>
                                         @{
                                    
-                                             <td>@Model.GetStatus(item.BrandStatus)</td>
+                                             <td>@item.GetStatus(item.BrandStatus)</td>
                                         }
                                         <td style=" width:200px;">
                                             <div class="Action">
-                                                <a class="btn btn btn-outline-danger" href="/FormUpdateBrands?id=@item.BrandId">
+                                                <a class="btn btn btn-outline-danger" href="/FormUpdateBrands?idBrands=@item.BrandId">
                                                         Cập nhật
                                                 </a>
-
-                                                <a class="btn btn-delete-brands btn-outline-danger" href="/RemoveBrands?id=@item.BrandId">Xóa</a>
                                             </div>
 
                                      </td>

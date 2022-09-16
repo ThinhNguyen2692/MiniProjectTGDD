@@ -1,7 +1,7 @@
 ﻿using CMSWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using BUS;
+using BUS.Services;
 using DAL.Models;
 using DAL;
 using Newtonsoft.Json;
@@ -15,15 +15,13 @@ namespace CMSWeb.Controllers
         private readonly ILogger<TypeController> _logger;
 
         private readonly IBusProductType Ibus_ProductType;
-        private readonly IBusInformationProperties Ibus_InformationProperties;
-        private readonly IBusProductPecification IbusProductPecification;
+      
        
-        public TypeController(ILogger<TypeController> logger, IBusProductType Ibus_ProductType, IBusProductPecification IbusProductPecification, IBusInformationProperties Ibus_InformationProperties)
+        public TypeController(ILogger<TypeController> logger, IBusProductType Ibus_ProductType)
         {
             _logger = logger;
             this.Ibus_ProductType = Ibus_ProductType;
-            this.Ibus_InformationProperties = Ibus_InformationProperties;
-            this.IbusProductPecification = IbusProductPecification;
+
         }
         //ListModel listModel = ListModel.GetList();
         ////
@@ -105,7 +103,7 @@ namespace CMSWeb.Controllers
         [Route("AddSpecification")]
         public IActionResult AddSpecification(CreateProductPecification productSpecification)
         {
-            var SpecificationsId = IbusProductPecification.BusAddProductPecification(new ProductSpecification(productSpecification.typeId, productSpecification.ProductPecificationName, productSpecification.ProductPecificationDrecription));
+            var SpecificationsId = Ibus_ProductType.BusAddProductPecification(new ProductSpecification(productSpecification.typeId, productSpecification.ProductPecificationName, productSpecification.ProductPecificationDrecription));
             var Information = new CreateInformationProperty();
             Information.SpecificationId = SpecificationsId;
             return View("FormProperty", Information);
@@ -119,8 +117,8 @@ namespace CMSWeb.Controllers
         public IActionResult AddProperty(CreateInformationProperty createInformationProperty)
         {
             //trả mã thông sô ngành hàng
-            Ibus_InformationProperties.BusAddInformationProperties(new InformationProperty(createInformationProperty.SpecificationId, createInformationProperty.InformationPropertyName, createInformationProperty.Description));
-            createInformationProperty.typeId = IbusProductPecification.GetTypeIdBySpecification(createInformationProperty.SpecificationId);
+            Ibus_ProductType.BusAddInformationProperties(new InformationProperty(createInformationProperty.SpecificationId, createInformationProperty.InformationPropertyName, createInformationProperty.Description));
+            createInformationProperty.typeId = Ibus_ProductType.GetTypeIdBySpecification(createInformationProperty.SpecificationId);
             return View("FormProperty", createInformationProperty);
         }
 
@@ -159,11 +157,11 @@ namespace CMSWeb.Controllers
                 foreach (var item in productTypeDetail.createListProductSpecification)
                 {
                     item.createProductSpectification.TypeId = productTypeDetail.createProductType.Typeid;
-                    IbusProductPecification.UpdateSpecificatio(item.createProductSpectification);
+                    Ibus_ProductType.UpdateSpecificatio(item.createProductSpectification);
                     foreach (var value in item.createArrayInformationProperty)
                     {
                         value.SpecificationsId = item.createProductSpectification.SpecificationsId;
-                        Ibus_InformationProperties.UpDateProperty(value);
+                        Ibus_ProductType.UpDateProperty(value);
                     }
                   
                 }
@@ -215,7 +213,7 @@ namespace CMSWeb.Controllers
         public IActionResult DeleteProperty(int id, string typeid)
         {
             var ProductDetail = new ProductTypeDetail();
-            if (Ibus_InformationProperties.DalDeleteProperty(id) != true)
+            if (Ibus_ProductType.DalDeleteProperty(id) != true)
             {
                 ProductDetail.messageDelete = "DeleteFalse";
             }
@@ -233,7 +231,7 @@ namespace CMSWeb.Controllers
         {
 
             var ProductDetail = new ProductTypeDetail();
-            if (IbusProductPecification.DeleteSpecification(id) != true)
+            if (Ibus_ProductType.DeleteSpecification(id) != true)
             {
                 ProductDetail.messageDelete = "DeleteFalse";
             }
@@ -253,16 +251,15 @@ namespace CMSWeb.Controllers
             var itemCheck = Ibus_ProductType.BusReadType(typeid);
             if (itemCheck != null)
             {
-                if (Ibus_InformationProperties.DeletePropertyType(typeid) == true)
+                if (Ibus_ProductType.DeletePropertyType(typeid) == true)
                 {
-                    IbusProductPecification.DeleteSpecificationType(typeid);
+                    Ibus_ProductType.DeleteSpecificationType(typeid);
                     Ibus_ProductType.deletetype(typeid);
 
                 }
                 var listProducttype = new ListProductTypeViewModel();
                 listProducttype.listproductTypes = Ibus_ProductType.ReadAll();
                 return View("ShowType", listProducttype);
-              
             }
 
             var ProductDetail = new ProductTypeDetail();

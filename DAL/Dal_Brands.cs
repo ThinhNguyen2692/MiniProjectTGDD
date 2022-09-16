@@ -9,7 +9,7 @@ namespace DAL
     public interface IDalBrands
     {
         public bool DalAddBrand(ProductBrand productBrand);
-        public string DalRemoveBrand(string id);
+        public bool DalRemoveBrand(string id);
         public List<ProductBrand> DalGetBrand();
         public ProductBrand GetBrandById(string id);
         public bool DalUpdateBrands(ProductBrand name);
@@ -26,12 +26,16 @@ namespace DAL
 
         
 
-        //thêm thương hiệu
+        /// <summary>
+        /// Thêm thương hiệu mới
+        /// </summary>
+        /// <param name="brand">thông tin thương hiệu</param>
+        /// <returns>false: thêm không thành công</returns>
+        /// <returns>true: thêm thành công</returns>
         public bool DalAddBrand(ProductBrand brand)
         {
             if (GetBrandById(brand.BrandId) == null)
             {
-
                 context.ProductBrands.Add(brand);
                 context.SaveChanges();
             }
@@ -39,42 +43,45 @@ namespace DAL
             {
                 return false;
             }
-
             return true;
         }
-        //Đọc toàn bộ dữ liệu
+
+        /// <summary>
+        /// Đọc thông tin thương hiệu
+        /// </summary>
+        /// <returns>danh sách thông tin các thương hiệu</returns>
         public List<ProductBrand> DalGetBrand()
         {
-          
             List<ProductBrand> result = new List<ProductBrand>();
             //Khong dung try catch 
-
-           
-            var list = context.ProductBrands.OrderByDescending(b => b.BrandStatus).ToList();
-            result.AddRange(list);
-            return list;
+            var list = context.ProductBrands.OrderByDescending(b => b.BrandStatus);
+            if(list != null) result.AddRange(list.ToList());
+            return result;
         }
 
+
         //Xóa thương hiệu
-        public string DalRemoveBrand(string id)
+        public bool DalRemoveBrand(string id)
         {
-            // đương đẫn xóa hình logo
-            string path = null;
-            var data = context.ProductBrands.FirstOrDefault(c => c.BrandId == id);
+            var data = GetBrandById(id);
             if (data != null)
             {
-                path = data.BrandPhoto;
                 context.Remove(data);
                 context.SaveChanges();
             }
-               
-            return path;
+            else
+            {
+                return false;
+            }
+            return true;
         }
 
         //lây thông tin chi tiết thương hiệu
-        public ProductBrand GetBrandById(string id)
+        public ProductBrand? GetBrandById(string id)
         {
-                return context.ProductBrands.FirstOrDefault(c => c.BrandId == id);
+            var data = context.ProductBrands.Where(c => c.BrandId == id).FirstOrDefault();
+            if(data == null) { return null; }
+            return data;
         }
 
 

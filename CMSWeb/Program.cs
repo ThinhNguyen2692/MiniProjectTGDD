@@ -1,6 +1,7 @@
 using DAL;
 using DAL.Models;
 using BUS;
+using BUS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,16 +15,16 @@ builder.Services.AddSingleton<MiniProjectTGDDContext>();
 
 //ProductBrands
 builder.Services.AddSingleton<IDalBrands, Dal_Brands>();
-builder.Services.AddSingleton<IBrands, Bus_Brands>();
+builder.Services.AddSingleton<IBusBands, BusBrands>();
 
 //productType
 builder.Services.AddSingleton<IDaltype, Dal_ProductType>();
-builder.Services.AddSingleton<IBusProductType, Bus_ProductType>();
+builder.Services.AddSingleton<IBusProductType, BusProductType>();
 //Typecontronller
 builder.Services.AddSingleton<IDalProductPecification, Dal_ProductPecification>();
-builder.Services.AddSingleton<IBusProductPecification, Bus_ProductPecification>();
+
 builder.Services.AddSingleton<IDalInformationProperties, Dal_InformationProperties>();
-builder.Services.AddSingleton<IBusInformationProperties, Bus_InformationProperties>();
+
 
 //Customer
 builder.Services.AddSingleton<IBusCustomer, Bus_Customer>();
@@ -31,19 +32,22 @@ builder.Services.AddSingleton<IDalCustomer, Dal_Customer>();
 //Gift
 builder.Services.AddSingleton<IBus_Gift, Bus_Gift>();
 builder.Services.AddSingleton<IDal_Gift, Dal_Gift>();
+
+
 //product
 builder.Services.AddSingleton<IDAlProduct, Dal_Product>();
-builder.Services.AddSingleton<IBusProduct, Bus_Product>();
+builder.Services.AddSingleton<IBusProduct, BusProduct>();
 builder.Services.AddSingleton<IDalProductVersion, Dal_ProductVersion>();
-builder.Services.AddSingleton<IBusProductVersion, Bus_ProductVersion>();
+builder.Services.AddSingleton<IDalPropertyValue, Dal_PropertyValue>();
+
 //colorproduct
 builder.Services.AddSingleton<IDalProductColor, Dal_ProductColor>();
-builder.Services.AddSingleton<IBusProductColor, Bus_ProductColor>();
+
 
 
 
 builder.Services.AddSingleton<IDalVersionQuantity, Dal_VersionQuantity>();
-builder.Services.AddSingleton<IDalVersionQuantity, Dal_VersionQuantity>();
+
 
 
 

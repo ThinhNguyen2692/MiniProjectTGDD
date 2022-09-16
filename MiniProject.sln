@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BUS", "BUS\BUS.csproj", "{D6BB54D3-BFC2-439B-86AA-5427CB946087}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSWeb", "CMSWeb\CMSWeb.csproj", "{BEF13CB7-52DB-48CE-9731-C08C8C7A03D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMSWeb", "CMSWeb\CMSWeb.csproj", "{BEF13CB7-52DB-48CE-9731-C08C8C7A03D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelProject", "ModelProject\ModelProject.csproj", "{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BEF13CB7-52DB-48CE-9731-C08C8C7A03D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEF13CB7-52DB-48CE-9731-C08C8C7A03D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEF13CB7-52DB-48CE-9731-C08C8C7A03D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

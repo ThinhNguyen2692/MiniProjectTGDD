@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS;
-using DAL.Models;
+using BUS.Services;
+
 using Newtonsoft.Json;
 using DAL;
 using CMSWeb.ViewModels.ProductViewModel;
@@ -12,23 +13,15 @@ namespace CMSWeb.Controllers
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
-        private readonly IBusProductVersion bus_ProductVersion;
-        private readonly IBusProduct bus_Product;
-        private readonly IBusProductType bus_ProductType;
-        private readonly IBrands bus_Brands;
-        private readonly IBusProductColor bus_ProductColor;
-        private readonly IBusProductPecification bus_ProductPecification;
-        private readonly IBusInformationProperties bus_InformationProperties;
-        public ProductController(ILogger<ProductController> logger, IBusInformationProperties bus_InformationProperties, IBusProductPecification bus_ProductPecification, IBusProductVersion bus_ProductVersion, IBusProduct bus_Product, IBusProductType bus_ProductType, IBrands bus_Brands, IBusProductColor bus_ProductColor)
+
+        private readonly IBusProduct IBusProduct;
+        private readonly IBusProductType iBusProductType;
+
+        public ProductController(ILogger<ProductController> logger, IBusProduct IBusProduct, IBusProductType iBusProductType)
         {
             _logger = logger;
-            this.bus_ProductVersion = bus_ProductVersion;
-            this.bus_Product = bus_Product;
-            this.bus_Brands = bus_Brands;
-            this.bus_ProductType = bus_ProductType;
-            this.bus_ProductColor = bus_ProductColor;
-            this.bus_ProductPecification = bus_ProductPecification;
-            this.bus_InformationProperties = bus_InformationProperties;
+            this.IBusProduct = IBusProduct;
+            this.iBusProductType = iBusProductType;
         }
 
 
@@ -57,8 +50,8 @@ namespace CMSWeb.Controllers
         public void GetTypeBrands(ref AddProductViewModel addProductViewModel)
         {
 
-            addProductViewModel.ListproductBrands = bus_Brands.DalGetbrandsByStatus();
-            addProductViewModel.ListproductTypes = bus_ProductType.ReadAll();
+            addProductViewModel.ListproductBrands = IBusProduct.DalGetbrandsByStatus();
+            addProductViewModel.ListproductTypes = IBusProduct.ReadAll();
         }
 
 
@@ -80,7 +73,7 @@ namespace CMSWeb.Controllers
         public IActionResult ShowProduct()
         {
             
-            var listProductVersions = bus_ProductVersion.DalReadProductAll();
+            var listProductVersions = IBusProduct.DalReadProductAll();
 
             return View(listProductVersions);
         }
@@ -125,9 +118,9 @@ namespace CMSWeb.Controllers
         public IActionResult AddProduct(AddProductViewModel addProductViewModel)
         {
             addProductViewModel.ProductItem.ProductPhoto = addProductViewModel.FileImage.FileName;
-            if (bus_Product.CheckProduct(addProductViewModel.ProductItem.ProductId) == true)
+            if (IBusProduct.CheckProduct(addProductViewModel.ProductItem.ProductId) == true)
             {
-                bus_Product.AddProduct(addProductViewModel.ProductItem);
+                IBusProduct.AddProduct(addProductViewModel.ProductItem);
                 AddFileImage(addProductViewModel.FileImage);
                 var viewColor = new AddColorProduct();
                 viewColor.ProductId = addProductViewModel.ProductItem.ProductId;
@@ -160,7 +153,7 @@ namespace CMSWeb.Controllers
         {
             addColorProduct.ProductColorItem.ColorPath = addColorProduct.Fileimage.FileName;
             addColorProduct.ProductColorItem.ProductId = addColorProduct.ProductId;
-            if (bus_ProductColor.AddProductColor(addColorProduct.ProductColorItem) == true)
+            if (IBusProduct.AddProductColor(addColorProduct.ProductColorItem) == true)
             {
                 AddFileImage(addColorProduct.Fileimage);
             }
@@ -171,11 +164,11 @@ namespace CMSWeb.Controllers
         [Route("FormAddProductVersion")]
         public IActionResult FormAddProductVersion(string productId)
         {
-            var Product = bus_Product.BusReadProduct(productId);
+            var Product = IBusProduct.BusReadProduct(productId);
             var productVersionViewModeal = new ProductVersionViewModel();
-            productVersionViewModeal.productSpecifications = bus_ProductPecification.ReadSpecification(Product.ProductType);
-            productVersionViewModeal.information = bus_InformationProperties.ReadProperty(Product.ProductType);
-            productVersionViewModeal.productColor = bus_ProductColor.BusReadProductColors(Product.ProductId);
+            productVersionViewModeal.productSpecifications = iBusProductType.ReadSpecification(Product.ProductType);
+            productVersionViewModeal.information = iBusProductType.ReadProperty(Product.ProductType);
+            productVersionViewModeal.productColor = IBusProduct.BusReadProductColors(Product.ProductId);
             productVersionViewModeal.product = Product;
             return View("form/FormAddProductVersion", productVersionViewModeal);
         }

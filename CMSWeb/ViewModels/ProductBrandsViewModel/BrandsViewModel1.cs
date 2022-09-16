@@ -2,9 +2,9 @@
 
 namespace CMSWeb.ViewModels.ProductBrandsViewModel
 {
-    public class BrandsViewModel
+    public class BrandsViewModel1
     {
-        public BrandsViewModel() { }
+        public BrandsViewModel1() { }
         public List<ProductBrand> ProductBrands { get; set; }
 
         public string GetStatus(int? Status)
