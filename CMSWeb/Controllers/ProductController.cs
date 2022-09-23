@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS;
 using BUS.Services;
-
+using ModelProject.Models;
 using Newtonsoft.Json;
 using DAL;
-using CMSWeb.ViewModels.ProductViewModel;
+using ModelProject.ViewModel;
+
 
 namespace CMSWeb.Controllers
 {
@@ -16,45 +17,12 @@ namespace CMSWeb.Controllers
 
         private readonly IBusProduct IBusProduct;
         private readonly IBusProductType iBusProductType;
-
         public ProductController(ILogger<ProductController> logger, IBusProduct IBusProduct, IBusProductType iBusProductType)
         {
             _logger = logger;
             this.IBusProduct = IBusProduct;
             this.iBusProductType = iBusProductType;
         }
-
-
-
-        //IBusProductType bus_ProductType = Bus_ProductType.GetBus_ProductType(Dal_ProductType.GetType());
-        //IBrands bus_Brands = Bus_Brands.GetBrands(Dal_Brands.GetBrands());
-        //IBusProduct bus_Product = Bus_Product.GetBus_Product(Dal_Product.GetDalProduct());
-        //IBusProductColor bus_ProductColor = Bus_ProductColor.GetBus_ProductColor(Dal_ProductColor.GetProductColor());
-        //IBusProductPhoto bus_ProductPhotos = Bus_ProductPhotos.GetBus_ProductPhotos(Dal_productphotos.GetProductPhoto());
-        //IBusProductPecification bus_ProductPecification = Bus_ProductPecification.GetBus_ProductPecification(Dal_ProductPecification.GetsPecification());
-        //IBusInformationProperties bus_InformationProperties = Bus_InformationProperties.GetBus_InformationProperties(Dal_InformationProperties.GetInformationProperties());
-        //IBusProductVersion bus_ProductVersion = Bus_ProductVersion.GetBusProduct(Dal_ProductVersion.GetProductVersion());
-        //IBusPropertyValue bus_PropertyValue = Bus_PropertyValue.GetPropertyValue(Dal_PropertyValue.GetPropertyValue());
-        //IBusQuanity bus_VersionQuantity = Bus_versionQuantity.GetVersionQuantity(Dal_VersionQuantity.GetVersionQuantity());
-        //IBusPhoto bus_Photo = Bus_photo.GetPhoto(Dal_Photo.GetDalPhoto());
-        //public ListModel listModel = ListModel.GetList();
-
-        ////Hiện form
-
-
-        /// <summary>
-        /// Lấy danh sách thương hiệu đang kinh doanh
-        /// Lấy danh sách ngành hàng
-        /// </summary>
-        /// <param name="listModel"></param>
-        public void GetTypeBrands(ref AddProductViewModel addProductViewModel)
-        {
-
-            addProductViewModel.ListproductBrands = IBusProduct.DalGetbrandsByStatus();
-            addProductViewModel.ListproductTypes = IBusProduct.ReadAll();
-        }
-
-
         /// <summary>
         /// load form nhập sản phẩm mới
         /// </summary>
@@ -62,7 +30,8 @@ namespace CMSWeb.Controllers
         public IActionResult FormAddProduct()
         {
             var addProductViewModel = new AddProductViewModel();
-            GetTypeBrands(ref addProductViewModel);
+            addProductViewModel.ListBrands = addProductViewModel.GetViewModelBrands(IBusProduct.DalGetbrandsByStatus());
+            addProductViewModel.ListTypes = addProductViewModel.GetViewModelTypes(IBusProduct.ReadAll());
             return View("form/FormAddProduct", addProductViewModel);
         }
 
@@ -77,69 +46,79 @@ namespace CMSWeb.Controllers
 
             return View(listProductVersions);
         }
-        ///// <summary>
-        ///// load form thêm hình cho sản phẩm
-        ///// </summary>
-        ///// <param name="ProductIdVersion">mã phiên bản sản phẩm</param>
-        ///// <param name="ProductNameVersion">tên phiên bản sản phẩm</param>
-        ///// <returns></returns>
 
-        //[HttpGet]
-        //[Route("FormAddPhoto")]
-        //public IActionResult FormAddPhoto(string ProductIdVersion, string ProductNameVersion)
-        //{
-        //    string[] information = { ProductIdVersion, ProductNameVersion };
-        //    return View("form/FormAddPhoto", information);
-        //}
+
+        /// <summary>
+        /// load form thêm hình cho sản phẩm
+        /// </summary>
+        /// <param name="ProductIdVersion">mã phiên bản sản phẩm</param>
+        /// <param name="ProductNameVersion">tên phiên bản sản phẩm</param>
+        /// <returns></returns>
+
+
+
+        [HttpGet]
+        public IActionResult FormAddPhoto(string ProductIdVersion, string ProductNameVersion)
+        {
+            var viewModel = IBusProduct.GetPhotoViewModel();
+            ProductPhotoViewModel productPhotoViewModel = new ProductPhotoViewModel();
+            productPhotoViewModel.photoViewModel = viewModel;
+            productPhotoViewModel.ProductVerSionName = ProductNameVersion;
+            productPhotoViewModel.ProductVersionId = ProductIdVersion;
+            return View("form/AddPhotoProduct", viewModel);
+        }
+
+        /// <summary>
+        /// Thêm hình cho sản phẩm
+        /// </summary>
+        /// <param name="ListImage">danh sách file hình cần thêm</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AddPhoto")]
+        public IActionResult AddPhoto(PhotoViewModel viewModel)
+        {
+            
+            IBusProduct.AddImageProduct(viewModel.photos);
+             viewModel = IBusProduct.GetPhotoViewModel();
+            return View("form/FormAddPhoto", viewModel);
+        }
 
 
         /// <summary>
         /// lưu ảnh vào folder
         /// </summary>
         /// <param name="fileImage">file hình cần thêm vào</param>
-        public void AddFileImage(IFormFile fileImage)
-        {
-            string fileName = fileImage.FileName;
-            string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
-            var stream = new FileStream(upLoad, FileMode.Create);
-            fileImage.CopyToAsync(stream);
-        }
+        
 
-        ///// <summary>
-        ///// Thêm product
-        ///// </summary>
-        ///// <param name="product">Models sản phẩm cần thêm</param>
-        ///// <param name="fileImage">file hình của sản phẩm </param>
-        ///// <returns>load form thêm màu cho sản phẩm nếu thêm hình thành công</returns>
-
-
+        /// <summary>
+        /// Thêm product
+        /// </summary>
+        /// <param name="product">Models sản phẩm cần thêm</param>
+        /// <param name="fileImage">file hình của sản phẩm </param>
+        /// <returns>load form thêm màu cho sản phẩm nếu thêm hình thành công</returns>
         [HttpPost]
         [Route("AddProduct")]
         public IActionResult AddProduct(AddProductViewModel addProductViewModel)
         {
-            addProductViewModel.ProductItem.ProductPhoto = addProductViewModel.FileImage.FileName;
-            if (IBusProduct.CheckProduct(addProductViewModel.ProductItem.ProductId) == true)
+           var productViewModel = IBusProduct.AddProduct(addProductViewModel);
+            if(productViewModel != null)
             {
-                IBusProduct.AddProduct(addProductViewModel.ProductItem);
-                AddFileImage(addProductViewModel.FileImage);
-                var viewColor = new AddColorProduct();
-                viewColor.ProductId = addProductViewModel.ProductItem.ProductId;
-                return View("form/FormAddColor", viewColor);
+                addProductViewModel.ListBrands = addProductViewModel.GetViewModelBrands(IBusProduct.DalGetbrandsByStatus());
+                addProductViewModel.ListTypes = addProductViewModel.GetViewModelTypes(IBusProduct.ReadAll());
+                addProductViewModel.messageAdd = "AddProductFalse";
+                return View("form/FormAddProduct", addProductViewModel);
             }
-            GetTypeBrands(ref addProductViewModel);
-            addProductViewModel.messageAdd = true;
-           
             
-            return View("form/FormAddProduct", addProductViewModel);
+            var viewModelColor = new AddColorProduct();
+            viewModelColor.ProductId = addProductViewModel.ProductId;
+            return View("form/FormAddColor", viewModelColor);
         }
-
         //[HttpPost]
         //[Route("CheckProductId")]
         //public bool CheckProductId(string ProductId)
         //{
         //    return bus_Product.CheckProduct(ProductId);
         //}
-
 
         /// <summary>
         /// Thêm màu cho sản phẩm
@@ -151,166 +130,88 @@ namespace CMSWeb.Controllers
         [Route("AddProductColor")]
         public IActionResult AddProductColor(AddColorProduct addColorProduct)
         {
-            addColorProduct.ProductColorItem.ColorPath = addColorProduct.Fileimage.FileName;
-            addColorProduct.ProductColorItem.ProductId = addColorProduct.ProductId;
-            if (IBusProduct.AddProductColor(addColorProduct.ProductColorItem) == true)
+           
+            if (IBusProduct.AddProductColor(addColorProduct) == true)
             {
-                AddFileImage(addColorProduct.Fileimage);
-            }
+               
+                addColorProduct.messageAdd = "AddcolorTrue";
+            }else addColorProduct.messageAdd = "AddcolorFalse";
             return View("form/FormAddColor", addColorProduct);
         }
 
+
+        /// <summary>
+        /// hiện form nhập thông tin sản phẩm version  chuyển qua tử form nhập thông tin màu
+        /// </summary>
+        /// <param name="productId">mã sản phẩm</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("FormAddProductVersion")]
+
+
+        /// <summary>
+        /// Load form nhập thông tin phiên bản sản phẩm
+        /// </summary>
+        /// <param name="productId">Mã sản phẩm của phiên bản</param>
+        /// <returns></returns>
         public IActionResult FormAddProductVersion(string productId)
         {
-            var Product = IBusProduct.BusReadProduct(productId);
-            var productVersionViewModeal = new ProductVersionViewModel();
-            productVersionViewModeal.productSpecifications = iBusProductType.ReadSpecification(Product.ProductType);
-            productVersionViewModeal.information = iBusProductType.ReadProperty(Product.ProductType);
-            productVersionViewModeal.productColor = IBusProduct.BusReadProductColors(Product.ProductId);
-            productVersionViewModeal.product = Product;
+            var productVersionViewModeal = IBusProduct.BusReadProduct(productId);
+            //Lấy thuộc tính ngành hàng cho sản phẩm
             return View("form/FormAddProductVersion", productVersionViewModeal);
         }
 
-        ///// <summary>
-        ///// Thêm hình cho sản phẩm
-        ///// </summary>
-        ///// <param name="VersionId">mã phiên bản sản phẩm</param>
-        ///// <param name="ListImage">danh sách file hình cần thêm</param>
-        ///// <returns></returns>
-        //[HttpPost]
-        //[Route("AddPhoto")]
-        //public IActionResult AddPhoto(string VersionId, List<IFormFile> ListImage)
-        //{
-        //    List<string> PhotoName = new List<string>();
-        //    foreach (var item in ListImage)
-        //    {
-        //        PhotoName.Add(item.FileName);
-        //        AddFileImage(item);
-        //    }
-        //    //Lấy danh sách id hình vừa thêm
-        //    List<int> ListPhoto = bus_Photo.AddPhoto(PhotoName);
-        //    //Thêm ảnh cho sản phẩm
-        //    if (bus_ProductPhotos.BusAddProductPhoto(ListPhoto, VersionId) == false)
-        //    {
-        //        GetProductDetail(VersionId);
-        //        listModel.message = "photofalse";
-        //        return View("form/FormAddProductVersion",listModel);
-        //    }
-        //    GetProductDetail(VersionId);
-        //    listModel.message = "phototrue";
-        //    return View("ShowDetailProduct", listModel);
-        //}
-
+       
         ///// <summary>
         ///// ajax thêm sản phâm version
         ///// </summary>
         ///// <param name="productVersion">Model dữ liệu phiên bản sản phẩm cần thêm</param>
         ///// <returns></returns>
 
-        //[HttpPost]
-        //[Route("AddVersionProduct")]
-        //public bool AddVerSionProduct(ProductVersion productVersion)
-        //{
-        //    if (bus_ProductVersion.AddProductVersion(productVersion) != true)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// ajax thêm thông sô kỹ thuật sản phâm version
-        ///// </summary>
-        ///// <param name="valueProperty">danh sách dữ liệu thông tin thông số kỹ thuật sản phẩm</param>
-        ///// <returns>true thêm thành công</returns>
-        ///// <returns>false thêm thất bại</returns>
-        //[HttpPost]
-        //[Route("AddPropertyValue")]
-        //public bool AddPropertyValue(PropertiesValue[] valueProperty)
-        //{
-
-        //    if (bus_PropertyValue.AddPropertyValue(valueProperty) != true)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
+        [HttpPost]
+        [Route("AddVersionProduct")]
+        public IActionResult AddVerSionProduct(ProductVersionViewModel productVersionViewModeal)
+        {
+            productVersionViewModeal = IBusProduct.AddProductVersion(productVersionViewModeal);
+            return View("form/FormAddProductVersion", productVersionViewModeal);
+        }
 
 
-        ///// <summary>
-        ///// ajax thêm số lượng cho phiên bản sản phẩm
-        ///// </summary>
-        ///// <param name="versionQuantity">dữ liệu số lượng sản phẩm</param>
-        ///// <returns>true them thành công</returns>
-        ///// <returns>false them thất bại</returns>
-        //[HttpPost]
-        //[Route("AddVersionQuantity")]
-        //public bool AddVersionQuantity(VersionQuantity[] versionQuantity)
-        //{
+        /// <summary>
+        /// hiện thông tin chi tiết sản phẩm theo phiên bản sản phẩm
+        /// </summary>
+        /// <param name = "id" > mã phiên bản sản phẩm</param>
+        /// <returns>thông tin sản phẩm</returns>
+        /// <returns>thông tin phiên bản sản phẩm</returns>
+        /// <returns>thông tin thông số kỹ thuật sản phẩm</returns>
+        /// <returns>thông tin số lượng sản phẩm (có màu)</returns>
+        [HttpGet]
+        [Route("ShowDetailProduct")]
+        public IActionResult ShowDetailProduct(string id)
+        {
+            var ProductDetailViewModel = IBusProduct.DalReadProductDetail(id);
+            return View(ProductDetailViewModel);
+        }
 
-        //    if (bus_VersionQuantity.AddVersionQuantity(versionQuantity) != true)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
+        [HttpGet]
+        [Route("DeleteProductVerSion")]
+        public IActionResult DeleteProduct(string versionId, string productId)
+        {
+            if( IBusProduct.CheckProductVersion(versionId) == false || IBusProduct.CheckProduct(productId) == false)
+            {
+                    return View("ShowProduct", IBusProduct.DalReadProductAll());
+            }
 
-        ///// <summary>
-        ///// hiện thông tin chi tiết sản phẩm theo phiên bản sản phẩm
-        ///// </summary>
-        ///// <param name="id">mã phiên bản sản phẩm</param>
-        ///// <returns>thông tin sản phẩm</returns>
-        ///// <returns>thông tin phiên bản sản phẩm</returns>
-        ///// <returns>thông tin thông số kỹ thuật sản phẩm</returns>
-        ///// <returns>thông tin số lượng sản phẩm (có màu)</returns>
-        //[HttpGet]
-        //[Route("ShowDetailProduct")]
-        //public IActionResult ShowDetailProduct(string id)
-        //{
-        //    GetProductDetail(id);
-        //    return View(listModel);
-        //}
+           if(IBusProduct.DelProductVerion(versionId, productId) == false)
+            {
+                var ProductDetailViewModel = IBusProduct.DalReadProductDetail(versionId);
+                return View("ShowDetailProduct", ProductDetailViewModel);
+            }
+            var listProductVersions = IBusProduct.DalReadProductAll();
 
-        ///// <summary>
-        ///// hàm lấy thông tin chi tiết sản phẩm
-        ///// </summary>
-        ///// <param name="id">mã sản phẩm version</param>
-        //public void GetProductDetail(string id)
-        //{
-        //    listModel.productVersionDetail = bus_ProductVersion.DalReadProduct(id);
-        //    listModel.product = listModel.productVersionDetail.Product;
-        //    GetTypeBrands();
-        //    listModel.propertiesValues = bus_PropertyValue.ReadValue(id);
-        //    listModel.versionQuantities = bus_VersionQuantity.ReadQuantity(id);
-        //}
+            return View("ShowProduct", listProductVersions);
 
-
-        //[HttpGet]
-        //[Route("DeleteProductVerSion")]
-        //public IActionResult DeleteProduct(string versionId, string productId)
-        //{
-        //    if (bus_VersionQuantity.DelQuantyti(versionId) == true) {
-        //        bus_PropertyValue.DeletePropertyValue(versionId);
-        //        bus_ProductPhotos.DelPhoto(versionId);
-        //        var listPath = bus_Photo.DeletePhoto();
-        //        bus_ProductVersion.DelProductVerion(versionId);
-        //        if (listPath.Count > 0) deleteListPhoto(listPath);
-        //        if (bus_Product.CheckVersionQuantity(versionId) == 0) {
-        //            bus_ProductColor.delColor(productId);
-        //            string path = bus_Product.DeleteProduct(productId);
-        //            if (path != null)
-        //            {
-        //                System.IO.File.Delete("wwwroot\\images\\" + path);
-        //            }
-        //        }
-        //        listModel.productVersion = bus_ProductVersion.DalReadProductAll();
-        //        return View("ShowProduct", listModel);
-        //    }
-        //    GetProductDetail(versionId);
-        //    return View("ShowDetailProduct", listModel);
-        //}
+        }
 
 
         ///// <summary>
@@ -326,54 +227,25 @@ namespace CMSWeb.Controllers
         //}
 
 
-        ///// <summary>
-        ///// Hàm cập nhật thông tin 
-        ///// </summary>
-        ///// <param name="product">sản phảm</param>
-        ///// <param name="productVersion"> phiên bản sản phẩm</param>
-        ///// <param name="PropertiesId">danh sách id thông tin thông số</param>
-        ///// <param name="ValueId">danh sách id dữ liệu</param>
-        ///// <param name="Value">dữ liệu</param>
-        ///// 
-        ///// <param name="fileImage">hình cập nhật</param>
-        ///// <param name="Id">mã sản phẩm</param>
-        ///// <param name="ColorId">màu sản phẩm</param>
-        ///// <param name="Quantity"></param>
 
-        //[HttpPost]
-        //[Route("UpdateProduct")]
-        //public int[] UpdateProduct(Product product, ProductVersion productVersion, int[] PropertiesId, int[] ValueId, string[] Value, IFormFile fileImage, int[] Id, int[] ColorId, int[] Quantity)
-        //{
-        //    var GetPropertiesValues = GetPropertiesValue(PropertiesId, ValueId, Value, productVersion.VersionId);
-        //    var GetVersionQuantitys = GetVersionQuantity(Id,ColorId, Quantity, productVersion.VersionId);
-
-        //    return PropertiesId;
-        //}
+        /// <summary>
+        /// Hàm Cập nhật thông tin chi tiết sản phẩm
+        /// </summary>
+        /// <param name="productDetailViewModel">chưa thông tin chi tiết sản phẩm</param>
+        /// <returns>productDetailViewModel: chứa các thông tin chi sản phẩm vừa cập nhật</returns>
+        [HttpPost]
+        [Route("UpdateProduct")]
+        public IActionResult UpdateProduct(ProductDetailViewModel productDetailViewModel)
+        {
 
 
-        ////Tạo PropertiesValue
-        //public List<PropertiesValue> GetPropertiesValue(int[] PropertiesId, int[] ValueId, string[] Value, string versionId)
-        //{
-        //    var data = new List<PropertiesValue>();
-        //   // PropertiesValue(int valueId, string versionId, int propertiesId, string ? value)
-        //    for (int i = 0; i < ValueId.Length; i++)
-        //    {
-        //        data.Add(new PropertiesValue(ValueId[i], versionId, PropertiesId[i], Value[i]));
-        //    }
-        //    return data;
-        //}
+            var ProductDetailViewModelNew = IBusProduct.DalReadProductDetail(productDetailViewModel.VersionId);
+            productDetailViewModel.MessageUpdate = IBusProduct.UpdateProduct(productDetailViewModel);
+            return View("ShowDetailProduct", ProductDetailViewModelNew);
+        }
 
 
-        //public List<VersionQuantity> GetVersionQuantity(int[] Id, int[] ColorId, int[] Quantity, string versionId)
-        //{
-        //    var data = new List<VersionQuantity>();
-        //    //public VersionQuantity(int Id, string VersionId, int? Quantity)
-        //    for (int i = 0; i < Id.Length; i++)
-        //    {
-        //        data.Add(new VersionQuantity(Id[i], versionId, Quantity[i], ColorId[i]));
-        //    }
-        //    return data;
-        //}
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

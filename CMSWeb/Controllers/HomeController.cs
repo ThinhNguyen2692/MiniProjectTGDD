@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS.Services;
-using DAL.Models;
+using ModelProject.Models;
 using Newtonsoft.Json;
 using CMSWeb.Models.ProductBrands;
 using ModelProject.ViewModel;
@@ -46,7 +46,13 @@ namespace CMSWeb.Controllers
             return View("form/FormBrands", item);
         }
 
-       
+        [Route("")]
+        public IActionResult Index()
+        {
+            
+            return View();
+        }
+
 
         /// <summary>
         /// controller: thêm thông tin thuong hiệu
@@ -86,8 +92,8 @@ namespace CMSWeb.Controllers
         public void AddFileImage(IFormFile fileImage)
         {
             string fileName = fileImage.FileName;
-            string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
-            var stream = new FileStream(upLoad, FileMode.Create);
+            string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Logo\\", fileName);
+            var stream = new FileStream(upLoad, FileMode.OpenOrCreate);
             fileImage.CopyToAsync(stream);
 
         }
@@ -108,7 +114,7 @@ namespace CMSWeb.Controllers
               return  ShowBrands();
             }
 
-            return View("form/FormBrands", brands);
+            return View("form/FormUpdateBrands", brands);
         }
 
         /// <summary>
@@ -127,7 +133,7 @@ namespace CMSWeb.Controllers
 
         public void DeleteImage(string FileImageName)
         {
-            System.IO.File.Delete("wwwroot\\images\\" + FileImageName);
+            System.IO.File.Delete("wwwroot\\images\\logo\\" + FileImageName);
         }
 
 
@@ -143,8 +149,16 @@ namespace CMSWeb.Controllers
             if (addBrandViewModel.fileImage != null)
             {
                 addBrandViewModel.BrandPhoto = addBrandViewModel.fileImage.FileName;
-                System.IO.File.Delete("wwwroot\\images\\" + path);
                 AddFileImage(addBrandViewModel.fileImage);
+                try
+                {
+                    System.IO.File.Delete("wwwroot\\images\\Logo\\" + path);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+               
             }
             //kiểm tra cập nhật
             if (bus_Brands.UpdateBrands(addBrandViewModel) == true)

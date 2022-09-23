@@ -1,5 +1,4 @@
-﻿@using CMSWeb.ViewModels.ProductTypeViewModel;
-@using DAL.Models;
+﻿@using ModelProject.ViewModel;
 @model ProductTypeDetail;
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
@@ -9,11 +8,11 @@
                 @{
                     switch (Model.messageUpdate)
                     {
-                        case "UpdateTrue":
-                                <div class="alert alert-success">Cập nhật thành công</div>
+                        case "UpdateProductTypeTrue":
+                            <div class="alert alert-success">Cập nhật thành công</div>
                             break;
-                            case "UpdateFalse":
-                                <div class="alert alert-danger">Cập nhật thất bại</div>
+                        case "UpdateProductTypeFalse":
+                            <div class="alert alert-danger">Cập nhật thất bại</div>
                             break;
 
                         default: break;
@@ -22,20 +21,18 @@
                     switch (Model.messageDelete)
                     {
                         case "DeleteTrue":
-                                <div class="alert alert-success">Xóa thành công</div>
+                            <div class="alert alert-success">Xóa thành công</div>
                             break;
-                            case "DeleteFalse":
-                                <div class="alert alert-danger">Xóa thất bại</div>
+                        case "DeleteFalse":
+                            <div class="alert alert-danger">Xóa thất bại</div>
                             break;
-
-                        default: break;
                     }
                 }
                 <form class="forms-sample" asp-action="UpdataType" asp-controller="Type" method="post" id="form-add-type">
 
                     <div class="form-group">
-                        <label asp-for="@Model.createProductType.Typeid">Mã ngành hành</label>
-                        <input class="form-control" readonly asp-for="@Model.createProductType.Typeid" />
+                        <label asp-for="@Model.TypeId">Mã ngành hành</label>
+                        <input class="form-control" readonly asp-for="@Model.TypeId" />
                         <div class="valid-feedback">
                             Looks good!
                         </div>
@@ -47,7 +44,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Ngành hàng</label>
-                        <input asp-for="@Model.createProductType.Typename" class="form-control" />
+                        <input asp-for="@Model.TypeName" class="form-control" />
                         <div class="valid-feedback">
                             Looks good!
                         </div>
@@ -56,22 +53,22 @@
                         </div>
                     </div>
 
-                    <a class="btn btn-outline-danger" href="/FormSpecification?typeid=@Model.createProductType.Typeid">Thêm</a>
-                    <a class="btn btn-outline-danger" href="/DeleteType?typeid=@Model.createProductType.Typeid">Xóa</a>
+                    <a class="btn btn-outline-danger" href="/FormSpecification?typeid=@Model.TypeId">Thêm</a>
+                    <a class="btn btn-outline-danger" href="/DeleteType?typeid=@Model.TypeId">Xóa</a>
                     <br />
                     <br />
                     <br />
                     @{
-                        
+
                         for (var i = 0; i < Model.createListProductSpecification.Count; i++)
                         {
-                           
-                                <label>Mã: <input class="form-control" readonly style="width: 100px;" asp-for="@Model.createListProductSpecification[i].createProductSpectification.SpecificationsId" /> </label>  <label style="margin-left: 30px;margin-right: 515px;">Thông số:  <input class="form-control " asp-for="@Model.createListProductSpecification[i].createProductSpectification.SpecificationsName" /></label> <a href="/ShowFormSpecification?idSpecification=@Model.createListProductSpecification[i].createProductSpectification.SpecificationsId&TypeId=@Model.createProductType.Typeid" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@Model.createListProductSpecification[i].createProductSpectification.SpecificationsId&typeid=@Model.createProductType.Typeid" class="btn btn-outline-danger">Xóa</a>
-                                <br />
-                                <br />
-                            for (var j = 0; j < Model.createListProductSpecification[i].createArrayInformationProperty.Count; j++)
-                            {  
-                                        <label style="margin-left: 20px;">Mã: <input style="width: 100px;" asp-for="@Model.createListProductSpecification[i].createArrayInformationProperty[j].PropertiesId" class="form-control" readonly /></label>  <label style="margin-left: 30px;margin-right: 30px;">Thuộc tính:  <input asp-for="@Model.createListProductSpecification[i].createArrayInformationProperty[j].PropertiesName" class="form-control" /></label> <label style="margin-right: 485px;">Đơn vị: <input style="width: 100px;" class="form-control" asp-for="@Model.createListProductSpecification[i].createArrayInformationProperty[j].PropertiesDescription" /></label> <a href="/DeleteProperty?id=@Model.createListProductSpecification[i].createArrayInformationProperty[j].PropertiesId&typeid=@Model.createProductType.Typeid" class="btn btn-outline-danger">Xoá</a>
+
+                            <label>Mã: <input class="form-control" readonly style="width: 100px;" asp-for="@Model.createListProductSpecification[i].SpecificationId" /> </label>  <label style="margin-left: 30px;margin-right: 515px;">Thông số:  <input class="form-control " asp-for="@Model.createListProductSpecification[i].SpecificationName" /></label> <a href="/ShowFormSpecification?idSpecification=@Model.createListProductSpecification[i].SpecificationId&TypeId=@Model.TypeId" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@Model.createListProductSpecification[i].SpecificationId&typeid=@Model.TypeId" class="btn btn-outline-danger">Xóa</a>
+                            <br />
+                            <br />
+                            for (var j = 0; j < Model.createListProductSpecification[i].listInformationProperty.Count; j++)
+                            {
+                                <label style="margin-left: 20px;">Mã: <input style="width: 100px;" asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertyId" class="form-control" readonly /></label>  <label style="margin-left: 30px;margin-right: 30px;">Thuộc tính:  <input asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertyName" class="form-control" /></label> <label style="margin-right: 485px;">Đơn vị: <input style="width: 100px;" class="form-control" asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertiesDescription" /></label> <a href="/DeleteProperty?id=@Model.createListProductSpecification[i].listInformationProperty[j].PropertyId&typeid=@Model.TypeId" class="btn btn-outline-danger">Xoá</a>
                             }
                         }
                     }
@@ -87,6 +84,3 @@
 
     </div>
 </div>
-
-
-

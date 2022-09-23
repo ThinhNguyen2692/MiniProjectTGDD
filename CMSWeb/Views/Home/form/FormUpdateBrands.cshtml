@@ -42,12 +42,11 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="@Model.BrandStatus">Trạng thái thương hiệu</label>
-                        <select class="form-control" asp-for="@Model.BrandStatus">
-                            <option value="@Model.BrandStatus">@Model.GetStatus()[Model.BrandStatus]</option>
-                               @{
-                                for (int i = 0; i < Model.GetStatus().Count; i++)
+                       <select class="form-control" asp-for="@Model.BrandStatus">
+                            @{
+                                for (int i = 0; i < Model.status.GetStatus().Count; i++)
                                 {
-                                     <option value="@i">@Model.GetStatus()[i]</option>
+                                     <option value="@i">@Model.status.GetStatus()[i]</option>
                                 }
                             }
                         </select>
@@ -57,11 +56,11 @@
                         <input asp-for="@Model.fileImage" class="fileImage form-control" accept="image/*" />
                         <br />
                         <br />
-                        <div class="imagelogo">  <img id="preview" src="/images/@Model.BrandPhoto" width="auto" height="auto" class="hidden" /></div>
+                        <div class="imagelogo">  <img id="preview" src="/images/Logo/@Model.BrandPhoto" width="auto" height="auto" class="hidden" /></div>
                     </div>
                      <button type="submit" id="btn-submit" class="btn btn-logo btn-gradient-primary me-2">Cập nhật</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
-                    <a class="btn btn-light" asp-controller="Home" asp-action="RemoveBrands" asp-route-id="@Model.BrandId">Xóa</a>
+                    <a class="btn btn-outline-danger btn-remove" asp-controller="Home" asp-action="RemoveBrands" asp-route-id="@Model.BrandId">Xóa</a>
                 </form>
             </div>
         </div>

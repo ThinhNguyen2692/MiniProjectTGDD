@@ -1,0 +1,206 @@
+﻿@using ModelProject.ViewModel;
+@model ListPurchaseOrderViewModel;
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="Processing-tab" data-toggle="tab" href="#Processing" role="tab" aria-controls="Processing" aria-selected="true">Đang xử lý</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="Delivering-tab" data-toggle="tab" href="#Delivering" role="tab" aria-controls="Delivering" aria-selected="false">Đang giao</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="Delivered-tab" data-toggle="tab" href="#Delivered" role="tab" aria-controls="Delivered" aria-selected="false">Đã giao</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="Cancelled-tab" data-toggle="tab" href="#Cancelled" role="tab" aria-controls="Cancelled" aria-selected="false">Đã hủy</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="Processing" role="tabpanel" aria-labelledby="Processing-tab">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th> Mã </th>
+                    <th> Số điện thoại khách hàng </th>
+                    <th> Tổng tiền hóa đơn </th>
+                    <th> Khuyến mãi </th>
+                    <th> Thành tiền</th>
+                    <th> Trạng thái</th>
+                    <th> Ngày lập hóa đơn</th>
+                    <th> </th>
+                    <th> </th>
+
+                </tr>
+            </thead>
+            <tbody class="value-brands">
+                @{
+
+                    foreach (var item in Model.ListProcessing)
+                    {
+
+                                <tr>
+                                    <th> @item.PurchaseOrderId </th>
+                                    <th> @item.customer_phone </th>
+                                    <th> @item.toltalMoney </th>
+                                    <th> @item.toltalPromotionalPrice </th>
+                                    <th> @item.IntoMoney </th>
+                                    <th> @Model.GetStatus(item.Status) </th>
+                                    <th> @Model.GetStatus(item.Status) </th>
+                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                    <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=1">Giao hàng</a>  <a href="/">Hủy đơn</a></th>
+                                </tr>
+
+                    }
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+    <div class="tab-pane fade" id="Delivering" role="tabpanel" aria-labelledby="Delivering-tab">
+         <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th> Mã </th>
+                    <th> Số điện thoại khách hàng </th>
+                    <th> Tổng tiền hóa đơn </th>
+                    <th> Khuyến mãi </th>
+                    <th> Thành tiền</th>
+                    <th> Trạng thái</th>
+                    <th> Ngày lập hóa d</th>
+                    <th> </th>
+                    <th> </th>
+
+                </tr>
+            </thead>
+            <tbody class="value-brands">
+                @{
+
+                    foreach (var item in Model.ListDelivering)
+                    {
+
+                                <tr>
+                                    <th> @item.PurchaseOrderId </th>
+                                    <th> @item.customer_phone </th>
+                                    <th> @item.toltalMoney </th>
+                                    <th> @item.toltalPromotionalPrice </th>
+                                    <th> @item.IntoMoney </th>
+                                    <th> @Model.GetStatus(item.Status) </th>
+                                    <th> @Model.GetStatus(item.Status) </th>
+                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                   <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=2">Giao hàng</a>  <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=3">Hủy đơn</a></th>
+                                </tr>
+
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="Delivered" role="tabpanel" aria-labelledby="Delivered-tab">
+
+         <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th> Mã </th>
+                    <th> Số điện thoại khách hàng </th>
+                    <th> Tổng tiền hóa đơn </th>
+                    <th> Khuyến mãi </th>
+                    <th> Thành tiền</th>
+                    <th> Trạng thái</th>
+                    <th> </th>
+                    <th> </th>
+
+                </tr>
+            </thead>
+            <tbody class="value-brands">
+                @{
+
+                    foreach (var item in Model.ListDelivered)
+                    {
+
+                                <tr>
+                                    <th> @item.PurchaseOrderId </th>
+                                    <th> @item.customer_phone </th>
+                                    <th> @item.toltalMoney </th>
+                                    <th> @item.toltalPromotionalPrice </th>
+                                    <th> @item.IntoMoney </th>
+                                    <th> @Model.GetStatus(item.Status) </th>
+                                     <th> <button class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                    <th> </th>
+                                </tr>
+
+                    }
+                }
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+    <div class="tab-pane fade" id="Cancelled" role="tabpanel" aria-labelledby="Cancelled-tab">
+         <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th> Mã </th>
+                    <th> Số điện thoại khách hàng </th>
+                    <th> Tổng tiền hóa đơn </th>
+                    <th> Khuyến mãi </th>
+                    <th> Thành tiền</th>
+                    <th> Trạng thái</th>
+                    <th> Ngày lập hóa đơn</th>
+                    <th> </th>
+                    <th> </th>
+
+                </tr>
+            </thead>
+            <tbody class="value-brands">
+                @{
+
+                    foreach (var item in Model.ListCancelled)
+                    {
+
+                                <tr>
+                                    <th> @item.PurchaseOrderId </th>
+                                    <th> @item.customer_phone </th>
+                                    <th> @item.toltalMoney </th>
+                                    <th> @item.toltalPromotionalPrice </th>
+                                    <th> @item.IntoMoney </th>
+                                    <th> @Model.GetStatus(item.Status) </th>
+                                    <th>  </th>
+                                    <th> <a class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</a></th>
+                                    </tr>
+
+                    }
+                }
+
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+
+
+                            <!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

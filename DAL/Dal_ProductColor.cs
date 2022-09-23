@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
 
 namespace DAL
 {
@@ -32,7 +32,8 @@ namespace DAL
 
        public List<ProductColor> DalReadProductColors(string id)
         {
-            var data = context.ProductColors.Where(c => c.ProductId == id).ToList();       
+            var data = context.ProductColors.Where(c => c.ProductId == id).ToList();
+            if (data == null) return null;
             return data;
         }
 

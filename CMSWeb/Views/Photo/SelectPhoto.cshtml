@@ -1,0 +1,30 @@
+﻿@using ModelProject.ViewModel;
+@model PhotoViewModel;
+
+<div class="content-wrapper">
+    <div class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4></h4>
+                <h4 class="card-title">Thêm ảnh cho sản phẩm</h4>
+                <div style="margin-top: 40px; margin-bottom: 40px;"></div>
+
+                <div  class="row">
+                    @{
+                       
+                            foreach (var value in Model.informationPhoto)
+                            {
+                                          <div class="col-3">
+                                    <img style="width: 160px; heigh: 160px;" src="/images/@value.PathImage"/>
+                                    <div><span>@value.PathImage</span></div>
+                                    </div>
+                            }
+                          
+                     
+                    }
+                </div>
+               
+            </div>
+        </div>  
+    </div>
+</div>

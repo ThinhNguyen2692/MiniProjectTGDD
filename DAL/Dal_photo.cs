@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace DAL
 {
@@ -12,15 +13,14 @@ namespace DAL
     {
         public int AddPhoto(Photo photo);
         public List<string> DeletePhoto();
+        public List<Photo> ReadAll();
     }
     public class Dal_Photo:IDalPhoto
     {
-        private static Dal_Photo dalPhoto;
-        private MiniProjectTGDDContext context = new MiniProjectTGDDContext();
-       public static Dal_Photo GetDalPhoto()
+        private MiniProjectTGDDContext context;
+       public  Dal_Photo(MiniProjectTGDDContext context)
         {
-            if(dalPhoto == null) { dalPhoto = new Dal_Photo(); }
-            return dalPhoto;
+        this.context = context;
         }
         
         // Them hinh cho sản phẩm
@@ -31,7 +31,15 @@ namespace DAL
              return photo.PhotoId;
         }
 
-      
+        public List<Photo> ReadAll()
+        {
+            var data = context.Photos.ToList();
+            
+            return data;
+        }
+
+       
+
         /// <summary>
         /// Xóa hình khi không còn sử dụng
         /// </summary>

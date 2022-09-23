@@ -1,11 +1,19 @@
-﻿@using CMSWeb.ViewModels.ProductViewModel;
+﻿@using ModelProject.ViewModel;
 @model AddColorProduct;
 
 <div class="content-wrapper">
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 style="color: red;">@ViewBag.mess</h4>
+                @{
+                    switch (Model.messageAdd)
+                    {
+                        case "AddcolorFalse":
+                            <h4 style="color: red;">Thêm màu thất bại</h4>
+                            break;
+                        default:break;
+                    }
+                }
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
                 <form class="forms-sample" id="form-color" method="post" enctype="multipart/form-data" action="/AddProductColor">
                     <div class="form-group">
@@ -14,7 +22,7 @@
                     </div>
                     <div class="form-group">
                         <label >Màu</label>
-                        <input class="form-control ColorDescription" asp-for="@Model.ProductColorItem.ColorDescription"/>
+                        <input class="form-control ColorDescription" asp-for="@Model.colorName"/>
                        <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -26,7 +34,7 @@
                     <div class="form-group">
                         <label>Chọn hình: </label>
                         <br />
-                        <input asp-for="@Model.Fileimage" class="form-control" />
+                        <input asp-for="@Model.Fileimage" class="form-control fileImage" />
                         <br />
                         <img id="preview" src="#" width="auto" height="auto" class="hidden" />
 

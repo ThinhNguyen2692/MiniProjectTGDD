@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL;
-using DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using ModelProject.Models;
+
 
 namespace DAL
 {
@@ -13,20 +15,25 @@ namespace DAL
         public bool DalAddProductPhoto(ProductPhoto productPhoto);
         public void DelPhoto(string id);
         public List<ProductPhoto> GetProductPhotos();
+        public List<ProductPhoto> GetProductPhoto(string VersionId);
     }
-    public class Dal_productphotos:IDalProductPhoto
+    public class Dal_productphotos : IDalProductPhoto
     {
-        private MiniProjectTGDDContext context = new MiniProjectTGDDContext();
-        private static Dal_productphotos _instance;
+        private MiniProjectTGDDContext context;
 
-        public static Dal_productphotos Instance
+        public Dal_productphotos(MiniProjectTGDDContext context)
         {
-            get {
-                if (_instance == null) { _instance = new Dal_productphotos(); }
-                return _instance;
-            }
+            this.context = context;
         }
-        
+
+        public List<ProductPhoto> GetProductPhoto(string VersionId)
+        {
+            var data = context.ProductPhotos.Where(p => p.VersionId == VersionId).Include(p => p.Photo).ToList();
+            return data;
+        }
+
+
+
         /// <summary>
         /// Thêm liên kết ảnh và sản phẩm
         /// </summary>
@@ -34,19 +41,17 @@ namespace DAL
         /// <returns></returns>
         public bool DalAddProductPhoto(ProductPhoto productPhoto)
         {
-                context.ProductPhotos.Add(productPhoto);
-                context.SaveChanges();
+            context.Photos.Add(productPhoto.Photo);
+            context.ProductPhotos.Add(productPhoto);
+            context.SaveChanges();
             return true;
-           
         }
-
         /// <summary>
         /// lấy toàn bộ dữ liệu productPhoto
         /// </summary>
         /// <returns></returns>
         public List<ProductPhoto> GetProductPhotos()
         {
-           
             var GetProductPhotos = context.ProductPhotos.ToList();
             return GetProductPhotos;
         }
@@ -57,11 +62,11 @@ namespace DAL
         /// <returns></returns>
         public void DelPhoto(string id)
         {
-           
+
             //lấy danh sách hình sản phẩm cần xóa
             var data = context.ProductPhotos.Where(c => c.VersionId == id);
-                context.ProductPhotos.RemoveRange(data);
-                context.SaveChanges();
+            context.ProductPhotos.RemoveRange(data);
+            context.SaveChanges();
         }
     }
 }

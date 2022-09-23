@@ -42,27 +42,27 @@
                     @{
                         foreach (var item in Model)
                         {
-                                    <tr>
-                                        <td class="Img-Name">
-                                            <img id="img-delete" style="width: 100px;height: 100px; border-radius: 0;" src="~/images/@item.BrandPhoto" />
-                                        </td>
-                                        <td> @item.BrandId </td>
-                                        <td>
-                                            @item.BrandName
-                                        </td>
-                                        @{
+                                            <tr>
+                                                <td class="Img-Name">
+                                                    <img id="img-delete" style="width:100px; height: 100px; border-radius: 0;" src="/images/Logo/@item.BrandPhoto" />
+                                                </td>
+                                                <td> @item.BrandId </td>
+                                                <td>
+                                                    @item.BrandName
+                                                </td>
+                                                @{
                                    
-                                             <td>@item.GetStatus(item.BrandStatus)</td>
-                                        }
-                                        <td style=" width:200px;">
-                                            <div class="Action">
-                                                <a class="btn btn btn-outline-danger" href="/FormUpdateBrands?idBrands=@item.BrandId">
-                                                        Cập nhật
-                                                </a>
-                                            </div>
+                                                             <td>@item.GetStatus(item.BrandStatus)</td>
+                                                }
+                                                <td style=" width:200px;">
+                                                    <div class="Action">
+                                                        <a class="btn btn btn-outline-danger" href="/FormUpdateBrands?idBrands=@item.BrandId">
+                                                                Cập nhật
+                                                        </a>
+                                                    </div>
 
-                                     </td>
-                              </tr>
+                                             </td>
+                                      </tr>
                         }
                     }
                 </tbody>
@@ -70,7 +70,7 @@
         </div>
     </div>
 </div>
-    </div>
+    
 
 <!-- content-wrapper ends -->
 <!-- partial:../../partials/_footer.html -->

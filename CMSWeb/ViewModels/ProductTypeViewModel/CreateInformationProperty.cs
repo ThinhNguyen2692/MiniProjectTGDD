@@ -1,5 +1,4 @@
-﻿using DAL.Models;
-
+﻿using ModelProject.Models;
 namespace CMSWeb.ViewModels.ProductTypeViewModel
 {
     public class CreateInformationProperty

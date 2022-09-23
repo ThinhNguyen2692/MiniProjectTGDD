@@ -1,7 +1,5 @@
-﻿@using DAL.Models;
-@using CMSWeb.Models;
-@using CMSWeb.ViewModels.ProductViewModel;
-@model List<ProductVersion>;
+﻿@using ModelProject.ViewModel;
+@model List<ListProductViewModel>;
 <div class="content-wrapper">
     <div class="page-header">
          
@@ -20,6 +18,12 @@
         <a class="nav-link" asp-controller="Product" asp-action="FormAddProduct">
             <button type="button" class="btn btn-outline-danger">
                 Thêm sản phẩm
+            </button>
+        </a>
+
+         <a class="nav-link" asp-controller="Product" asp-action="FormAddPhoto">
+            <button type="button" class="btn btn-gradient-primary me-2">
+                Thư viện hình sản phẩm
             </button>
         </a>
     </div>
@@ -51,18 +55,13 @@
                         foreach (var item in Model)
                         {
                             <tr>
-                                <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="/images/@item.Product.ProductPhoto"/> </th>
-                                <th> @item.VersionName </th>
-                                <th> @item.ProductPrice</th>
-                                @switch(@item.ProductStatus){
-                                    case 1:
-                                        <th> Đang kinh doanh </th>
-                                        break;
-                                        case 0:
-                                        <th> Tạm ngưng kinh doanh </th>
-                                        break;
-                                }
-                                <th> <a href="/ShowDetailProduct?id=@item.VersionId">Xem chi tiết </a></th>
+                                <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="/images/ProductDefault/@item.path"/> </th>
+                                <th> @item.ProductName </th>
+                                <th> @item.Price</th>
+                               
+                                        <th>@item.GetStatus(item.status)</th>
+                                       
+                                <th> <a href="/ShowDetailProduct?id=@item.ProductVersionId">Xem chi tiết </a></th>
                             </tr>
                         }
                     }

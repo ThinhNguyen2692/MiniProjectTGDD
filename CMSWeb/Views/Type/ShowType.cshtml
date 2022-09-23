@@ -1,7 +1,5 @@
-﻿@using DAL.Models;
-@using CMSWeb.Models;
-@using CMSWeb.ViewModels.ProductTypeViewModel;
-@model ListProductTypeViewModel;
+﻿@using ModelProject.ViewModel;
+@model List<ListProductTypeViewModel>;
 <div class="content-wrapper">
     <div class="page-header">
        
@@ -34,12 +32,12 @@
                 </thead>
                 <tbody>
                     @{
-                        foreach (var item in Model.listproductTypes)
+                        foreach (var item in Model)
                         {
                             <tr>
-                        <th> <h5>@item.Typename</h5></th>
+                        <th> <h5>@item.TypeName</h5></th>
                         <th> 
-                           <a class="btn btn-outline-danger" href="/ShowTypeDetail?typeid=@item.Typeid">Cập nhật</a>
+                           <a class="btn btn-outline-danger" href="/ShowTypeDetail?typeid=@item.TypeId">Cập nhật</a>
                         </th>
                     </tr>
                         }

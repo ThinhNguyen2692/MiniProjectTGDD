@@ -3,29 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
     public interface IDalPropertyValue
     {
-        public bool AddPropertyValue(PropertiesValue propertiesValue);
+        public bool Update(ProductVerSionDetailInformation productVerSionDetailInformation);
         public List<PropertiesValue> ReadValue(string id);
         public void DeletePropertyValue(string id);
     }
     public class Dal_PropertyValue:IDalPropertyValue
     {
-        private static Dal_PropertyValue propertyValue;
-        private MiniProjectTGDDContext context = new MiniProjectTGDDContext();
+        private MiniProjectTGDDContext context;
 
-        public static Dal_PropertyValue Instance
+        public Dal_PropertyValue(MiniProjectTGDDContext context)
         {
-            get
-            {
-                if (propertyValue == null) { propertyValue = new Dal_PropertyValue(); }
-                return propertyValue;
-            }
+             this.context = context;
+        }
+
+        //Cập nhật
+        public bool Update(ProductVerSionDetailInformation productVerSionDetailInformation)
+        {
+            var data = context.PropertiesValues.First(p => p.ValueId == productVerSionDetailInformation.vauleId);
+            if (data == null) return false;
+            data.Value = productVerSionDetailInformation.Value;
+            context.SaveChanges();
+            return true;
         }
 
         //them thông tin thông số cho sản phẩm
@@ -35,6 +40,10 @@ namespace DAL
                 context.SaveChanges();
             return true;
         }
+
+
+       
+
 
         //lấy thông số chi tiết
 

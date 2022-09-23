@@ -1,7 +1,7 @@
 ﻿using CMSWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using DAL.Models;
+using ModelProject.Models;
 using BUS;
 using CMSWeb.ViewModels.GiftViewModels;
 

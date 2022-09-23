@@ -3,30 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
+using ModelProject.ViewModel;
 
 namespace BUS.Services
 {
     public interface IBusProductType
     {
-        public bool BusAddType(ProductType type);
-        public bool BusUpdateType(ProductType type);
-        public List<ProductType> ReadAll();
-        public ProductType BusReadType(string id);
-        public void deletetype(string typeid);
+        public bool BusAddType(CreateProductType type);
+        public ProductTypeDetail BusUpdateType(ProductTypeDetail type);
+        public List<ListProductTypeViewModel> ReadAll();
+        public ProductTypeDetail BusReadType(string id);
+        public bool deletetype(string typeid);
+        public bool DeleteInformationProperty(int idProperty);
+        public bool deleteSpecificatio(int SpecìficationId);
 
-        public void BusAddInformationProperties(InformationProperty informationProperty);
-        public List<InformationProperty> ReadProperty(string id);
-        public void UpDateProperty(InformationProperty property);
-        public bool DalDeleteProperty(int property);
-        public bool DalDeletePropertySpecification(int SpecificationID);
-        public bool DeletePropertyType(string id);
 
-        public int BusAddProductPecification(ProductSpecification productSpecification);
-        public List<ProductSpecification> ReadSpecification(string id);
-        public void UpdateSpecificatio(ProductSpecification specification);
-        public bool DeleteSpecification(int specification);
-        public void DeleteSpecificationType(string typeid);
+
+        public void BusAddInformationProperties(CreateInformationProperty informationProperty);
+      
+  
+
+      
+
+        public int BusAddProductPecification(CreateProductPecification informationProperty);
+      
         public string GetTypeIdBySpecification(int SpecificationId);
     }
 }

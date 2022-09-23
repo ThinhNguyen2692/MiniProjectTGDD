@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
+using ModelProject;
 using Microsoft.AspNetCore.Http;
 
 namespace ModelProject.ViewModel
@@ -19,16 +20,7 @@ namespace ModelProject.ViewModel
         public IFormFile fileImage { get; set; }
         public string MessageAdd { get; set; }
         public string MessageUpdate { get; set; }
-
-        public List<string> GetStatus()
-        {
-            List<string> status = new List<string>
-            {
-               
-                new string("Tạm ngưng doanh"),
-                new string("Kinh doanh")
-            };
-            return status;
-        }
+        public Status status { get; set; } = new Status();
+        
     }
 }

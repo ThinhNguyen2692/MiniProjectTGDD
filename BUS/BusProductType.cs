@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
+using ModelProject.ViewModel;
 using DAL;
 using BUS.Services;
 
@@ -11,91 +12,222 @@ namespace BUS
 {
     public class BusProductType:IBusProductType
     {
-        private IDaltype daltype;
-        private IDalProductPecification iDalProductPecification;
-        private IDalInformationProperties iDalInformationProperties;
-        public BusProductType(IDaltype daltype, IDalProductPecification iDalProductPecification, IDalInformationProperties iDalInformationProperties)
+        private readonly IDaltype daltype;
+        private readonly IDalProductPecification iDalProductPecification;
+        private readonly IDalInformationProperties iDalInformationProperties;
+        private readonly IDAlProduct iDAlProduct;
+        public BusProductType(IDaltype daltype, IDalProductPecification iDalProductPecification, IDalInformationProperties iDalInformationProperties, IDAlProduct iDAlProduct)
         {
             this.daltype = daltype;
             this.iDalProductPecification = iDalProductPecification;
             this.iDalInformationProperties = iDalInformationProperties;
+            this.iDAlProduct = iDAlProduct;  
         }
 
 
 
-        //thêm ngành hàng
-        public bool BusAddType(ProductType type)
+        /// <summary>
+        ///Thêm ngành hàng
+        /// </summary>
+        /// <param name="type">thông tin ngành hàng</param>
+        /// <returns>true thêm thành công </returns>
+        /// <returns>false thêm thất bại </returns>
+        public bool BusAddType(CreateProductType type)
         {
-            return daltype.DalAddType(type);
+            ProductType productType = new ProductType{ Typeid = type.typeId, Typename = type.typeName };
+            return daltype.DalAddType(productType);
         }
 
-        //Cập nhật thông tin ngành hàng
-        public bool BusUpdateType(ProductType type)
+        /// <summary>
+        /// thêm thông tin thông số kỹ thuật
+        /// </summary>
+        /// <param name="productSpecification"></param>
+        /// <returns></returns>
+        public int BusAddProductPecification(CreateProductPecification productSpecification)
         {
-            return daltype.DalUpdateType(type);
+            ProductSpecification specification = new ProductSpecification() { 
+                TypeId = productSpecification.typeId, 
+                SpecificationsName = productSpecification.ProductPecificationName,  
+                SpecificationsDescription = productSpecification.ProductPecificationDrecription};
+            return iDalProductPecification.DalAddProductPecification(specification);
         }
 
-        // lấy danh sách ngành hàng
-        public List<ProductType> ReadAll()
+        /// <summary>
+        ///thêm thông tin thuộc tính thông số cho sản phẩm
+        /// </summary>
+        /// <param name="informationProperty">Thông tin thuộc tính</param>
+        public void BusAddInformationProperties(CreateInformationProperty informationProperty)
         {
-            return daltype.ReadTypes();
+            InformationProperty valueAdd = new InformationProperty()
+            {
+                SpecificationsId = informationProperty.SpecificationId,
+                PropertiesName = informationProperty.InformationPropertyName,
+                PropertiesDescription = informationProperty.Description
+            };
+            iDalInformationProperties.AddInformationProperties(valueAdd);
         }
-        //lay 1 ngành hàng
-        public ProductType BusReadType(string id)
+
+        /// <summary>
+        /// cập nhật thông tin ngành hàng 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public ProductTypeDetail BusUpdateType(ProductTypeDetail type)
         {
-            return daltype.ReadType(id);
+            //cập nhật thông tin ngành hàng 
+            ProductType productType = new ProductType()
+            {
+                Typeid = type.TypeId,
+                Typename = type.TypeName
+            };
+            foreach (var item in type.createListProductSpecification)
+            {
+              ProductSpecification value = new ProductSpecification()
+                {
+                    SpecificationsName = item.SpecificationName,
+                    SpecificationsId = item.SpecificationId,
+                    TypeId = type.TypeId
+                };
+                foreach (var item2 in item.listInformationProperty)
+                {
+                    InformationProperty informationProperty = new InformationProperty();
+                    informationProperty.PropertiesName = item2.PropertyName;
+                    informationProperty.PropertiesId = item2.PropertyId;
+                    informationProperty.SpecificationsId = item.SpecificationId;
+                    informationProperty.PropertiesDescription = item2.PropertiesDescription;
+
+                    value.InformationProperties.Add(informationProperty);
+                }
+
+                productType.ProductSpecifications.Add(value);
+            }
+            bool check = daltype.DalUpdateType(productType);
+            if (check == true)
+            {
+                type.messageUpdate = "UpdateProductTypeTrue";
+            }
+            else
+            {
+                type.messageUpdate = "UpdateProductTypeFalse";
+            }
+            return type;
         }
+
+        /// <summary>
+        /// đọc danh sách thông tin ngành hàng
+        /// </summary>
+        /// <returns>danh sách ngành hàng (ListProductTypeViewModel) </returns>
+        public List<ListProductTypeViewModel> ReadAll()
+        {
+            //danh sách ngành hàng
+            var data = daltype.ReadTypes();
+
+            var listproductType = new List<ListProductTypeViewModel>();
+
+            foreach (var item in data)
+            {
+                ListProductTypeViewModel viewModel = new ListProductTypeViewModel();
+                viewModel.TypeName = item.Typename;
+                viewModel.TypeId = item.Typeid;
+                listproductType.Add(viewModel );
+            }
+
+
+            return listproductType;
+        }
+       
+        /// <summary>
+        /// đọc thông tin ngành hàng (producttype InformationProperty productSpecificaion)
+        /// </summary>
+        /// <param name="id">mã ngành hàng</param>
+        /// <returns></returns>
+        public ProductTypeDetail BusReadType(string id)
+        {
+            //dữ liệu
+            var data = daltype.ReadType(id);
+            var InformationProductTypeDetail = new ProductTypeDetail();
+            InformationProductTypeDetail.TypeId = data.Typeid;
+            InformationProductTypeDetail.TypeName = data.Typename;
+
+            //danh sách thông tin thông số kỹ thuật
+            foreach (var item in data.ProductSpecifications)
+             {   
+                //danh sách thông tin thông số kỹ thuật
+                var valueProductSpecification = new ListProductSpectification();
+                valueProductSpecification.SpecificationName = item.SpecificationsName;
+                valueProductSpecification.SpecificationId = item.SpecificationsId;
+                // thông tin thuộc tín của thông số kỹ thuật
+                
+                //lấy thông tin thông số kỹ thuật
+                foreach (var item2 in item.InformationProperties)
+                {
+                    var valueinformationProperty = new ListInformationProperty();
+                    valueinformationProperty.PropertyName = item2.PropertiesName;
+                    valueinformationProperty.PropertyId = item2.PropertiesId;
+                    valueinformationProperty.PropertiesDescription = item2.PropertiesDescription;
+
+                    valueProductSpecification.listInformationProperty.Add(valueinformationProperty);
+                }
+
+
+                InformationProductTypeDetail.createListProductSpecification.Add(valueProductSpecification);
+            }
+            return InformationProductTypeDetail;
+        }
+       
+        
         //xóa ngành hàng
-        public void deletetype(string typeid)
+        public bool deletetype(string typeid)
         {
-            daltype.deletetype(typeid);
-        }
-        //lấy thuộc tính theo loại
-        public List<InformationProperty> ReadProperty(string id)
-        {
-            return iDalInformationProperties.ReadProperty(id);
-        }
-        public void UpDateProperty(InformationProperty property)
-        {
-            iDalInformationProperties.DalUpdateProperty(property);
-        }
+            // kiểm tra sản phẩm ngành hàng còn tồn tại
+            //true sản phẩm ngành hàng = 0 được xóa
+            if (daltype.CheckProductByTypeId(typeid) == true)
+            {
 
-        public bool DalDeleteProperty(int property) { return iDalInformationProperties.DalDeleteProperty(property); }
-        public bool DalDeletePropertySpecification(int SpecificationID) { return iDalInformationProperties.DalDeletePropertySpecification(SpecificationID); }
-        public bool DeletePropertyType(string id) { return iDalInformationProperties.DeletePropertyType(id); }
-
-        //thêm thông số ky thuật
-        public int BusAddProductPecification(ProductSpecification productSpecification)
-        {
-            return iDalProductPecification.DalAddProductPecification(productSpecification);
+                daltype.deletetype(typeid);
+                return true;
+            }
+            return false;
         }
 
-        // lấy danh sách thông số theo type
-        public List<ProductSpecification> ReadSpecification(string id)
+        public bool deleteSpecificatio(int SpecificationId)
         {
-            return iDalProductPecification.ReadSpecification(id);
+            // kiểm tra sản phẩm ngành hàng còn tồn tại
+            //true sản phẩm ngành hàng = 0 được xóa
+
+            if (iDalProductPecification.DeleteSpecification(SpecificationId) == true)
+            {
+                return true;
+            }
+            return false;
         }
 
-        //cập nhật thông số
-        public void UpdateSpecificatio(ProductSpecification specification)
+        /// <summary>
+        /// Xóa thuộc tính ngành hàng
+        /// </summary>
+        /// <param name="idProperty">mã thuộc tính</param>
+        /// <returns>true: được xóa</returns>
+        /// <returns>true: đã xóa thông và người ngãm</returns>
+        public bool DeleteInformationProperty(int idProperty)
         {
-            iDalProductPecification.UpdateSpecificatio(specification);
+            if (iDalInformationProperties.DalDeleteProperty(idProperty) == true)
+            {
+                return true;
+            }
+            return false;
         }
 
-        //Xóa thông số 
-        public bool DeleteSpecification(int specification) { return iDalProductPecification.DeleteSpecification(specification); }
+     
 
-        // Xóa thông số theo type id
-        public void DeleteSpecificationType(string typeid) { iDalProductPecification.DeleteSpecificationType(typeid); }
 
+     
+      
         public string GetTypeIdBySpecification(int SpecificationId)
         {
             return iDalProductPecification.GetTypeIdBySpecification(SpecificationId);
         }
 
-        public void BusAddInformationProperties(InformationProperty informationProperty)
-        {
-            throw new NotImplementedException();
-        }
+
+       
     }
 }

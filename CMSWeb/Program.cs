@@ -1,5 +1,5 @@
 using DAL;
-using DAL.Models;
+using ModelProject.Models;
 using BUS;
 using BUS.Services;
 
@@ -39,10 +39,20 @@ builder.Services.AddSingleton<IDAlProduct, Dal_Product>();
 builder.Services.AddSingleton<IBusProduct, BusProduct>();
 builder.Services.AddSingleton<IDalProductVersion, Dal_ProductVersion>();
 builder.Services.AddSingleton<IDalPropertyValue, Dal_PropertyValue>();
+builder.Services.AddSingleton<IDalPhoto, Dal_Photo>();
+
+
+
+builder.Services.AddSingleton<IBusPhoto, Busphoto>();
+builder.Services.AddSingleton<IDalProductPhoto, Dal_productphotos>();
+
 
 //colorproduct
 builder.Services.AddSingleton<IDalProductColor, Dal_ProductColor>();
 
+//PurchaseOrderController
+builder.Services.AddSingleton<IDalPurchaseOrder, DalPurchaseOrder>();
+builder.Services.AddSingleton<IBusPurchaseOrder, BusPurchaseOrder>();
 
 
 

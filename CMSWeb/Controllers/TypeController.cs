@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS.Services;
-using DAL.Models;
 using DAL;
 using Newtonsoft.Json;
-using CMSWeb.ViewModels;
-using CMSWeb.ViewModels.ProductTypeViewModel;
+
+using ModelProject.ViewModel;
 
 namespace CMSWeb.Controllers
 {
@@ -55,7 +54,7 @@ namespace CMSWeb.Controllers
         [Route("ShowType")]
         public IActionResult ShowType()
         {
-            return View(GetListProductTypeViewModel());
+            return View("ShowType", Ibus_ProductType.ReadAll());
         }
 
 
@@ -63,12 +62,12 @@ namespace CMSWeb.Controllers
         /// lấy danh sách ngành hàng
         /// </summary>
         /// <returns></returns>
-        public ListProductTypeViewModel GetListProductTypeViewModel()
-        {
-            var listProducttype = new ListProductTypeViewModel();
-            listProducttype.listproductTypes = Ibus_ProductType.ReadAll();
-            return listProducttype;
-        }
+        //public ListProductTypeViewModel GetListProductTypeViewModel()
+        //{
+        //    var listProducttype = new ListProductTypeViewModel();
+        //    var  = Ibus_ProductType.ReadAll();
+        //    return listProducttype;
+        //}
 
         ////load trang thêm ngành hàng
         
@@ -81,12 +80,17 @@ namespace CMSWeb.Controllers
 
 
 
-        ////Xử lý thêm ngành hàng mới
+        /// <summary>
+        /// xử lý thêm mới thông tin ngành hàng
+        /// </summary>
+        /// <param name="productType">thông tin ngành hàng</param>
+        /// <returns>thêm thành công chuyển sang form thêm thông tin kỹ thuật</returns>
+        /// <returns>thêm thất bại load lại trang thêm thông tin ngành hàng</returns>
         [HttpPost]
         [Route("Type/AddBrands")]
         public IActionResult AddType(CreateProductType productType)
         {
-            if (Ibus_ProductType.BusAddType(new ProductType(productType.typeId, productType.typeName)) != true)
+            if (Ibus_ProductType.BusAddType(productType) != true)
             {
                 // Nếu lỗi load lại trang thêm ngành hàng
                 productType.message = true;
@@ -98,12 +102,17 @@ namespace CMSWeb.Controllers
         }
 
 
-        ////xử lý thêm thông số kỹ thuật sản phẩm
+        /// <summary>
+        /// xử lý thêm thông số kỹ thuật sản phẩm
+        /// </summary>
+        /// <param name="productSpecification">thông tin thông số kỹ thuật</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("AddSpecification")]
         public IActionResult AddSpecification(CreateProductPecification productSpecification)
         {
-            var SpecificationsId = Ibus_ProductType.BusAddProductPecification(new ProductSpecification(productSpecification.typeId, productSpecification.ProductPecificationName, productSpecification.ProductPecificationDrecription));
+
+            var SpecificationsId = Ibus_ProductType.BusAddProductPecification(productSpecification);
             var Information = new CreateInformationProperty();
             Information.SpecificationId = SpecificationsId;
             return View("FormProperty", Information);
@@ -111,101 +120,57 @@ namespace CMSWeb.Controllers
 
 
 
-        ////xử lý thêm thuộc tính thông số
+        /// <summary>
+        /// xử lý thêm thuộc tính thông số
+        /// </summary>
+        /// <param name="createInformationProperty">thông tin thuộc tính thông số kỹ thuật</param>
+        /// <returns>FormProperty: hiện lại view form nhập thông tin thuộc tính</returns>
+        /// <returns>Thông tin view model thuộc tính</returns>
         [HttpPost]
         [Route("AddProperty")]
         public IActionResult AddProperty(CreateInformationProperty createInformationProperty)
         {
-            //trả mã thông sô ngành hàng
-            Ibus_ProductType.BusAddInformationProperties(new InformationProperty(createInformationProperty.SpecificationId, createInformationProperty.InformationPropertyName, createInformationProperty.Description));
+            Ibus_ProductType.BusAddInformationProperties(createInformationProperty);
             createInformationProperty.typeId = Ibus_ProductType.GetTypeIdBySpecification(createInformationProperty.SpecificationId);
             return View("FormProperty", createInformationProperty);
         }
 
-        ////Hiện chi tiết ngành hàng
+
+
+        /// <summary>
+        /// Hiện chi tiết thông tin ngành hàng
+        /// </summary>
+        /// <param name="typeid">mã ngành hàng</param>
+        /// <returns>producttypeDetail</returns>
         [HttpGet]
         [Route("ShowTypeDetail")]
         public IActionResult ShowTypeDetail(string typeid)
         {
             var itemCheck = Ibus_ProductType.BusReadType(typeid);
-            if(itemCheck == null)
+            if (itemCheck == null)
             {
-                return View("ShowType",GetListProductTypeViewModel());
+                return ShowType();
             }
-
-            var productTypeDetail = new ProductTypeDetail();
-
-            GetTypeDetail(typeid, ref productTypeDetail);
-            productTypeDetail.GetProductTypeNew();
-            return View(productTypeDetail);
-           }
-
-        public void GetTypeDetail(string typeid, ref ProductTypeDetail productTypeDetail)
-        {
-            productTypeDetail.createListProductSpecification = new List<ArrayProductSpectification>();
-            productTypeDetail.createProductType = Ibus_ProductType.BusReadType(typeid);
+            return View("ShowTypeDetail", itemCheck);
         }
 
+
+        /// <summary>
+        /// cập nhật thông tin ngành hàng
+        /// </summary>
+        /// <param name="productTypeDetail">thông tin chi tiết của ngành hàng</param>
+        /// <returns>ShowTypeDetail</returns>
+        /// <returns>thông tin chi tiết ngành hàng</returns>
         [HttpPost]
         [Route("UpdataType")]
         public IActionResult UpdataType(ProductTypeDetail productTypeDetail)
         {
-            //lấy thông tin ngành hàng cũ
-            string status = "";
-            if (Ibus_ProductType.BusUpdateType(productTypeDetail.createProductType) == true)
-            {
-                foreach (var item in productTypeDetail.createListProductSpecification)
-                {
-                    item.createProductSpectification.TypeId = productTypeDetail.createProductType.Typeid;
-                    Ibus_ProductType.UpdateSpecificatio(item.createProductSpectification);
-                    foreach (var value in item.createArrayInformationProperty)
-                    {
-                        value.SpecificationsId = item.createProductSpectification.SpecificationsId;
-                        Ibus_ProductType.UpDateProperty(value);
-                    }
-                  
-                }
-                status = "UpdateTrue";
-            }
-            else
-            {
-                status = "UpdateFalse";
-            }
-            string Typeid = productTypeDetail.createProductType.Typeid;
-             productTypeDetail = new ProductTypeDetail();
-            GetTypeDetail(Typeid, ref productTypeDetail);
-            productTypeDetail.GetProductTypeNew();
-            productTypeDetail.messageUpdate = status;
-            return View("ShowTypeDetail", productTypeDetail);
+           var value = Ibus_ProductType.BusUpdateType(productTypeDetail);
+            return View("ShowTypeDetail", value);
         }
 
 
-        ////Cập nhật thuộc tính kỹ thuật
-        //[HttpPost]
-        //[Route("UpdataSpecification")]
-        //public bool UpdataSpecification(ProductSpecification specification)
-        //{
-        //    if (bus_ProductPecification.UpdateSpecificatio(specification) == true)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
 
-
-
-
-        //[HttpPost]
-        //[Route("UpdataProperty")]
-        //public bool UpdataProperty(InformationProperty specification)
-        //{
-        //    bus_InformationProperties.UpDateProperty(specification);
-        //    return true;
-
-        //}
 
 
         [HttpGet]
@@ -213,14 +178,16 @@ namespace CMSWeb.Controllers
         public IActionResult DeleteProperty(int id, string typeid)
         {
             var ProductDetail = new ProductTypeDetail();
-            if (Ibus_ProductType.DalDeleteProperty(id) != true)
-            {
-                ProductDetail.messageDelete = "DeleteFalse";
+           
+            if (Ibus_ProductType.DeleteInformationProperty(id) == true){
+                ProductDetail = Ibus_ProductType.BusReadType(typeid);
+                ProductDetail.messageDelete = "removePropertyRemoveTrue";
             }
-            else { ProductDetail.messageDelete = "DeleteTrue"; }
-
-            GetTypeDetail(typeid, ref ProductDetail);
-            ProductDetail.GetProductTypeNew();
+            else
+            {
+                ProductDetail = Ibus_ProductType.BusReadType(typeid);
+                ProductDetail.messageDelete = "removePropertyRemoveFalse";
+            }
             return View("ShowTypeDetail", ProductDetail);
         }
 
@@ -229,16 +196,19 @@ namespace CMSWeb.Controllers
         [Route("DeleteSpecification")]
         public IActionResult DeleteSpecification(int id, string typeid)
         {
-
             var ProductDetail = new ProductTypeDetail();
-            if (Ibus_ProductType.DeleteSpecification(id) != true)
-            {
-                ProductDetail.messageDelete = "DeleteFalse";
-            }
-            else { ProductDetail.messageDelete = "DeleteTrue"; }
 
-            GetTypeDetail(typeid, ref ProductDetail);
-            ProductDetail.GetProductTypeNew();
+            if (Ibus_ProductType.deleteSpecificatio(id) == true)
+            {
+                ProductDetail = Ibus_ProductType.BusReadType(typeid);
+                ProductDetail.messageDelete = "removeSpecificationRemoveTrue";
+            }
+            else
+            {
+                ProductDetail = Ibus_ProductType.BusReadType(typeid);
+                ProductDetail.messageDelete = "removeSpecificationRemoveFale";
+            }
+
             return View("ShowTypeDetail", ProductDetail);
         }
 
@@ -248,22 +218,12 @@ namespace CMSWeb.Controllers
         [Route("DeleteType")]
         public IActionResult DeleteType(string typeid)
         {
-            var itemCheck = Ibus_ProductType.BusReadType(typeid);
-            if (itemCheck != null)
+            var ProductDetail = Ibus_ProductType.BusReadType(typeid);
+            if (Ibus_ProductType.deletetype(typeid) == true) return ShowType();
+            else
             {
-                if (Ibus_ProductType.DeletePropertyType(typeid) == true)
-                {
-                    Ibus_ProductType.DeleteSpecificationType(typeid);
-                    Ibus_ProductType.deletetype(typeid);
-
-                }
-                var listProducttype = new ListProductTypeViewModel();
-                listProducttype.listproductTypes = Ibus_ProductType.ReadAll();
-                return View("ShowType", listProducttype);
+                ProductDetail.messageDelete = "removeSpecificationRemoveFale";
             }
-
-            var ProductDetail = new ProductTypeDetail();
-            GetTypeDetail(typeid, ref ProductDetail);
             return View("ShowTypeDetail", ProductDetail);
         }
 

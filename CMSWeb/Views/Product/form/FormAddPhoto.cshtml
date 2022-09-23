@@ -1,30 +1,38 @@
-﻿@model string[];
+﻿@using ModelProject.ViewModel;
+@model PhotoViewModel;
 
 <div class="content-wrapper">
-    <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
+    <div class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4></h4>
                 <h4 class="card-title">Thêm ảnh cho sản phẩm</h4>
                 <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/AddPhoto">
                     <div class="form-group">
-                            <label for="exampleInputUsername1">Mã sản phẩm</label>
-                            <input type="text" value="@Model[0]" readonly class="form-control" id="" name="VersionId" />
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputUsername1">Tên sản phẩm</label>
-                            <input type="text" value="@Model[1]" disabled class="form-control" id="" name="VersionName" />
-                        </div>
-                    <div class="form-group">
                         <label>Chọn hình: </label>
-                        <br />
-                        <input type="file" name="ListImage" id="FormFile" accept = "image/*" multiple />
+                        <input asp-for="@Model.photos" class="form-control"  accept="image/*" multiple />
                     </div>
-                   
-                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
                 </form>
+
+                <div style="margin-top: 40px; margin-bottom: 40px;"></div>
+
+                <div  class="row">
+                    @{
+                       
+                            foreach (var value in Model.informationPhoto)
+                            {
+                                          <div class="col-3">
+                                    <img style="width: 160px; heigh: 160px;" src="/images/@value.PathImage"/>
+                                    <div><span>@value.PathImage</span></div>
+                                    </div>
+                            }
+                     
+                    }
+                </div>
+               
             </div>
-        </div>
+        </div>  
     </div>
 </div>

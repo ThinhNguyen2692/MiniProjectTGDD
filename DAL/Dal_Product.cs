@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
@@ -13,11 +13,10 @@ namespace DAL
         public void AddProduct(Product product);
         public List<Product> DalReadProductAll();
         public Product DalReadProduct(string productId);
-        public int CheckVersionQuantity(string id);
+        public bool CheckVersionQuantity(string id);
         public string DeleteProduct(string id);
         public bool CheckProduct(string ProductId);
-
-        public bool UpdateProduct(Product product);
+        public List<string> DeleteProductAuto(string id);
 
     }
     public class Dal_Product:IDAlProduct
@@ -48,15 +47,16 @@ namespace DAL
         /// Kiểm tra mã sản phẩm, thông tin sản đã tồn tại chưa
         /// </summary>
         /// <param name="ProductId">mã sản phẩm</param>
-        /// <returns>true sản phẩm được thêm</returns>
-        /// <returns>false sản phẩm không được thêm</returns>
+        /// <returns>true sản phẩm chưa tồn tại</returns>
+        /// <returns>false sản phẩm đã tồn tại</returns>
         public bool CheckProduct(string ProductId)
         {
-           
             var data = context.Products.FirstOrDefault(p => p.ProductId == ProductId);
-            if (data == null) return true;
-            return false;
+            if (data == null) return false;
+            return true;
         }
+
+      
 
 
         /// <summary>
@@ -81,21 +81,24 @@ namespace DAL
             var data = context.Products.FirstOrDefault(p => p.ProductId == productId);
             return data;
         }
-
-
         /// <summary>
         /// kiểm tra số lượng phiên bản sản phẩm
         /// </summary>
         /// <param name="id">mã sản phẩm</param>
         /// <returns></returns>
         //kiểm tra số lượng phiên bản của phiên bản
-        public int CheckVersionQuantity(string id)
+        public bool CheckVersionQuantity(string id)
         {
-           
-            var data = context.ProductVersions.Where(p => p.ProductId == id).ToList();
-            var Quantity = data.Count;
-
-            return Quantity;
+            context = new MiniProjectTGDDContext();
+            var data = context.ProductVersions.Include(v => v.VersionQuantities).First(p => p.VersionId == id);
+            foreach (var item in data.VersionQuantities)
+            {
+                if(item.Quantity != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
 
@@ -118,20 +121,41 @@ namespace DAL
             return path;
         }
 
-
-        /// <summary>
-        /// cập nhật sản phẩm
-        /// </summary>
-        /// <param name="product">thông tin sản phẩm</param>
-        
-        public bool UpdateProduct(Product product)
+        public List<string> DeleteProductAuto(string id)
         {
-            
             context = new MiniProjectTGDDContext();
-            context.Products.Update(product);
-            context.SaveChanges();
-            return true;
+            var data = context.ProductVersions.Where(p => p.ProductId == id).ToList();
+            if(data.Count == 0)
+            {
+                //danh sách tên hình cần xóa
+                List<string> path = new List<string>();
+                var data2 = context.Products.Include(c => c.ProductColors).ThenInclude(p => p.VersionQuantities).First(p => p.ProductId == id);
+                path.Add(data2.ProductPhoto);
+                foreach (var item in data2.ProductColors)
+                {
+                    path.Add(item.ColorPath);
+                }
+                foreach (var item in data2.ProductColors)
+                {
+                    if(item.VersionQuantities.Count > 0)
+                    {
+                        context.VersionQuantities.RemoveRange(item.VersionQuantities);
+                    }
+                }
+                context.ProductColors.RemoveRange(data2.ProductColors);
+                context.Products.Remove(data2);
+                context.SaveChanges();
+                return path;
+            }
+            else
+            {
+                return null;
+            }
+           
         }
+
+
+
 
     }
 }

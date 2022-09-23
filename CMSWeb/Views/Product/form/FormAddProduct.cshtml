@@ -1,6 +1,4 @@
-﻿@using DAL.Models;
-@using CMSWeb.Models;
-@using CMSWeb.ViewModels.ProductViewModel;
+﻿@using ModelProject.ViewModel;
 @model AddProductViewModel;
 
 <div class="content-wrapper">
@@ -9,14 +7,14 @@
             <div class="card-body">
                 @switch (Model.messageAdd)
                 {
-                    case true: <div class="alert alert-success">Cập nhật thất bại</div> break;
+                    case "AddProductFalse": <div class="alert alert-danger">Cập nhật thất bại: mã sản phẩm tồn tại</div> break;
                     default: <div></div> break;
                 }
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
                 <form class="forms-sample form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="AddProduct">
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input class="form-control ProductId" asp-for="@Model.ProductItem.ProductId" />
+                        <input class="form-control ProductId" asp-for="@Model.ProductId" />
                          <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -26,7 +24,7 @@
                     </div>
                     <div class="form-group">
                         <label >Tên sản phẩm</label>
-                        <input class="form-control ProuctName" asp-for="@Model.ProductItem.ProuctName"/>
+                        <input class="form-control ProuctName" asp-for="@Model.ProductName"/>
                          <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -36,22 +34,23 @@
                     </div>
                      <div class="form-group">
                          <label >Ngành hàng</label>
-                        <select class="form-control" asp-for="@Model.ProductItem.ProductType">
-                           @{
-                                for (int i = 0; i < Model.ListproductTypes.Count; i++)
+                        <select class="form-control" asp-for="@Model.TypeId">
+                            @{
+                                
+                                for (int i = 0; i < Model.ListTypes.Count; i++)
                                 {
-                                    <option value="@Model.ListproductTypes[i].Typeid">@Model.ListproductTypes[i].Typename</option>
+                                    <option value="@Model.ListTypes[i].TypeId">@Model.ListTypes[i].TyName</option>
                                 }
                             }
                         </select>
                     </div> 
                     <div class="form-group">
                          <label >Thương hiệu</label>
-                        <select class="form-control" asp-for="@Model.ProductItem.ProductBrand">
+                        <select class="form-control" asp-for="@Model.BrandId">
                             @{
-                                for (int i = 0; i < Model.ListproductBrands.Count; i++)
+                                for (int i = 0; i < Model.ListBrands.Count; i++)
                                 {
-                                    <option value="@Model.ListproductBrands[i].BrandId">@Model.ListproductBrands[i].BrandName</option>
+                                    <option value="@Model.ListBrands[i].BrandsId">@Model.ListBrands[i].BrandsName</option>
                                 }
                             }
                         </select>
@@ -65,11 +64,11 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nhập mô tả cho</label>
-                        <textarea style="height: 100px;" asp-for="@Model.ProductItem.ProductDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." ></textarea>
+                        <textarea style="height: 100px;" asp-for="@Model.ProdutDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." ></textarea>
                     </div>
                      <div class="form-group">
                         <label >Thời gian ra mắt</label>
-                        <input asp-for="@Model.ProductItem.ReleaseTime" class="form-control" />
+                        <input asp-for="@Model.ReleaseTime" class="form-control" />
                     </div>
                      <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>

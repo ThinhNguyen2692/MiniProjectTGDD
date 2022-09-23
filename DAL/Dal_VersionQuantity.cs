@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
     public interface IDalVersionQuantity
     {
+        public bool Update(QuantityProductVerSion quantityProductVerSion);
         public bool AddVersionQuantity(VersionQuantity versionQuantity);
         public List<VersionQuantity> ReadQuantity(string id);
         public bool DelQuantyti(string id);
@@ -17,14 +18,10 @@ namespace DAL
     }
     public class Dal_VersionQuantity : IDalVersionQuantity
     {
-        private static Dal_VersionQuantity dalVersionQuantity;
-        private MiniProjectTGDDContext context = new MiniProjectTGDDContext();
-        public static Dal_VersionQuantity Instance
+        private MiniProjectTGDDContext context ;
+        public Dal_VersionQuantity(MiniProjectTGDDContext context)
         {
-            get{
-                if (dalVersionQuantity == null) { dalVersionQuantity = new Dal_VersionQuantity(); }
-                return dalVersionQuantity;
-            }
+           this.context = context;
         }
 
         /// <summary>
@@ -53,6 +50,14 @@ namespace DAL
             return data;
         }
 
+        public bool Update(QuantityProductVerSion quantityProductVerSion) {
+
+            var data = context.VersionQuantities.First(v => v.Id == quantityProductVerSion.idQuantity);
+            if (data == null) return false;
+            data.Quantity = quantityProductVerSion.Quantity;
+            context.SaveChanges();
+            return true;
+        }
 
         /// <summary>
         /// Hàm xóa thông tin số lượng sản phẩm

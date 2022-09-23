@@ -1,14 +1,22 @@
-﻿@using DAL.Models;
-@using CMSWeb.Models;
-@model ListModel;
+﻿@using ModelProject.ViewModel;
+@model ProductDetailViewModel;
 <div class="content-wrapper">
     <div style="width: 1300px; margin: auto;" class="grid-margin stretch-card">
         <div class="card ">
             <div class="card-body">
-
+                @{
+                    switch (Model.MessageUpdate)
+                    {
+                        case "UpdatePropertyValueFale": <div class="alert alert-danger">Cập nhật thông tin thuộc tính chi tiết thất bại</div> break; 
+                        case "UpdateVersionQuantityFale": <div class="alert alert-danger">Cập nhật số lượng thất bại</div> break; 
+                        default: break;
+                    }
+                }
                 <h2 style="text-align:center">Thông tin chi tiết sản phẩm</h2>
                 <div>
-                    <a href="/FormAddPhoto?ProductIdVersion=@Model.productVersionDetail.VersionId&ProductNameVersion=@Model.productVersionDetail.VersionName" class="btn btn-gradient-primary">Thêm ảnh cho sản phẩm</a>  <button class="btn btn-gradient-primary">Xem hình</button>  <a href="/DeleteProductVerSion?versionId=@Model.productVersionDetail.VersionId&productId=@Model.productVersionDetail.ProductId" class="btn btn-outline-danger" id="deleteProduct">Xóa</a>
+                    <a href="/FormAddPhoto?ProductIdVersion=@Model.VersionId&ProductNameVersion=@Model.VersionName" class="btn btn-gradient-primary">Thêm ảnh cho sản phẩm</a> 
+                    <button class="btn btn-gradient-primary">Xem hình</button>
+                    <a href="/DeleteProductVerSion?versionId=@Model.VersionId&productId=@Model.ProductId" class="btn btn-outline-danger" id="deleteProduct">Xóa</a>
                     <!-- The Modal -->
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -33,88 +41,77 @@
 
                 </div>
                 <br />
-                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/UpdateProduct">
+                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="UpdateProduct">
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input type="text" value="@Model.product.ProductId" readonly class="form-control" id="" name="ProductId" />
+                        <input asp-for="@Model.ProductId" readonly class="form-control" />
                     </div>
                     <div class="form-group">
                         <label>Tên sản phẩm</label>
-                        <input type="text" value="@Model.product.ProuctName" class="form-control" id="" name="ProductName" />
+                        <input asp-for="@Model.ProuctName" class="form-control" />
 
                     </div>
                     <div class="form-group">
                         <label>Ngành hàng</label>
-                        @{
-                            foreach (var item in Model.productType)
-                            {
-                                if (item.Typeid == Model.product.ProductType)
-                                {
-                                    <input type="text" class="form-control" readonly value="@item.Typeid" id="ProductType" name="ProductType" />
-                                }
-                            }
-                        }
+                        <select class="form-control" asp-for="@Model.ProductType">
+                            <option value="@Model.ProductType">@Model.ProductTypeName</option>
+                        </select>
+
                     </div>
                     <div class="form-group">
                         <label>Mã thương hiệu</label>
-                        <br />
-                        @{
-                            foreach (var item in Model.productBrands)
-                            {
-                                if (item.BrandId == Model.product.ProductBrand)
-                                {
-                                    
-                                    <input type="text" class="form-control" readonly value="@item.BrandId" id="ProductBrand" name="ProductBrand" />
-                                }
-                            }
-                        }
+                        <select class="form-control" asp-for="@Model.ProductBrand">
+                            <option value="@Model.ProductBrand">@Model.ProductBrandName</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label>Chọn hình: </label>
                         <br />
-                        @Html.TextBox("fileImage", "", new { type = "file", accept = "image/*" })
+                        <input class="fileImage form-control" asp-for="@Model.fileImage"  accept = "image/*"  />
                         <br />
-                        <img id="preview" src="/images/@Model.product.ProductPhoto" width="auto" height="auto" class="hidden" />
+                        <img id="preview" src="/images/ProductDefault/@Model.ProductPhoto" width="auto" height="auto" class="hidden" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Mô tả cho</label>
-                        <textarea style="height: 100px;" name="ProductDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu...">@Model.product.ProductDescription</textarea>
+                        <textarea style="height: 100px;" asp-for="@Model.ProductDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu...">@Model.ProductDescription</textarea>
                     </div>
                     <div class="form-group">
                         <label>Thời gian ra mắt</label>
                         @{
-                            DateTime datetime = (DateTime)Model.product.ReleaseTime;
+                            DateTime datetime = (DateTime)Model.ReleaseTime;
                         }
-                        <input type="date" value="@datetime.ToString("yyyy-MM-dd")" class="form-control" id="ReleaseTime" name="ReleaseTime" />
+                        <input asp-for="@Model.ReleaseTime" class="form-control" />
                     </div>
                     <h3>Thông tin </h3>
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
-                        <input type="text" class="form-control" value="@Model.productVersionDetail.VersionId" readonly id="VersionId" name="VersionId" />
+                        <input class="form-control" readonly asp-for="@Model.VersionId"  />
                     </div>
                     <div class="form-group">
                         <label>Tên phiên bản sản phẩm</label>
-                        <input type="text" value="@Model.productVersionDetail.VersionName" class="form-control" id="VersionName" name="VersionName" />
+                        <input type="text" value="@Model.VersionName" class="form-control" id="VersionName" name="VersionName" />
 
                     </div>
                     <div class="form-group">
                         <label>Giá sản phẩm</label>
-                        <input type="number" class="form-control" name="ProductPrice" id="ProductPrice" min="100" max="9000000000" step="100" value="@Model.productVersionDetail.ProductPrice">
-
+                        <input class="form-control" asp-for="@Model.ProductPrice">
                     </div>
-
                     <div class="form-group">
                         <label>Trạng thái</label>
-                        <select class="form-control" name="ProductStatus" id="ProductStatus">
+                        <select class="form-control" asp-for="@Model.ProductStatus">
+                           
                             @{
-                                if (@Model.productVersionDetail.ProductStatus == 1)
+                                for (int i = 0; i < Model.status.GetStatus().Count; i++)
                                 {
-                                    <option value="1">Trạng thái bình thường</option>
+                                    if (i == Model.ProductStatus)
+                                    {
+                                        <option value="@Model.ProductStatus">@Model.status.GetStatus()[i]</option>
+                                        continue;
+                                    }
+                                    <option value="@i">@Model.status.GetStatus()[i]</option>
                                 }
                             }
-                            <option value="1">Trạng thái bình thường</option>
-                            <option value="0">Ngưng khinh doanh</option>
                         </select>
                     </div>
 
@@ -122,13 +119,13 @@
 
                     @{
 
-                        foreach (var item in Model.propertiesValues)
+                        for (int i = 0; i < Model.productVerSionDetailInformation.Count; i++)
                         {
                             <div class="tag-informationType">
-                             <label>  @item.Properties.PropertiesName :  <input style="width:100px; margin-right:40px;" value=" @item.Properties.PropertiesId" name="PropertiesId" readonly class="form-control InputProperty" type="text" /> </label> 
-                                <label>  Mã : <input style="width:100px; margin-right:40px;" value="@item.ValueId" name="ValueId" readonly class="form-control InputProperty" type="text" /> </label> 
-                                <label> Thông tin:<input style="width:400px; margin-right:40px;" value="@item.Value" name="Value" class="form-control InputProperty" type="text" /></label>
-                                </div>
+                                <label>  @Model.productVerSionDetailInformation[i].SpecificationName </label>
+                                <label>  @Model.productVerSionDetailInformation[i].PropertyName <input style="width:100px; margin-right:40px;" asp-for="@Model.productVerSionDetailInformation[i].vauleId" readonly class="form-control InputProperty" /> </label>
+                                <label> Thông tin:<input style="width:400px; margin-right:40px;" asp-for="@Model.productVerSionDetailInformation[i].Value" class="form-control InputProperty" /></label>
+                            </div>
                         }
                     }
 
@@ -137,22 +134,20 @@
                             Số lượng
                         </h3>
                         @{
-                            foreach (var item in Model.versionQuantities)
+                            for (int i = 0; i < Model.quantityProductVerSions.Count; i++)
                             {
-                              <label>Mã: <input style="width:100px;" readonly value="@item.Id" class="form-control input-quantity" type="number" name="Id" /></label>
-                              <label>@item.Color.ColorDescription: <input style="width:100px;" readonly value="@item.ColorId" class="form-control input-quantity" type="number" name="ColorId" /></label>
-                                <label>Số lượng: <input style="width:300px;" min="0" max="9000000000" step="100" value="@item.Quantity" name="Quantity" class="form-control input-quantity" type="number" /></label>
+                               
+                                <label>@Model.quantityProductVerSions[i].color: <input style="width:100px;" readonly asp-for="@Model.quantityProductVerSions[i].idQuantity" class="form-control input-quantity"  /></label>
+                                <label>Số lượng: <input style="width:300px;" asp-for="@Model.quantityProductVerSions[i].Quantity" class="form-control input-quantity" /></label>
                             }
                         }
 
                     </div>
                     <br />
-
                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật thông tin</button>
                 </form>
-
                 <br />
-               
+
             </div>
 
         </div>

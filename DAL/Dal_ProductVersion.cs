@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
@@ -11,9 +11,11 @@ namespace DAL
     public interface IDalProductVersion
     {
         public bool AddProductVerion(ProductVersion productVersion);
-        public void DelProductVerion(string id);
+        public bool DelProductVerion(string id);
         public ProductVersion DalReadProduct(string id);
         public List<ProductVersion> DalReadProductAll();
+        public bool UpdateProductVersion(ProductVersion productVersion);
+        public bool CheckProductVersion(string versionID);
     }
 
     public class Dal_ProductVersion:IDalProductVersion
@@ -26,6 +28,11 @@ namespace DAL
         //Add thông tin phiên bản
         public bool AddProductVerion(ProductVersion productVersion)
         {
+            var data = context.ProductVersions.Where(p => p.VersionId == productVersion.VersionId).FirstOrDefault();
+            if(data != null)
+            {
+                return false;
+            }
                 context.ProductVersions.Add(productVersion);
                 context.SaveChanges();
             return true;
@@ -33,12 +40,16 @@ namespace DAL
 
 
         //Xóa phiên bản sản phẩm
-        public void DelProductVerion(string id)
+        public bool DelProductVerion(string id)
         {
-          
-                var data = context.ProductVersions.First(v => v.VersionId == id);
-                context.ProductVersions.Remove(data);
+          var data = context.ProductVersions.Include(pv => pv.PropertiesValues).Include(pv => pv.VersionQuantities).Include(p =>p.ProductPhotos).First(v => v.VersionId == id);
+            if (data == null) return false;
+            context.PropertiesValues.RemoveRange(data.PropertiesValues);
+            context.VersionQuantities.RemoveRange(data.VersionQuantities);
+            context.ProductPhotos.RemoveRange(data.ProductPhotos);
+            context.ProductVersions.Remove(data);
             context.SaveChanges();
+            return true;
         }
 
 
@@ -47,8 +58,9 @@ namespace DAL
         //lấy chi tiết sản phẩm
         public ProductVersion DalReadProduct(string id)
         {
-          
-            var data2 = context.ProductVersions.Where(p => p.VersionId == id).Include(pv => pv.Product).Include(p => p.PropertiesValues).Include(p => p.VersionQuantities).Include(p => p.Product).FirstOrDefault();
+            context = new MiniProjectTGDDContext();
+            var data2 = context.ProductVersions.Where(p => p.VersionId == id).Include(pv => pv.Product).Include(p => p.PropertiesValues).ThenInclude(p=>p.Properties).ThenInclude(p => p.Specifications).Include(p => p.VersionQuantities).ThenInclude(p => p.Color).Include(p => p.Product).ThenInclude(p => p.ProductBrandNavigation).Include(p => p.Product).ThenInclude(p => p.ProductTypeNavigation).FirstOrDefault();
+            if (data2 == null) return null;
             return data2;
         }
 
@@ -58,8 +70,8 @@ namespace DAL
         /// <returns>danh sách sản phẩm</returns>
         public List<ProductVersion> DalReadProductAll()
         {
-            var data2 = context.ProductVersions.Include(p => p.Product).ToList();
-            return data2;
+            var data = context.ProductVersions.Include(p => p.Product).ToList();
+            return data;
         }
 
         /// <summary>
@@ -71,10 +83,16 @@ namespace DAL
         {
             context = new MiniProjectTGDDContext();
             context.ProductVersions.Update(productVersion);
-
+            context.SaveChanges();
             return true;
         }
 
+        public bool CheckProductVersion(string versionID)
+        {
+            var data = context.ProductVersions.First(p => p.VersionId == versionID);
+            if (data == null) return false;
+            return true;
+        }
 
     }
 }

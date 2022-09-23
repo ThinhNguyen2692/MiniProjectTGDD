@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\Product.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\js\Product.js" />
+    <Content Remove="wwwroot\js\RegexColor.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +18,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,11 +27,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\Product.js" />
+    <None Include="wwwroot\js\RegexColor.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\Logo\" />
+    <Folder Include="wwwroot\images\ProductDefault\" />
+    <Folder Include="wwwroot\images\Products\" />
   </ItemGroup>
 
 </Project>

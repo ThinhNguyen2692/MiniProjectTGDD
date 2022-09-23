@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using ModelProject.Models;
 using CMSWeb.Models.ProductBrands;
 
 namespace CMSWeb.ViewModels.ProductBrandsViewModel

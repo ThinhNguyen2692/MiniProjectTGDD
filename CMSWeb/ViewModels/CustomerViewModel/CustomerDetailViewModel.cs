@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using ModelProject.Models;
 
 namespace CMSWeb.ViewModels.CustomerViewModel
 {

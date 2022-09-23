@@ -1,5 +1,4 @@
-﻿@using DAL.Models;
-@using CMSWeb.ViewModels.ProductViewModel;
+﻿@using ModelProject.ViewModel;
 @model ProductVersionViewModel;
 
 <div class="content-wrapper">
@@ -7,56 +6,51 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
-                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/">
+                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="AddVerSionProduct">
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input class="form-control ProductID" readonly asp-for="@Model.product.ProductId" />
+                        <input class="form-control ProductID" readonly asp-for="@Model.ProductId" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
-                        <input class="form-control VersionID" asp-for="@Model.ProductVersionItem.VersionId"/>
+                        <input class="form-control VersionID" asp-for="@Model.ProductVersionId" />
                     </div>
                     <div class="form-group">
                         <label>Tên phiên bản sản phẩm</label>
-                        <input asp-for="@Model.product.ProuctName" class="form-control VersionName" />
+                        <input asp-for="@Model.ProductVersionName" class="form-control VersionName" />
 
                     </div>
                     <div class="form-group">
                         <label>Giá sản phẩm</label>
-                        <input type="number" class="form-control VersionPrice" asp-for="@Model.ProductVersionItem.ProductPrice" min="100" max="9000000000" step="100000" value="100000">
+                        <input type="number" class="form-control VersionPrice" asp-for="@Model.ProductVersionPrice">
                     </div>
 
                     <div class="form-group">
                         <label>Trạng thái</label>
-                        <select class="form-control" name="VersionStatus" id="VersionStatus">
-                            <option value="1">Trạng thái bình thường</option>
-                            <option value="0">Ngưng khinh doanh</option>
+                        <select class="form-control" asp-for="@Model.ProductVersionStatus">
+                            @{
+                                for (int i = 0; i < Model.status.GetStatus().Count; i++)
+                                {
+                                     <option value="@i">@Model.status.GetStatus()[i]</option>
+                                }
+                            }
                         </select>
                     </div>
 
                     @{
 
-                        for (int i = 0; i < Model.productSpecifications.Count; i++)
-                        
+                        for (int i = 0; i < Model.information.Count; i++)
+
                         {
 
-                                                <div class="tag-informationType">
-
-                                                    <h3>@Model.productSpecifications[i].SpecificationsName</h3>
-                                                    <br />
-                                                    <br />
-                                                    @{
-
-                                    for (int j = 0; j < Model.information.Count; j++)
-                                   
-                                        if (Model.productSpecifications[i].SpecificationsId == Model.information[i].SpecificationsId)
-                                        {
-                                                                                    <h4 class="DataProperty" style="margin-left: 20px;">@Model.information[j].PropertiesName </h4>
-                                                                                    <label>Mã thuộc tính: <input readonly width="100px" asp-for="@Model.information[j].PropertiesId"  class="form-control" /></label>
-                                                                                    <label><input style="width:500px;" value="" class="form-control InputProperty" type="text" />  </label> <label class="data-input" data-input="@Model.information[i].PropertiesDescription"><h4>@Model.information[i].PropertiesDescription</h4></label>
-                                        }
-                                    }
-                                                </div>
+                            <div class="tag-informationType">
+                                <h3>@Model.information[i].SpecificationName</h3>
+                                <br />
+                                <br />
+                                <h4 class="DataProperty" style="margin-left: 20px;">@Model.information[i].PropertyName </h4>
+                                <label>Mã thuộc tính: <input readonly width="100px" asp-for="@Model.information[i].ProperTyId" class="form-control" /></label>
+                                <label><input style="width:500px;" asp-for="@Model.information[i].Value" class="form-control InputProperty" /><input style="width:100px;" asp-for="@Model.information[i].Description" class="form-control InputProperty" />  </label>
+                            </div>
                         }
                     }
 
@@ -65,20 +59,20 @@
                             Số lượng
                         </h3>
                         @{
-                            for (int i = 0; i < Model.productColor.Count; i++)
+                            for (int i = 0; i < Model.ColorProduct.Count; i++)
                             {
-                                                    <h3 data-colorid="@Model.productColor[i].ColorId" class="list-color-id">Mã màu: @Model.productColor[i].ColorId </h3>
-                                                    <label> <h4>@Model.productColor[i].ColorDescription</h4> <input style="width:500px;" min="0" max="9000000000" step="100" value="0" class="form-control input-quantity" type="number" /></label>
+                                <h3 class="list-color-id">Mã màu:  <input asp-for="@Model.ColorProduct[i].ColoId"/></h3>
+                                <label> <h3>@Model.ColorProduct[i].ColoName</h3> <input style="width:500px;" asp-for="@Model.ColorProduct[i].QuantityProduct"  class="form-control input-quantity"  /></label>
                             }
                         }
 
                     </div>
-                     <br />
+                    <br />
                     <button type="reset" class=" btn btn-gradient-primary me-2">Làm mới</button>
-
+                    <button class="btn btn-gradient-primary me-2">Thêm mới</button>
                 </form>
                 <br />
-                <button class="btn btn-gradient-primary me-2" onclick="addProductversion()">Thêm mới</button>
+                
             </div>
         </div>
     </div>

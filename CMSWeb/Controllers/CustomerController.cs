@@ -3,7 +3,7 @@ using CMSWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS;
-using DAL.Models;
+using ModelProject.Models;
 using CMSWeb.ViewModels.CustomerViewModel;
 using Newtonsoft.Json;
 

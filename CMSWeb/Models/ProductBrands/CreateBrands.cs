@@ -1,4 +1,4 @@
-﻿using DAL.Models;
+﻿using ModelProject.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace CMSWeb.Models.ProductBrands

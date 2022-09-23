@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Models;
+using ModelProject.Models;
 using DAL;
 using BUS.Services;
 using ModelProject.ViewModel;
@@ -65,7 +65,7 @@ namespace BUS
                 if(iDalBrands.DalRemoveBrand(addBrandViewModel.BrandId) == true)
                
                 // Xóa ảnh
-                File.Delete("wwwroot\\images\\" + addBrandViewModel.BrandPhoto);
+                File.Delete("wwwroot\\images\\Logo\\" + addBrandViewModel.BrandPhoto);
                 addBrandViewModel = null;
             }
             else
