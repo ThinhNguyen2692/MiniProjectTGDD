@@ -13,11 +13,13 @@ namespace BUS
     public class BusPurchaseOrder:IBusPurchaseOrder
     {
         private IDalPurchaseOrder iDalPurchaseOrder;
+        private IDalVersionQuantity iDalVersionQuantity;
 
-        public BusPurchaseOrder(IDalPurchaseOrder iDalPurchaseOrder)
+        public BusPurchaseOrder(IDalPurchaseOrder iDalPurchaseOrder, IDalVersionQuantity iDalVersionQuantity)
         {
             this.iDalPurchaseOrder = iDalPurchaseOrder;
-        }   
+            this.iDalVersionQuantity = iDalVersionQuantity;
+        }
 
         public ListPurchaseOrderViewModel GetListPurchaseOrderViewModels()
         {
@@ -61,7 +63,25 @@ namespace BUS
         {
             //cập nhật trạng thái
             iDalPurchaseOrder.Update(OrderId, status);
-            var data = iDalPurchaseOrder.GetPurchaseOrderById(OrderId);
+            switch (status)
+            {
+                case 3: var item = iDalPurchaseOrder.GetPurchaseOrderById(OrderId);
+                  
+                    foreach (var value in item.PurchaseOrderDetails)
+                    {
+                        VersionQuantity versionQuantity = new VersionQuantity();
+                        //OrderProduct (mã sản phẩm khuyến mãi)
+                        versionQuantity.VersionId = value.OrderProduct;
+                        //mã màu (EventName)
+                        versionQuantity.ColorId = value.EventName;
+                        versionQuantity.Quantity = value.OrderQuantity;
+                        iDalVersionQuantity.UpdateOrderCanned(versionQuantity);
+                    }
+                    break;
+                default:
+                    break;
+            }
+           
             return GetListPurchaseOrderViewModels();
         }
     }

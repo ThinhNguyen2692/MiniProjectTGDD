@@ -15,6 +15,7 @@ namespace DAL
         public List<VersionQuantity> ReadQuantity(string id);
         public bool DelQuantyti(string id);
         public bool CheckQuantity(List<VersionQuantity> versionQuantities);
+        public void UpdateOrderCanned(VersionQuantity versionQuantity);
     }
     public class Dal_VersionQuantity : IDalVersionQuantity
     {
@@ -93,6 +94,20 @@ namespace DAL
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// cập nhật số lượng sản phẩm khi hủy hóa đơn về
+        /// </summary>
+        /// <param name="quantityProductVerSion">chứa thông tin số lượng sản phẩm</param>
+        /// <returns></returns>
+        public void UpdateOrderCanned(VersionQuantity versionQuantity)
+        {
+
+            var data = context.VersionQuantities.Where(v => v.VersionId == versionQuantity.VersionId).Where(v => v.ColorId == versionQuantity.ColorId).FirstOrDefault();
+            if (data == null) return ;
+            data.Quantity = data.Quantity + versionQuantity.Quantity;
+            context.SaveChanges();
         }
 
     }

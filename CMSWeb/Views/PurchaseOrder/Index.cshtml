@@ -47,7 +47,7 @@
                                     <th> @Model.GetStatus(item.Status) </th>
                                     <th> @Model.GetStatus(item.Status) </th>
                                     <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
-                                    <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=1">Giao hàng</a>  <a href="/">Hủy đơn</a></th>
+                                    <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=1">Giao hàng</a>      <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=3">Hủy đơn</a></th>
                                 </tr>
 
                     }
@@ -87,7 +87,7 @@
                                     <th> @item.IntoMoney </th>
                                     <th> @Model.GetStatus(item.Status) </th>
                                     <th> @Model.GetStatus(item.Status) </th>
-                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                   <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
                                    <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=2">Giao hàng</a>  <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=3">Hủy đơn</a></th>
                                 </tr>
 
@@ -126,7 +126,7 @@
                                     <th> @item.toltalPromotionalPrice </th>
                                     <th> @item.IntoMoney </th>
                                     <th> @Model.GetStatus(item.Status) </th>
-                                     <th> <button class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
                                     <th> </th>
                                 </tr>
 
@@ -169,7 +169,7 @@
                                     <th> @item.IntoMoney </th>
                                     <th> @Model.GetStatus(item.Status) </th>
                                     <th>  </th>
-                                    <th> <a class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</a></th>
+                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
                                     </tr>
 
                     }

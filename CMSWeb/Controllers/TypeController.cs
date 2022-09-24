@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS.Services;
-using DAL;
 using Newtonsoft.Json;
 
 using ModelProject.ViewModel;

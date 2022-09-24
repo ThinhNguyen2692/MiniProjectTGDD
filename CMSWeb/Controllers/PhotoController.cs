@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CMSWeb.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS;
 using BUS.Services;
 using ModelProject.Models;
 using Newtonsoft.Json;
-using DAL;
 using ModelProject.ViewModel;
 
 namespace CMSWeb.Controllers
