@@ -1,0 +1,71 @@
+﻿@using ModelProject.ViewModel;
+@model AddUserViewModel;
+
+
+<div class="content-wrapper">
+    <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                @{
+                        switch (Model.Message)
+                        {
+                                case "AddBrandsTrue":  <div class="alert alert-success">Thêm thương hiệu thành công</div> break;
+                                case "AddBrandsIDfalse":  <div class="alert alert-danger">Mã sản phẩm đã tồn tại</div> break;
+                                case "AddBrandsFalse":  <div class="alert alert-success">Thêm thương hiệu thất bại</div> break;
+                            default: break;
+                        }     
+                }
+                <h2 style="text-align:center;" class="card-title">Nhập thông tin thương hiệu mới</h2>
+                <form class="forms-sample" id="form-User" method="post" enctype="multipart/form-data" asp-action="">
+                    <div class="form-group">
+                        <label asp-for="@Model.UserName">Tên quản trị viên</label>
+
+                        <input class="form-control" asp-for="@Model.UserName" placeholder="Nhập tên quản trị viên" />
+
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.UserPhone">Số điện thoại</label>
+                        <input asp-for="@Model.UserPhone" class="form-control UserPhone" type="number" placeholder="0......" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Định dạng số điện thoại sai
+                        </div>
+                    </div>
+                        
+                    
+                    <div class="form-group">
+                        <label asp-for="@Model.Email"  >Nhập Email</label>
+                        <input asp-for="@Model.Email" type="email" class="form-control" placeholder="Email" />
+                       
+                    </div>
+                   
+                    <div class="form-group">
+                        <label asp-for="@Model.Email" >Nhập password </label>
+                        <input asp-for="@Model.Email" type="password" class="form-control" placeholder="Password" />
+                       
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Ảnh</h4>
+                        <input asp-for="@Model.UserPhoto" class="fileImage form-control" accept="image/*" />
+                        <br />
+                        <br />
+                        <img id="preview" src="#" width="auto" height="auto" class="hidden" />
+                    </div>
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                    <button type="reset" class="btn btn-light">Làm mới</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

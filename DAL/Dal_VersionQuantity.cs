@@ -110,5 +110,19 @@ namespace DAL
             context.SaveChanges();
         }
 
+        /// <summary>
+        /// cập nhật số lượng sản phẩm khi dùng lại hóa đơn
+        /// </summary>
+        /// <param name="quantityProductVerSion">chứa thông tin số lượng sản phẩm</param>
+        /// <returns></returns>
+        public void UpdateOrder(VersionQuantity versionQuantity)
+        {
+
+            var data = context.VersionQuantities.Where(v => v.VersionId == versionQuantity.VersionId).Where(v => v.ColorId == versionQuantity.ColorId).FirstOrDefault();
+            if (data == null) return;
+            data.Quantity = data.Quantity - versionQuantity.Quantity;
+            context.SaveChanges();
+        }
+
     }
 }

@@ -211,7 +211,7 @@ namespace CMSWeb.Controllers
             return View("ShowTypeDetail", ProductDetail);
         }
 
-
+       
 
         [HttpGet]
         [Route("DeleteType")]

@@ -46,7 +46,6 @@ namespace CMSWeb.Controllers
             return View("form/FormBrands", item);
         }
 
-        [Route("")]
         public IActionResult Index()
         {
             

@@ -18,7 +18,10 @@ function checkTen(inputVaule) {
     const regex = /^.+$/; // không được bỏ trống
     return regex.test(inputVaule);
 }
-
+function checkPhone(inputVaule) {
+    const regex = /^([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})$/; // không được bỏ trống
+    return regex.test(inputVaule);
+}
 
 
 const formDemo = document.querySelector('#form-brands');

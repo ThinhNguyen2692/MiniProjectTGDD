@@ -30,6 +30,7 @@ namespace BUS
             services.AddSingleton<IDalProductColor, Dal_ProductColor>();
             services.AddSingleton<IDalPurchaseOrder, DalPurchaseOrder>();
             services.AddSingleton<IDalVersionQuantity, Dal_VersionQuantity>();
+            services.AddSingleton<IDAlUser, DalUser>();
 
             services.AddSingleton<IBusBands, BusBrands>();
             services.AddSingleton<IBusProductType, BusProductType>();
@@ -38,6 +39,7 @@ namespace BUS
             services.AddSingleton<IBusProduct, BusProduct>();
             services.AddSingleton<IBusPhoto, Busphoto>();
             services.AddSingleton<IBusPurchaseOrder, BusPurchaseOrder>();
+            services.AddSingleton<IBusUser, BusUser>();
             return services;
         }
     }
