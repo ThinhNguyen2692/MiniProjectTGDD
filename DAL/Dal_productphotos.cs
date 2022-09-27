@@ -41,7 +41,6 @@ namespace DAL
         /// <returns></returns>
         public bool DalAddProductPhoto(ProductPhoto productPhoto)
         {
-            context.Photos.Add(productPhoto.Photo);
             context.ProductPhotos.Add(productPhoto);
             context.SaveChanges();
             return true;

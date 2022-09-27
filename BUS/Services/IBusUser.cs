@@ -10,5 +10,10 @@ namespace BUS.Services
     public interface IBusUser
     {
         public AddUserViewModel UserAdd(AddUserViewModel user);
+        public List<ListUserViewModel> GetUsers();
+
+        public EditUserViewModel GetEditUserViewModel(int UserId);
+        public EditUserViewModel UpdateUser(EditUserViewModel editUserViewModel);
+        public EditUserViewModel UpdatePassword(int UserId);
     }
 }

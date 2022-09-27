@@ -1,0 +1,168 @@
+﻿@using ModelProject.ViewModel;
+@model StatisticalViewModel;
+@{
+
+    var quantity = new List<int>();
+    var Price = new List<int>();
+    var productNameQuantity = new List<string>();
+    var productNamePrice = new List<string>();
+    var OderName = new List<string>();
+    var OderQuantity = new List<int>();
+    OderName.Add(Model.purChaseOderStatisticalsProcessing.PurChaseOderName);
+    OderQuantity.Add(Model.purChaseOderStatisticalsProcessing.PurChaseOderQuantity);
+
+    OderName.Add(Model.purChaseOderStatisticalsDelivering.PurChaseOderName);
+    OderQuantity.Add(Model.purChaseOderStatisticalsDelivering.PurChaseOderQuantity);
+
+    OderName.Add(Model.purChaseOderStatisticalsDelivered.PurChaseOderName);
+    OderQuantity.Add(Model.purChaseOderStatisticalsDelivered.PurChaseOderQuantity);
+
+    OderName.Add(Model.purChaseOderStatisticalsCancelled.PurChaseOderName);
+    OderQuantity.Add(Model.purChaseOderStatisticalsCancelled.PurChaseOderQuantity);
+    
+    foreach (var item in Model.ProductStatistical)
+    {
+        productNameQuantity.Add(item.ProductName);
+        productNamePrice.Add(item.ProductName+"VND");
+        quantity.Add(item.ProductQuantity);
+        Price.Add(item.Price);
+    }
+    
+
+}
+
+<div class="content-wrapper">
+    <div class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-ProductQuantity-tab" data-bs-toggle="tab" data-bs-target="#nav-ProductQuantity" type="button" role="tab" aria-controls="nav-ProductQuantity" aria-selected="true">Sản phẩm bán tháng</button>
+                        <button class="nav-link" id="nav-ProductPrice-tab" data-bs-toggle="tab" data-bs-target="#nav-ProductPrice" type="button" role="tab" aria-controls="nav-ProductPrice" aria-selected="false">Thống kê sản phẩm bán ra theo giá</button>
+                        <button class="nav-link" id="nav-Order-tab" data-bs-toggle="tab" data-bs-target="#nav-Order" type="button" role="tab" aria-controls="nav-Order" aria-selected="false">Thốn kê hóa đơn</button>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-ProductQuantity" role="tabpanel" aria-labelledby="nav-ProductQuantity-tab">
+                       <canvas id="myChart"></canvas>
+                      <div>fdjkshfvug</div>
+
+                    </div>
+                    <div class="tab-pane fade" id="nav-ProductPrice" role="tabpanel" aria-labelledby="nav-ProductPrice-tab">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+                    <div class="tab-pane fade" id="nav-Order" role="tabpanel" aria-labelledby="nav-Order-tab">
+                      <canvas id="orderChart"></canvas>  
+                        
+                      </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+var quantity = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(quantity));
+var productNamePrice = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(productNamePrice));
+var productNameQuantity = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(productNameQuantity));
+var ProductPrice = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Price));
+var OderName = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(OderName));
+var OderQuantity = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(OderQuantity));
+var color = [
+    'rgb(255,255,0)',
+    'rgb(54, 162, 235)',
+    'rgb(0,255,0)',
+    'rgb(255, 99, 132)',
+    'rgb(0,0,0)',
+    'rgb(0,255,255)',
+    'rgb(255,0,255)',
+    'rgb(192,192,192)',
+    'rgb(128,128,128)',
+    'rgb(128,0,0)',
+    'rgb(128,128,0)',
+    'rgb(0,128,0)',
+    'rgb(128,0,128)',
+    'rgb(0,128,128)',
+    'rgb(0,0,128)',
+    'rgb(255,127,80)',
+    'rgb(184,134,11)',
+    'rgb(205,92,92)',
+    'rgb(238,232,170)',
+    'rgb(255,160,122)',
+    'rgb(0,250,154)',
+    'rgb(46,139,87)',
+    'rgb(30,144,255)',
+    'rgb(173,216,230)',
+    'rgb(138,43,226)',
+    'rgb(139,0,139)',
+    'rgb(176,196,222)',
+    'rgb(255,250,240)',
+    'rgb(255, 205, 86)'
+];
+
+  const data = {
+  labels: productNameQuantity,
+  datasets: [{
+    label: 'My First Dataset',
+    data: quantity,
+    backgroundColor: color,
+    hoverOffset: 4
+  }]
+};
+
+const data2 = {
+  labels: productNamePrice,
+  datasets: [{
+    label: 'My First Dataset',
+    data: ProductPrice,
+    backgroundColor: color,
+    hoverOffset: 4
+  }]
+};
+
+const data3 = {
+  labels: OderName,
+  datasets: [{
+    label: 'My First Dataset',
+    data: OderQuantity,
+    backgroundColor: color,
+    hoverOffset: 4
+  }]
+};
+
+
+const config = {
+  type: 'pie',
+  data: data,
+};
+
+const config2 = {
+  type: 'pie',
+  data: data2,
+};
+
+const config3 = {
+  type: 'doughnut',
+  data: data3,
+};
+</script>
+<script>
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+
+  const priceChart = new Chart(
+    document.getElementById('priceChart'),
+    config2
+  );
+
+  const orderChart = new Chart(
+    document.getElementById('orderChart'),
+    config3
+  );
+</script>

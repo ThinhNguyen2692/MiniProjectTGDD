@@ -15,13 +15,6 @@ namespace ModelProject.Models
         public string PropertiesName { get; set; } = null!;
         public string? PropertiesDescription { get; set; }
 
-        public InformationProperty(int SpecificationsId, string PropertiesName, string? PropertiesDescription)
-        {
-            this.SpecificationsId = SpecificationsId;
-            this.PropertiesName = PropertiesName;
-            this.PropertiesDescription = PropertiesDescription;
-        }
-
         public virtual ProductSpecification Specifications { get; set; } = null!;
         public virtual ICollection<PropertiesValue> PropertiesValues { get; set; }
     }

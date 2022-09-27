@@ -9,10 +9,6 @@ namespace ModelProject.Models
         public string VersionId { get; set; } = null!;
         public int PhotoId { get; set; }
 
-        public ProductPhoto() { }
-
-    
-
         public virtual Photo Photo { get; set; } = null!;
         public virtual ProductVersion Version { get; set; } = null!;
     }

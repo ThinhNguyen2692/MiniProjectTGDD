@@ -1,0 +1,83 @@
+﻿@using ModelProject.ViewModel;
+@model PricePromotionViewModel;
+
+<div class="content-wrapper">
+    <div style=" margin: auto;" class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                @{
+                    switch (@Model.Message)
+                    {
+                        case "AddTrue": <div class="alert alert-success">Thêm thành công</div> break;
+                        case "ProductIdFalse": <div class="alert alert-danger">Mã sản phẩm không tồn tại</div> break;
+                        default: break;
+                    }
+                }
+                <form method="post" asp-action="AddPriceSale" asp-controller="ProductPromotion">
+                    <div class="form-group">
+                        <label>Tên sự kiện</label>
+                        <input class="form-control" asp-for="@Model.eventName" placeholder="Nhập mã sản phẩm" /> 
+                    </div>
+                    <div class="form-group">
+                        <label>Giảm (%)</label>
+                        <input class="form-control" asp-for="@Model.sale" max="100" min="1" />
+                         
+                    </div>
+
+           
+                    <div class="form-group">
+                        <label>thời gian bắt đầu</label>
+                        <input class="form-control" asp-for="@Model.StartTime"/>
+                    </div>
+                      <div class="form-group">
+                        <label>thời gian kết thúc</label>
+                        <input class="form-control" asp-for="@Model.EndTime"/>
+                    </div>
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm khuyến mãi</button>
+                    <br />
+                    <br />
+                    <h4>Chọn sản phẩm tặng</h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Tên sản phẩm</th>
+                                <th>Hình</th>
+                                <th> Giá </th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                for (int i = 0; i < Model.listProductPromotions.Count; i++)
+                                {
+                                     <tr>
+                                            <th>@Html.CheckBoxFor(m => m.listProductPromotions[i].select)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].productId)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].productName)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].Price)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].productPhoto)
+                                            </th>
+                                            <th>@Model.listProductPromotions[i].productName</th>
+                                            <th><img src="/images/ProductDefault/@Model.listProductPromotions[i].productPhoto "/></th>
+                                            <th>@Model.listProductPromotions[i].Price</th>
+                                            <th></th>
+                                        </tr>
+                                }
+                               
+                            }
+                        </tbody>
+                    </table>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

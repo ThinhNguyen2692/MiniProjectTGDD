@@ -15,13 +15,6 @@ namespace ModelProject.Models
         public string SpecificationsName { get; set; } = null!;
         public string? SpecificationsDescription { get; set; }
 
-        public ProductSpecification( string typeId, string specificationsName, string? specificationsDescription)
-        {
-            TypeId = typeId;
-            SpecificationsName = specificationsName;
-            SpecificationsDescription = specificationsDescription;
-        }
-
         public virtual ProductType Type { get; set; } = null!;
         public virtual ICollection<InformationProperty> InformationProperties { get; set; }
     }

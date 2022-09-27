@@ -7,10 +7,11 @@
             <div class="card-body">
                 <h4></h4>
                 <h4 class="card-title">Thêm ảnh cho sản phẩm</h4>
-                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" action="/AddPhoto">
+                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="AddPhoto">
                     <div class="form-group">
                         <label>Chọn hình: </label>
-                        <input asp-for="@Model.photos" class="form-control"  accept="image/*" multiple />
+                        <input asp-for="@Model.photos"  class="form-control"  accept="image/*" multiple />
+                        @Html.HiddenFor(m => m.ProductVersionId);
                     </div>
                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
@@ -23,10 +24,10 @@
                        
                             foreach (var value in Model.informationPhoto)
                             {
-                                          <div class="col-3">
-                                    <img style="width: 160px; heigh: 160px;" src="/images/@value.PathImage"/>
-                                    <div><span>@value.PathImage</span></div>
-                                    </div>
+                                              <div class="col-3">
+                                        <img style="width: 160px; heigh: 160px;" src="/images//Products/@value.PathImage"/>
+                                        <div><span>@value.PathImage</span></div>
+                                        </div>
                             }
                      
                     }

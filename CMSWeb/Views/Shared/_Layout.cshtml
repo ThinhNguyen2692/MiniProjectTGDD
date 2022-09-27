@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="~/CMSWeb.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/assets/vendors/css/vendor.bundle.base.css">
+    <script type="text/javascript" src="~/js/Chart.min.js"></script>
+
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <!-- End plugin css for this page -->
@@ -208,6 +210,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" asp-controller="ProductPromotion" asp-action="PriceSale">
+                    <span class="menu-title">Giảm giá sản phẩm</span>
+                    <i style="color:red;" class="mdi mdi-cellphone-link menu-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Customer" asp-action="ShowCustomer">
                     <span class="menu-title">Khách hàng</span>
                     <i style="color:red;" class="mdi mdi-cellphone-link menu-icon"></i>
@@ -216,11 +224,17 @@
 
               <li class="nav-item">
                 <a class="nav-link" asp-controller="PurchaseOrder" asp-action="Index">
-                    <span class="menu-title">Khách hàng</span>
+                    <span class="menu-title">Đơn hàng</span>
                     <i style="color:red;" class="mdi mdi-cellphone-link menu-icon"></i>
                 </a>
             </li>  
 
+             <li class="nav-item">
+                <a class="nav-link" asp-controller="User" asp-action="ShowUsers">
+                    <span class="menu-title">Nhân viên</span>
+                    <i style="color:red;" class="mdi mdi-cellphone-link menu-icon"></i>
+                </a>
+            </li>  
 
             <li class="nav-item">
                 <a class="nav-link" href="pages/forms/basic_elements.html">

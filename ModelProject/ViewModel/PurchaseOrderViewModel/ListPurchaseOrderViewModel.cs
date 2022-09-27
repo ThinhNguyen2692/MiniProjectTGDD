@@ -17,6 +17,7 @@ namespace ModelProject.ViewModel
         public int toltalMoney { get; set; }
         public int toltalPromotionalPrice { get; set; }
         public int IntoMoney { get; set; }
+        public DateTime SetupTime { get; set; }
         public int Status { get; set; }
 
     }

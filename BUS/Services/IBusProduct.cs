@@ -7,6 +7,7 @@ using BUS;
 using Microsoft.AspNetCore.Http;
 using ModelProject.Models;
 using ModelProject.ViewModel;
+
 namespace BUS.Services
 {
     public interface IBusProduct
@@ -27,7 +28,7 @@ namespace BUS.Services
 
         public PhotoViewModel ReadPhotoVerSionProduct(PhotoViewModel PhotoViewModel);
 
-        public void AddImageProduct(List<IFormFile> fileImages);
+        public void AddImageProduct(PhotoViewModel viewModel);
 
         public PhotoViewModel GetPhotoViewModel();
     }

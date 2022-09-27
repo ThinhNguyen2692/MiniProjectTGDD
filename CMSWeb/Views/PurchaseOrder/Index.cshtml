@@ -38,17 +38,17 @@
                     foreach (var item in Model.ListProcessing)
                     {
 
-                                <tr>
-                                    <th> @item.PurchaseOrderId </th>
-                                    <th> @item.customer_phone </th>
-                                    <th> @item.toltalMoney </th>
-                                    <th> @item.toltalPromotionalPrice </th>
-                                    <th> @item.IntoMoney </th>
-                                    <th> @Model.GetStatus(item.Status) </th>
-                                    <th> @Model.GetStatus(item.Status) </th>
-                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
-                                    <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=1">Giao hàng</a>      <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=3">Hủy đơn</a></th>
-                                </tr>
+                                    <tr>
+                                        <th> @item.PurchaseOrderId </th>
+                                        <th> @item.customer_phone </th>
+                                        <th> @item.toltalMoney </th>
+                                        <th> @item.toltalPromotionalPrice </th>
+                                        <th> @item.IntoMoney </th>
+                                        <th> @Model.GetStatus(item.Status) </th>
+                                        <th> @item.SetupTime.ToString(); </th>
+                                        <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                        <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=1">Giao hàng</a>      <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=3">Hủy đơn</a></th>
+                                    </tr>
 
                     }
                 }
@@ -79,17 +79,17 @@
                     foreach (var item in Model.ListDelivering)
                     {
 
-                                <tr>
-                                    <th> @item.PurchaseOrderId </th>
-                                    <th> @item.customer_phone </th>
-                                    <th> @item.toltalMoney </th>
-                                    <th> @item.toltalPromotionalPrice </th>
-                                    <th> @item.IntoMoney </th>
-                                    <th> @Model.GetStatus(item.Status) </th>
-                                    <th> @Model.GetStatus(item.Status) </th>
-                                   <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
-                                   <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=2">Giao hàng</a>  <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=3">Hủy đơn</a></th>
-                                </tr>
+                                    <tr>
+                                        <th> @item.PurchaseOrderId </th>
+                                        <th> @item.customer_phone </th>
+                                        <th> @item.toltalMoney </th>
+                                        <th> @item.toltalPromotionalPrice </th>
+                                        <th> @item.IntoMoney </th>
+                                        <th> @Model.GetStatus(item.Status) </th>
+                                        <th> @item.SetupTime.ToString()</th>
+                                       <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                       <th> <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=2">Giao hàng</a>  <a href="/Delivering?OrderId=@item.PurchaseOrderId&status=3">Hủy đơn</a></th>
+                                    </tr>
 
                     }
                 }
@@ -108,6 +108,7 @@
                     <th> Khuyến mãi </th>
                     <th> Thành tiền</th>
                     <th> Trạng thái</th>
+                    <th> Ngày lập hóa đơn</th>
                     <th> </th>
                     <th> </th>
 
@@ -119,16 +120,17 @@
                     foreach (var item in Model.ListDelivered)
                     {
 
-                                <tr>
-                                    <th> @item.PurchaseOrderId </th>
-                                    <th> @item.customer_phone </th>
-                                    <th> @item.toltalMoney </th>
-                                    <th> @item.toltalPromotionalPrice </th>
-                                    <th> @item.IntoMoney </th>
-                                    <th> @Model.GetStatus(item.Status) </th>
-                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
-                                    <th> </th>
-                                </tr>
+                                    <tr>
+                                        <th> @item.PurchaseOrderId </th>
+                                        <th> @item.customer_phone </th>
+                                        <th> @item.toltalMoney </th>
+                                        <th> @item.toltalPromotionalPrice </th>
+                                        <th> @item.IntoMoney </th>
+                                        <th> @Model.GetStatus(item.Status) </th>
+                                        <th> @item.SetupTime.ToString() </th>
+                                        <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                        <th> </th>
+                                    </tr>
 
                     }
                 }
@@ -161,16 +163,17 @@
                     foreach (var item in Model.ListCancelled)
                     {
 
-                                <tr>
-                                    <th> @item.PurchaseOrderId </th>
-                                    <th> @item.customer_phone </th>
-                                    <th> @item.toltalMoney </th>
-                                    <th> @item.toltalPromotionalPrice </th>
-                                    <th> @item.IntoMoney </th>
-                                    <th> @Model.GetStatus(item.Status) </th>
-                                    <th>  </th>
-                                    <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
-                                    </tr>
+                                    <tr>
+                                        <th> @item.PurchaseOrderId </th>
+                                        <th> @item.customer_phone </th>
+                                        <th> @item.toltalMoney </th>
+                                        <th> @item.toltalPromotionalPrice </th>
+                                        <th> @item.IntoMoney </th>
+                                        <th> @Model.GetStatus(item.Status) </th>
+                                        <th> @item.SetupTime.ToString() </th>
+                                        <th>  </th>
+                                        <th> <button onclick="GEtDetail('@item.PurchaseOrderId')" class="btn" data-toggle="modal" data-target="#exampleModal">Xem chi tiết</button></th>
+                                        </tr>
 
                     }
                 }

@@ -31,15 +31,17 @@ namespace BUS
             services.AddSingleton<IDalPurchaseOrder, DalPurchaseOrder>();
             services.AddSingleton<IDalVersionQuantity, Dal_VersionQuantity>();
             services.AddSingleton<IDAlUser, DalUser>();
+            services.AddSingleton<IDalEvent, DalEvent>();
 
             services.AddSingleton<IBusBands, BusBrands>();
             services.AddSingleton<IBusProductType, BusProductType>();
             services.AddSingleton<IBusCustomer, Bus_Customer>();
-            services.AddSingleton<IBus_Gift, Bus_Gift>();
+            services.AddSingleton<IBusPromotion, BusPromotion>();
             services.AddSingleton<IBusProduct, BusProduct>();
             services.AddSingleton<IBusPhoto, Busphoto>();
             services.AddSingleton<IBusPurchaseOrder, BusPurchaseOrder>();
             services.AddSingleton<IBusUser, BusUser>();
+            services.AddSingleton<IBusStatistical, BusStatistical>();
             return services;
         }
     }

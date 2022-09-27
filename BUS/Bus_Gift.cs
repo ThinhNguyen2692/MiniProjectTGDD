@@ -19,6 +19,9 @@ namespace BUS
         
     public class Bus_Gift: IBus_Gift
     {
+
+
+
       private  IDal_Gift iDal_Gift;   
         public Bus_Gift(IDal_Gift iDal_Gift)
         {
@@ -42,7 +45,7 @@ namespace BUS
 
             foreach (var item in GiftIds)
             {
-                var gift = new Gift(IdProduct, item);
+                var gift = new Gift() { ProductId = IdProduct, GiftProduct = item};
                 iDal_Gift.AddGift(gift);
             }
         

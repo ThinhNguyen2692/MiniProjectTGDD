@@ -26,6 +26,15 @@ namespace DAL
         // Them hinh cho sản phẩm
         public int AddPhoto(Photo photo)
         {
+            var data = context.Photos.ToList();
+            foreach (var item in data)
+            {
+                if(String.Compare(item.PhotoPath, photo.PhotoPath) == 0)
+                {
+                    return item.PhotoId;
+                }
+            }
+            
                 context.Photos.Add(photo);
                 context.SaveChanges();
              return photo.PhotoId;

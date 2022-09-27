@@ -13,6 +13,8 @@ namespace DAL
         public List<PurchaseOrder> GetPurchaseOrderAll();
         public PurchaseOrder GetPurchaseOrderById(string OrderId);
         public void Update(string OrderId, int stastus);
+        public List<PurchaseOrder> GetPurchaseOrdersMonth();
+        public List<PurchaseOrder> GetPurchaseOrdersMonthProduct();
     }
     public class DalPurchaseOrder:IDalPurchaseOrder
     {
@@ -43,6 +45,20 @@ namespace DAL
             if (data == null) return;
             data.OrderStatus = stastus;
             context.SaveChanges();
+        }
+
+        public List<PurchaseOrder> GetPurchaseOrdersMonth()
+        {
+            DateTime dateTime = DateTime.Now;
+            var data = context.PurchaseOrders.Where(p => p.SetupTime.Value.Month == dateTime.Month).Where(p => p.SetupTime.Value.Year == dateTime.Year).ToList();
+            return data;
+        }
+
+        public List<PurchaseOrder> GetPurchaseOrdersMonthProduct()
+        {
+            DateTime dateTime = DateTime.Now;
+            var data = context.PurchaseOrders.Where(p => p.SetupTime.Value.Month == dateTime.Month || p.SetupTime.Value.Year == dateTime.Year || p.OrderStatus == 0 || p.OrderStatus == 1).Include(p => p.PurchaseOrderDetails).ToList();
+            return data;
         }
 
     }

@@ -15,12 +15,14 @@ namespace CMSWeb.Controllers
         private readonly ILogger<ProductController> _logger;
 
         private readonly IBusProduct IBusProduct;
+        private readonly IBusPhoto iBusPhoto;
         private readonly IBusProductType iBusProductType;
-        public ProductController(ILogger<ProductController> logger, IBusProduct IBusProduct, IBusProductType iBusProductType)
+        public ProductController(ILogger<ProductController> logger, IBusProduct IBusProduct, IBusProductType iBusProductType, IBusPhoto iBusPhoto)
         {
             _logger = logger;
             this.IBusProduct = IBusProduct;
             this.iBusProductType = iBusProductType;
+            this.iBusPhoto = iBusPhoto;
         }
         /// <summary>
         /// load form nhập sản phẩm mới
@@ -73,11 +75,10 @@ namespace CMSWeb.Controllers
         /// <param name="ListImage">danh sách file hình cần thêm</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("AddPhoto")]
         public IActionResult AddPhoto(PhotoViewModel viewModel)
         {
             
-            IBusProduct.AddImageProduct(viewModel.photos);
+            IBusProduct.AddImageProduct(viewModel);
              viewModel = IBusProduct.GetPhotoViewModel();
             return View("form/FormAddPhoto", viewModel);
         }
@@ -243,8 +244,16 @@ namespace CMSWeb.Controllers
             return View("ShowDetailProduct", ProductDetailViewModelNew);
         }
 
+        [HttpGet]
+        [Route("FormAddPhoto")]
+        public IActionResult FormAddPhoto(string ProductIdVersion)
+        {
+            var viewModel = iBusPhoto.GetPhotoViewModel();
+            viewModel.ProductVersionId = ProductIdVersion;
+            return View("form/FormAddPhoto", viewModel);
+        }
 
-       
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

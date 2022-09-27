@@ -42,7 +42,7 @@ namespace DAL
         //Xóa phiên bản sản phẩm
         public bool DelProductVerion(string id)
         {
-          var data = context.ProductVersions.Include(pv => pv.PropertiesValues).Include(pv => pv.VersionQuantities).Include(p =>p.ProductPhotos).First(v => v.VersionId == id);
+          var data = context.ProductVersions.Include(pv => pv.PropertiesValues).Include(pv => pv.VersionQuantities).Include(p =>p.ProductPhotos).Include(p => p.ProductPhotos).First(v => v.VersionId == id);
             if (data == null) return false;
             context.PropertiesValues.RemoveRange(data.PropertiesValues);
             context.VersionQuantities.RemoveRange(data.VersionQuantities);
@@ -59,8 +59,12 @@ namespace DAL
         public ProductVersion DalReadProduct(string id)
         {
             context = new MiniProjectTGDDContext();
+
             var data2 = context.ProductVersions.Where(p => p.VersionId == id).Include(pv => pv.Product).Include(p => p.PropertiesValues).ThenInclude(p=>p.Properties).ThenInclude(p => p.Specifications).Include(p => p.VersionQuantities).ThenInclude(p => p.Color).Include(p => p.Product).ThenInclude(p => p.ProductBrandNavigation).Include(p => p.Product).ThenInclude(p => p.ProductTypeNavigation).FirstOrDefault();
             if (data2 == null) return null;
+            var data = context.Products.Where(p => p.ProductId == data2.ProductId).Include(g => g.ProductVersions).Include(p => p.EventDetails).ThenInclude(p => p.Event).FirstOrDefault();
+            if (data == null) return null;
+            data2.Product = data;
             return data2;
         }
 

@@ -14,12 +14,6 @@ namespace ModelProject.Models
         public string Typeid { get; set; } = null!;
         public string Typename { get; set; } = null!;
 
-        public ProductType(string typeid, string typename)
-        {
-            Typeid = typeid;
-            Typename = typename;
-        }
-
         public virtual ICollection<ProductSpecification> ProductSpecifications { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }

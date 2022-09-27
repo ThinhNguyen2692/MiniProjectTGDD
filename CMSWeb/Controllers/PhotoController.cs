@@ -27,13 +27,7 @@ namespace CMSWeb.Controllers
             return View( viewModel);
         }
 
-
-
-        public IActionResult FormAddPhoto()
-        {
-            var viewModel = iBusPhoto.GetPhotoViewModel();
-            return View("form/FormAddPhoto", viewModel);
-        }
+    
 
         /// <summary>
         /// Thêm hình cho sản phẩm

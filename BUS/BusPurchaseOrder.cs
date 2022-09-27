@@ -33,6 +33,7 @@ namespace BUS
                 model.toltalPromotionalPrice = item.TotalPromotionalPrice;
                 model.toltalMoney = item.TotalMoney;
                 model.IntoMoney = item.IntoMoney;
+                model.SetupTime = (DateTime) item.SetupTime;
                 model.Status = (int) item.OrderStatus;
                 switch (model.Status)
                 {
@@ -73,7 +74,7 @@ namespace BUS
                         //OrderProduct (mã sản phẩm khuyến mãi)
                         versionQuantity.VersionId = value.OrderProduct;
                         //mã màu (EventName)
-                        versionQuantity.ColorId = value.EventName;
+                        versionQuantity.ColorId = (int) value.ColorId;
                         versionQuantity.Quantity = value.OrderQuantity;
                         iDalVersionQuantity.UpdateOrderCanned(versionQuantity);
                     }

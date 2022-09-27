@@ -11,7 +11,6 @@ namespace ModelProject.Models
         {
         }
 
-
         public MiniProjectTGDDContext(DbContextOptions<MiniProjectTGDDContext> options)
             : base(options)
         {
@@ -38,7 +37,6 @@ namespace ModelProject.Models
         public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<VersionQuantity> VersionQuantities { get; set; } = null!;
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -211,13 +209,13 @@ namespace ModelProject.Models
                     .IsFixedLength();
 
                 entity.HasOne(d => d.GiftProductNavigation)
-                    .WithMany(p => p.GiftGiftProductNavigations)
+                    .WithMany(p => p.Gifts)
                     .HasForeignKey(d => d.GiftProduct)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("product_gift_gift_fk");
+                    .HasConstraintName("productVerion_gift_fk");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.GiftProducts)
+                    .WithMany(p => p.Gifts)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("product_gift_fk");
@@ -646,7 +644,11 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.OrderDetail).HasColumnName("order_detail");
 
-                entity.Property(e => e.EventName).HasColumnName("event_name");
+                entity.Property(e => e.ColorId).HasColumnName("colorId");
+
+                entity.Property(e => e.EventName)
+                    .HasMaxLength(255)
+                    .HasColumnName("event_name");
 
                 entity.Property(e => e.MoneyProduct).HasColumnName("money_product");
 
@@ -700,6 +702,8 @@ namespace ModelProject.Models
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
                     .HasColumnName("password");
+
+                entity.Property(e => e.RoleId).HasColumnName("role_id");
 
                 entity.Property(e => e.UserName)
                     .HasMaxLength(255)

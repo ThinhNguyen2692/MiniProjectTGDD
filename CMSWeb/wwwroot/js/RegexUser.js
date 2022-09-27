@@ -7,10 +7,11 @@ const FormUser = document.querySelector('#form-User');
         console.log(UserPhone.value)
         if (!checkPhone(UserPhone.value)) {
             setError(UserPhone);
+            e.preventDefault();
         } else {
             setTrue(UserPhone);
         }
        
-        e.preventDefault();
+       
 
     })

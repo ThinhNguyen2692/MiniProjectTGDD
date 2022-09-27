@@ -7,6 +7,7 @@ namespace ModelProject.Models
     {
         public ProductVersion()
         {
+            Gifts = new HashSet<Gift>();
             ProductPhotos = new HashSet<ProductPhoto>();
             PropertiesValues = new HashSet<PropertiesValue>();
             VersionQuantities = new HashSet<VersionQuantity>();
@@ -18,8 +19,8 @@ namespace ModelProject.Models
         public int? ProductPrice { get; set; }
         public int? ProductStatus { get; set; }
 
-      
         public virtual Product Product { get; set; } = null!;
+        public virtual ICollection<Gift> Gifts { get; set; }
         public virtual ICollection<ProductPhoto> ProductPhotos { get; set; }
         public virtual ICollection<PropertiesValue> PropertiesValues { get; set; }
         public virtual ICollection<VersionQuantity> VersionQuantities { get; set; }

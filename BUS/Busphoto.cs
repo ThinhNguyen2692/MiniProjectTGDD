@@ -31,7 +31,7 @@ namespace BUS
                 string fileName = item.FileName;
                 try
                 {
-                    string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+                    string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Products\\", fileName);
                     var stream = new FileStream(upLoad, FileMode.Create);
                     item.CopyToAsync(stream);
                 }

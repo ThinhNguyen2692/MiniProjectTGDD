@@ -1,89 +1,64 @@
-﻿<div class="content-wrapper">
+﻿@using ModelProject.ViewModel;
+@model ProductPromotionViewModel;
+
+<div class="content-wrapper">
     <div style=" margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <form method="post" asp-action="" asp-controller="">
-                    <button class="btn btn-logo btn-gradient-primary me-2" type="submit">Thêm khuyến mãi</button>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card-body">
-                                <h3>Sản phẩm khuyến mãi</h3>
-                                <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">ngành hàng</button>
-                                         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
-
-                                    </div>
-                                </nav>
-                                <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                        <table class="table table-borderless">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Hình</th>
-                                                    <th>Mã sản phẩm</th>
-                                                    <th>Tên sản phẩm</th>
-                                                    <th>Giá sản phẩm</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th><input type="checkbox" /></th>
-                                                    <th><image src="" /></th>
-                                                    <th>Mã sản phẩm</th>
-                                                    <th>Tên sản phẩm</th>
-                                                    <th>Giá sản phẩm</th>
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card-body">
-                                <h3>Quà tặng</h3>
-                                <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
-                                    </div>
-                                </nav>
-                                <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                        <table class="table table-borderless">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Hình</th>
-                                                    <th>Mã sản phẩm</th>
-                                                    <th>Tên sản phẩm</th>
-                                                    <th>Giá sản phẩm</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th><input type="checkbox" /></th>
-                                                    <th><image src="" /></th>
-                                                    <th>Mã sản phẩm</th>
-                                                    <th>Tên sản phẩm</th>
-                                                    <th>Giá sản phẩm</th>
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                @{
+                    switch (@Model.Message)
+                    {
+                        case "AddTrue": <div class="alert alert-success">Thêm thành công</div> break;
+                        case "AddFalse": <div class="alert alert-danger">Thêm thất bại</div> break;
+                        default: break;
+                    }
+                }
+                <form method="post" asp-action="AddPromation" asp-controller="ProductPromotion">
+                    <div class="form-group">
+                        <label>Mã sản phẩm</label>
+                        <input class="form-control" asp-for="@Model.ProductId" placeholder="Nhập mã sản phẩm" />
+                         
                     </div>
+
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm khuyến mãi</button>
+                    <br />
+                    <br />
+                    <h4>Chọn sản phẩm tặng</h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Tên sản phẩm</th>
+                                <th>Hình</th>
+                                <th> Giá </th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                for (int i = 0; i < Model.listProductPromotions.Count; i++)
+                                {
+                                     <tr>
+                                            <th>@Html.CheckBoxFor(m => m.listProductPromotions[i].select)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].productId)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].productName)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].Price)
+                                            @Html.HiddenFor(m => m.listProductPromotions[i].productPhoto)
+                                            </th>
+                                            <th>@Model.listProductPromotions[i].productName</th>
+                                            <th><img src="/images/ProductDefault/@Model.listProductPromotions[i].productPhoto "/></th>
+                                            <th>@Model.listProductPromotions[i].Price</th>
+                                            <th></th>
+                                        </tr>
+                                }
+                               
+                            }
+                        </tbody>
+                    </table>
+
+
                 </form>
 
             </div>

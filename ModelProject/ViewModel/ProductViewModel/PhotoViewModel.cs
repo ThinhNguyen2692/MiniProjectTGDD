@@ -16,7 +16,7 @@ namespace ModelProject.ViewModel
     }
     public class PhotoViewModel
     {
-
+        public string ProductVersionId { get; set; }
         public List<IFormFile> photos { get; set; } = new List<IFormFile>();
         public List<InformationPhoto> informationPhoto { get; set; } = new List<InformationPhoto>();
         public PhotoViewModel() { }

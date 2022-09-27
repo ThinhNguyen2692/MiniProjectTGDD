@@ -9,6 +9,7 @@ builder.Services.AddSession();
 builder.Services.AddMvc();
 
 builder.Services.serviceDescriptors(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

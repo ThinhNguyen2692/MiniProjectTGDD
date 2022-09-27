@@ -15,7 +15,6 @@ namespace ModelProject.Models
         public string ColorPath { get; set; } = null!;
         public string? ColorDescription { get; set; }
 
-       
         public virtual Product Product { get; set; } = null!;
         public virtual ICollection<VersionQuantity> VersionQuantities { get; set; }
     }

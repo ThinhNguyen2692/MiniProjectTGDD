@@ -10,7 +10,6 @@ namespace ModelProject.Models
             Products = new HashSet<Product>();
         }
 
-
         public string BrandId { get; set; } = null!;
         public string BrandName { get; set; } = null!;
         public string BrandPhoto { get; set; } = null!;
@@ -18,7 +17,5 @@ namespace ModelProject.Models
         public int? BrandStatus { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
-
-        
     }
 }

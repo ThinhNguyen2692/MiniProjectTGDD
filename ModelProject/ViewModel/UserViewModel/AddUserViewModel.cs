@@ -15,9 +15,25 @@ namespace ModelProject.ViewModel
         public IFormFile UserPhoto { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
+        public int roleID { get; set; } 
         public string Message { get; set; }
+        public Role role { get; set; }
 
 
         public AddUserViewModel() { }
+
+       
+        
+
+
     }
-}
+
+    public class RoleUser
+    {
+        public RoleUser() { }
+        public string RoleName { get; set; }
+        public int RoleId { get; set; }
+    }
+        
+        
+  }

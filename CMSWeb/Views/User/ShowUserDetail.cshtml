@@ -1,0 +1,86 @@
+﻿@using ModelProject.ViewModel;
+@model EditUserViewModel;
+
+
+<div class="content-wrapper">
+    <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                @{
+                        switch (Model.Message)
+                        {
+                                case "UpdateTrue":  <div class="alert alert-success">Cập nhật thành công</div> break;
+                                case "UpdateFalse":  <div class="alert alert-danger">Cập nhật thất bại</div> break;
+                            default: break;
+                        }     
+                }
+                <h2 style="text-align:center;" class="card-title"> Nhân viên</h2>
+                <form class="forms-sample" id="form-User" method="post" enctype="multipart/form-data" asp-action="UpdateUser" asp-controller="User">
+                    <div class="form-group">
+                         <img id="preview" src="/images/User/@Model.UserPhoto" width="auto" height="auto" class="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.UserId">Mã quản trị viên</label>
+                        <input class="form-control" asp-for="@Model.UserId" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.UserName">Tên quản trị viên</label>
+
+                        <input class="form-control" asp-for="@Model.UserName" placeholder="Nhập tên quản trị viên" />
+
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.UserPhone">Số điện thoại</label>
+                        <input asp-for="@Model.UserPhone" class="form-control UserPhone" type="number" placeholder="" />
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Định dạng số điện thoại sai
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label asp-for="@Model.Email"  >Nhập Email</label>
+                        <input asp-for="@Model.Email" type="email" class="form-control" placeholder="Email" />
+                    </div>
+                   
+                     <div class="form-group">
+                        <label>Vị trí</label>
+                        <select class="form-control" asp-for="@Model.RoleId">
+                            @{
+                              
+                               foreach (var item in Model.role.GetRoleUsers())
+                                {
+                                     <option value="@item.RoleId">@item.RoleName</option>
+                                }
+                                 <option value="@Model.RoleId">@Model.role.GetRoleUser((int)Model.RoleId)</option>
+                            }
+                        </select>
+                        </div>
+                        <br />
+                    <div class="form-group">
+                        <h4>Ảnh</h4>
+                        <input asp-for="@Model.FileImage" class="fileImage form-control" accept="image/*" />
+                        <br />
+                        <br />
+                    </div>
+                     <div class="form-group">
+                       <a class="btn btn-gradient-primary me-2" asp-controller="User" asp-action="UpdatePass" asp-route-UserId="@Model.UserId">Làm mới mật khẩu</a>
+                    </div>
+                     <br />
+                        <br />
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật</button>
+                    <button type="reset" class="btn btn-light">Làm mới</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

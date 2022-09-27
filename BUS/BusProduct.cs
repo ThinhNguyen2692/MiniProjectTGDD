@@ -8,6 +8,7 @@ using ModelProject.Models;
 using ModelProject.ViewModel;
 using BUS.Services;
 using Microsoft.AspNetCore.Http;
+using static ModelProject.ViewModel.Promation;
 
 namespace BUS
 {
@@ -183,6 +184,15 @@ namespace BUS
             ProductDetail.quantityProductVerSions = ProductDetail.GetQuantityProductVerSions(data.VersionQuantities.ToList());
             ProductDetail.productVerSionDetailInformation = ProductDetail.GetProductVerSionDetailInformation(data.PropertiesValues.ToList());
 
+            foreach (var item in data.Gifts)
+            {
+                Promation promation = new Promation();
+                promation.Id = item.GiftId;
+                promation.PromationName = item.GiftProductNavigation.VersionName;
+                
+                
+            }
+           
             return ProductDetail;
 
         }
@@ -360,23 +370,26 @@ namespace BUS
             return PhotoViewModel;
         }
 
-        public void AddImageProduct(List<IFormFile> fileImages)
+        public void AddImageProduct(PhotoViewModel viewModel)
         {
-            foreach (var item in fileImages)
+            foreach (var item in  viewModel.photos)
             {
                 Photo photo = new Photo();
                 photo.PhotoPath = item.FileName;
-                iDalPhoto.AddPhoto(photo);
+                var idPhoto = iDalPhoto.AddPhoto(photo);
                 string fileName = item.FileName;
+                ProductPhoto productPhoto = new ProductPhoto();
+                productPhoto.PhotoId = idPhoto;
+                productPhoto.VersionId = viewModel.ProductVersionId;
+                iDalProductPhoto.DalAddProductPhoto(productPhoto);
                 try
                 {
-                    string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Products", fileName);
+                    string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Products\\", fileName);
                     var stream = new FileStream(upLoad, FileMode.Create);
                     item.CopyToAsync(stream);
                 }
                 catch (Exception)
                 {
-
                     continue;
                 }
             }
