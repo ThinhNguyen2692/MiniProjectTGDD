@@ -7,9 +7,11 @@ using Newtonsoft.Json;
 using CMSWeb.Models.ProductBrands;
 using ModelProject.ViewModel;
 using CMSWeb.ViewModels.ProductBrandsViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -4,10 +4,11 @@ using System.Diagnostics;
 using BUS.Services;
 
 using ModelProject.ViewModel;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class StatisticalController : Controller
     {
         private readonly ILogger<StatisticalController> _logger;

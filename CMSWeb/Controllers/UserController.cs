@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using ModelProject.ViewModel;
 using System.Diagnostics;
 using BUS.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IBusUser iBusUser;

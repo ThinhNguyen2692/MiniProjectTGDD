@@ -1,4 +1,5 @@
 using BUS;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,12 +10,18 @@ builder.Services.AddSession();
 builder.Services.AddMvc();
 
 builder.Services.serviceDescriptors(builder.Configuration);
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(m => {
+        m.LoginPath = "/login/index";
+        m.ExpireTimeSpan = TimeSpan.FromSeconds(300);
+    });
 
 var app = builder.Build();
 var cookiePolicyOptions = new CookiePolicyOptions
 {
-    MinimumSameSitePolicy = SameSiteMode.Strict,
+    MinimumSameSitePolicy = SameSiteMode.Strict
 };
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -28,6 +35,12 @@ app.UseStaticFiles();
 app.UseSession();
 app.UseCookiePolicy(cookiePolicyOptions);
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapRazorPages();
+app.MapDefaultControllerRoute();
 
 app.UseAuthorization();
 

@@ -8,9 +8,11 @@ using CMSWeb.Models.ProductBrands;
 using ModelProject.ViewModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class PurchaseOrderController : Controller
     {
 

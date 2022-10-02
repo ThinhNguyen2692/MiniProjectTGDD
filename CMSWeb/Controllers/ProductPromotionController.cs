@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using ModelProject.ViewModel;
 using BUS.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class ProductPromotionController : Controller
     {
         private readonly ILogger<ProductPromotionController> _logger;

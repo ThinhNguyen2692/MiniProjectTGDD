@@ -142,6 +142,13 @@ namespace BUS
             return viewModel;
         }
 
+        public User UserLogin(int Userid, string Password)
+        {
+            var data = iDalUser.Login(Password, Userid);
+            if (data == null) return null;
+
+            return data;
+        }
 
 
         /// <summary>

@@ -5,10 +5,11 @@ using BUS;
 using ModelProject.Models;
 using CMSWeb.ViewModels.CustomerViewModel;
 using Newtonsoft.Json;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ILogger<CustomerController> _logger;

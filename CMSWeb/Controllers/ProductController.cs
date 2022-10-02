@@ -6,10 +6,11 @@ using BUS.Services;
 using ModelProject.Models;
 using Newtonsoft.Json;
 using ModelProject.ViewModel;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;

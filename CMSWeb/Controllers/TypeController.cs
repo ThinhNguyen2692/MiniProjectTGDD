@@ -5,9 +5,11 @@ using BUS.Services;
 using Newtonsoft.Json;
 
 using ModelProject.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
+    [Authorize]
     public class TypeController : Controller
     {
         private readonly ILogger<TypeController> _logger;

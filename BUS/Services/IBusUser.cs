@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ModelProject.ViewModel;
+using ModelProject.Models;
 
 namespace BUS.Services
 {
@@ -15,5 +16,6 @@ namespace BUS.Services
         public EditUserViewModel GetEditUserViewModel(int UserId);
         public EditUserViewModel UpdateUser(EditUserViewModel editUserViewModel);
         public EditUserViewModel UpdatePassword(int UserId);
+        public User UserLogin(int Userid, string Password);
     }
 }
