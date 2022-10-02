@@ -20,7 +20,23 @@ namespace ModelProject.ViewModel
         public IFormFile fileImage { get; set; }
         public string MessageAdd { get; set; }
         public string MessageUpdate { get; set; }
-        public Status status { get; set; } = new Status();
+        public IEnumerable<StatusBrands> status { get; set; } = new List<StatusBrands>()
+        {
+            new StatusBrands(){name = "Tạm ngưng kinh doanh", id = 0},
+            new StatusBrands(){name = "kinh doanh", id = 1}
+            
+        };
+      
         
+    }
+
+
+    public class StatusBrands
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+
+        
+
     }
 }

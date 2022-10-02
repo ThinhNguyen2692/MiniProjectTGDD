@@ -105,6 +105,7 @@ namespace CMSWeb.Controllers
             {
                 addProductViewModel.ListBrands = addProductViewModel.GetViewModelBrands(IBusProduct.DalGetbrandsByStatus());
                 addProductViewModel.ListTypes = addProductViewModel.GetViewModelTypes(IBusProduct.ReadAll());
+
                 addProductViewModel.messageAdd = "AddProductFalse";
                 return View("form/FormAddProduct", addProductViewModel);
             }
@@ -113,6 +114,8 @@ namespace CMSWeb.Controllers
             viewModelColor.ProductId = addProductViewModel.ProductId;
             return View("form/FormAddColor", viewModelColor);
         }
+
+
         //[HttpPost]
         //[Route("CheckProductId")]
         //public bool CheckProductId(string ProductId)
@@ -147,8 +150,6 @@ namespace CMSWeb.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("FormAddProductVersion")]
-
-
         /// <summary>
         /// Load form nhập thông tin phiên bản sản phẩm
         /// </summary>
@@ -253,7 +254,15 @@ namespace CMSWeb.Controllers
             return View("form/FormAddPhoto", viewModel);
         }
 
-        
+
+       
+        [Route("")]
+        public IActionResult ShowDetailProductJson()
+        {
+            var ProductDetailViewModel = IBusProduct.DalReadProductDetail("IP12");
+            return Ok(ProductDetailViewModel);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

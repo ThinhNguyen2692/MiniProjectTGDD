@@ -11,7 +11,10 @@ builder.Services.AddMvc();
 builder.Services.serviceDescriptors(builder.Configuration);
 
 var app = builder.Build();
-
+var cookiePolicyOptions = new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+};
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -23,7 +26,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
-
+app.UseCookiePolicy(cookiePolicyOptions);
 app.UseRouting();
 
 app.UseAuthorization();

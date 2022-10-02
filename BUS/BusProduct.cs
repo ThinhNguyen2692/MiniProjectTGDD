@@ -131,6 +131,7 @@ namespace BUS
             ProductVersion.VersionId = productVersionViewModel.ProductVersionId;
             ProductVersion.ProductPrice = productVersionViewModel.ProductVersionPrice;
             ProductVersion.ProductStatus = productVersionViewModel.ProductVersionStatus;
+           
             foreach (var item in productVersionViewModel.information)
             {
                 PropertiesValue propertiesValue = new PropertiesValue();
@@ -184,15 +185,25 @@ namespace BUS
             ProductDetail.quantityProductVerSions = ProductDetail.GetQuantityProductVerSions(data.VersionQuantities.ToList());
             ProductDetail.productVerSionDetailInformation = ProductDetail.GetProductVerSionDetailInformation(data.PropertiesValues.ToList());
 
-            foreach (var item in data.Gifts)
+            foreach (var item in data.Product.Gifts)
             {
                 Promation promation = new Promation();
                 promation.Id = item.GiftId;
                 promation.PromationName = item.GiftProductNavigation.VersionName;
-                
-                
+                promation.PromationPrice = (int)item.GiftProductNavigation.ProductPrice;
+                ProductDetail.ProductPromation.Add(promation);    
+            
             }
-           
+            foreach (var item in data.Product.EventDetails)
+            {
+                Promation promation = new Promation();
+                promation.Id = item.EventId;
+                promation.PromationName = item.Event.EventName;
+                promation.PromationPrice = item.Event.Promotion;
+                ProductDetail.PricePromation.Add(promation);
+
+            }
+
             return ProductDetail;
 
         }

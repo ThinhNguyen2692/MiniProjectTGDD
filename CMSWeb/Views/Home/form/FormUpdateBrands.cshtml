@@ -44,10 +44,7 @@
                         <label asp-for="@Model.BrandStatus">Trạng thái thương hiệu</label>
                        <select class="form-control" asp-for="@Model.BrandStatus">
                             @{
-                                for (int i = 0; i < Model.status.GetStatus().Count; i++)
-                                {
-                                     <option value="@i">@Model.status.GetStatus()[i]</option>
-                                }
+                                
                             }
                         </select>
                     </div>
