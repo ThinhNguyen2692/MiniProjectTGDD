@@ -14,12 +14,12 @@
                 }
 
                 <h4 class="card-title">Nhập ngành hàng mới</h4>
-
-                <form class="forms-sample" asp-action="AddBrands" asp-controller="Type" asp-action="AddType" method="post" id="form-add-type">
-
+                @using(Html.BeginForm("AddType","Type", FormMethod.Post,new {@class="forms-sample", id="form-add-type" }))
+                {
+                    
                     <div class="form-group">
-                        <label asp-for="@Model.typeId" >Mã ngành hàng</label>
-                        <input class="form-control TypeId" asp-for="@Model.typeId" />
+                        <label>Mã ngành hàng</label>
+                        @Html.TextBoxFor(m => m.typeId, new {@class="form-control TypeId"})
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -27,9 +27,9 @@
                             Mã: a-z, A-Z, 0-9
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.typeName">Tên ngành hàng</label>
-                        <input  class="form-control TypeName" asp-for="@Model.typeName"/>
+                     <div class="form-group">
+                        <label>Tên ngành hàng</label>
+                        @Html.TextBoxFor(m => m.typeName, new{@class="form-control TypeName"})
                         <div class="valid-feedback">
                            Chính xác
                         </div>
@@ -37,10 +37,12 @@
                             Không được bỏ trống
                         </div>
                     </div>
-
                     <button id="btn-add-Type" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
-                </form>
+                }
+
+
+                
 
             </div>
         </div>

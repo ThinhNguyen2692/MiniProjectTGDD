@@ -43,7 +43,7 @@ namespace ModelProject.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-5DKEKQQ7\\NGUYENTHINH;Database=MiniProjectTGDD;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(Setting.ConnectionStrings);
             }
         }
 
@@ -66,9 +66,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.ProductId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_id")
-                    .IsFixedLength();
+                    .HasColumnName("product_id");
 
                 entity.Property(e => e.Rating)
                     .HasColumnName("rating")
@@ -169,9 +167,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.ProductId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_id")
-                    .IsFixedLength();
+                    .HasColumnName("product_id");
 
                 entity.HasOne(d => d.Event)
                     .WithMany(p => p.EventDetails)
@@ -194,9 +190,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.GiftProduct)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("gift_product")
-                    .IsFixedLength();
+                    .HasColumnName("gift_product");
 
                 entity.Property(e => e.GiftStatus)
                     .HasColumnName("gift_status")
@@ -204,9 +198,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.ProductId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_id")
-                    .IsFixedLength();
+                    .HasColumnName("product_id");
 
                 entity.HasOne(d => d.GiftProductNavigation)
                     .WithMany(p => p.Gifts)
@@ -229,9 +221,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.GiftProduct)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("gift_product")
-                    .IsFixedLength();
+                    .HasColumnName("gift_product");
 
                 entity.Property(e => e.GiftQuantiy)
                     .HasColumnName("gift_quantiy")
@@ -320,15 +310,11 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.ProductId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_id")
-                    .IsFixedLength();
+                    .HasColumnName("product_id");
 
                 entity.Property(e => e.ProductBrand)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_brand")
-                    .IsFixedLength();
+                    .HasColumnName("product_brand");
 
                 entity.Property(e => e.ProductDescription)
                     .HasColumnName("product_description")
@@ -340,9 +326,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.ProductType)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_type")
-                    .IsFixedLength();
+                    .HasColumnName("product_type");
 
                 entity.Property(e => e.ProuctName)
                     .HasMaxLength(255)
@@ -362,7 +346,6 @@ namespace ModelProject.Models
                 entity.HasOne(d => d.ProductTypeNavigation)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.ProductType)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("product_type_fk");
             });
 
@@ -375,9 +358,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.BrandId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("brand_id")
-                    .IsFixedLength();
+                    .HasColumnName("brand_id");
 
                 entity.Property(e => e.BrandDescription)
                     .HasMaxLength(4000)
@@ -416,9 +397,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.ProductId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_id")
-                    .IsFixedLength();
+                    .HasColumnName("product_id");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductColors)
@@ -437,9 +416,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.VersionId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("version_id")
-                    .IsFixedLength();
+                    .HasColumnName("version_id");
 
                 entity.HasOne(d => d.Photo)
                     .WithMany(p => p.ProductPhotos)
@@ -473,9 +450,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.TypeId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("type_id")
-                    .IsFixedLength();
+                    .HasColumnName("type_id");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.ProductSpecifications)
@@ -493,9 +468,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.Typeid)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("typeid")
-                    .IsFixedLength();
+                    .HasColumnName("typeid");
 
                 entity.Property(e => e.Typename)
                     .HasMaxLength(255)
@@ -511,15 +484,11 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.VersionId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("version_id")
-                    .IsFixedLength();
+                    .HasColumnName("version_id");
 
                 entity.Property(e => e.ProductId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("product_id")
-                    .IsFixedLength();
+                    .HasColumnName("product_id");
 
                 entity.Property(e => e.ProductPrice)
                     .HasColumnName("product_price")
@@ -557,9 +526,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.VersionId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("version_id")
-                    .IsFixedLength();
+                    .HasColumnName("version_id");
 
                 entity.HasOne(d => d.Properties)
                     .WithMany(p => p.PropertiesValues)
@@ -663,10 +630,8 @@ namespace ModelProject.Models
                 entity.Property(e => e.OrderPrice).HasColumnName("order_price");
 
                 entity.Property(e => e.OrderProduct)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("order_product")
-                    .IsFixedLength();
+                    .HasMaxLength(50)
+                    .HasColumnName("order_product");
 
                 entity.Property(e => e.OrderProductPhoto)
                     .HasColumnType("text")
@@ -734,9 +699,7 @@ namespace ModelProject.Models
 
                 entity.Property(e => e.VersionId)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("version_id")
-                    .IsFixedLength();
+                    .HasColumnName("version_id");
 
                 entity.HasOne(d => d.Color)
                     .WithMany(p => p.VersionQuantities)

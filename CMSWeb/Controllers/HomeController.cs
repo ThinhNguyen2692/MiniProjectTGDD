@@ -101,7 +101,6 @@ namespace CMSWeb.Controllers
 
 
         [HttpGet]
-        [Route("RemoveBrands")]
         public IActionResult RemoveBrands(string id)
         {
             var brands = bus_Brands.GetBrandById(id);
@@ -124,7 +123,7 @@ namespace CMSWeb.Controllers
         /// <param name="idBrands"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("FormUpdateBrands")]
+        
         public IActionResult ShowDetail(string idBrands)
         {
             AddBrandViewModel addBrandsViewModel = bus_Brands.GetBrandById(idBrands);

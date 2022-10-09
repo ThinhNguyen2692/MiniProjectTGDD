@@ -88,7 +88,7 @@ namespace CMSWeb.Controllers
         /// <returns>thêm thành công chuyển sang form thêm thông tin kỹ thuật</returns>
         /// <returns>thêm thất bại load lại trang thêm thông tin ngành hàng</returns>
         [HttpPost]
-        [Route("Type/AddBrands")]
+        [Route("Type/AddType")]
         public IActionResult AddType(CreateProductType productType)
         {
             if (Ibus_ProductType.BusAddType(productType) != true)

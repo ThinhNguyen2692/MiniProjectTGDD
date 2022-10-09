@@ -16,7 +16,7 @@ namespace BUS.Services
         public ProductVersionViewModel BusReadProduct(string productId);
         public ProductVersionViewModel AddProductVersion(ProductVersionViewModel productVersionViewModel);
         public bool CheckProduct(string ProductId);
-        public bool CheckVersionQuantity(string id);
+    
         public bool AddProductColor(AddColorProduct productCaddColorProductolor);
         public List<ProductType> ReadAll();
         public List<ProductBrand> DalGetbrandsByStatus();

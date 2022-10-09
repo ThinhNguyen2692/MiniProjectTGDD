@@ -4,18 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ModelProject.Models;
+using DAL.DataModel;
 namespace DAL
 {
     
     public class Dal_Brands : IDalBrands
     {
-        private MiniProjectTGDDContext context;
-        public Dal_Brands(MiniProjectTGDDContext context)
-        {
-            this.context = context;
-        }
-
         
+
+        private IRepository<ProductBrand> repository;
+        private IUnitOfWork _uniOfWork;
+        public Dal_Brands(IUnitOfWork uniOfWork)
+        {
+           
+            _uniOfWork = uniOfWork;
+            this.repository =_uniOfWork.Repository<ProductBrand>();
+        }
 
         /// <summary>
         /// Thêm thương hiệu mới
@@ -27,8 +31,8 @@ namespace DAL
         {
             if (GetBrandById(brand.BrandId) == null)
             {
-                context.ProductBrands.Add(brand);
-                context.SaveChanges();
+                repository.Add(brand);
+                _uniOfWork.SaveChanges();
             }
             else
             {
@@ -43,22 +47,18 @@ namespace DAL
         /// <returns>danh sách thông tin các thương hiệu</returns>
         public List<ProductBrand> DalGetBrand()
         {
-            List<ProductBrand> result = new List<ProductBrand>();
-            //Khong dung try catch 
-            var list = context.ProductBrands.OrderByDescending(b => b.BrandStatus);
-            if(list != null) result.AddRange(list.ToList());
-            return result;
+            var data = repository.List().OrderByDescending(b => b.BrandStatus).ToList();
+            return data;
         }
-
-
         //Xóa thương hiệu
         public bool DalRemoveBrand(string id)
         {
             var data = GetBrandById(id);
+            
             if (data != null)
             {
-                context.Remove(data);
-                context.SaveChanges();
+                repository.Delete(data);
+                _uniOfWork.SaveChanges();
             }
             else
             {
@@ -70,38 +70,40 @@ namespace DAL
         //lây thông tin chi tiết thương hiệu
         public ProductBrand? GetBrandById(string id)
         {
-            var data = context.ProductBrands.Where(c => c.BrandId == id).FirstOrDefault();
+           // var data = context.ProductBrands.Where(c => c.BrandId.Contains(id)).FirstOrDefault();
+            var data = repository.GetById(m => m.BrandId == id);
             if(data == null) { return null; }
             return data;
         }
 
 
-        //Cập nhật thông tin thương hiệu
+        /// <summary>
+        /// Cập nhật thông tin thương hiệu
+        /// </summary>
+        /// <param name="brand">thông tin thương hiệu cần cập nhật</param>
+        /// <returns></returns>
         public bool DalUpdateBrands(ProductBrand brand)
         {
-            context = new MiniProjectTGDDContext();
-            context.ProductBrands.Update(brand);
-            context.SaveChanges();
+            var data = GetBrandById(brand.BrandId);
+            repository.Update(data,brand);
+            _uniOfWork.SaveChanges();
             return true;
         }
 
-        //Đọc dữ liệu thương hiệu đang kinh doanh
+        /// <summary>
+        /// Đọc danh sách thương hiệu đang kinh doanh
+        /// </summary>
+        /// <returns>danh sach thương hiệu</returns>
         public List<ProductBrand> DalGetbrandsByStatus()
         {
             
-            var list = context.ProductBrands.Where(b => b.BrandStatus == 1).ToList();
+            //var list = context.ProductBrands.Where(b => b.BrandStatus == 1).ToList();
+            var list = repository.List(b => b.BrandStatus == 1).ToList();
             return list;
 
         }
 
-        //kiểm tra sản phẩm thương hiệu
-        public bool CheckProduct(string BrandsId)
-        {
-            var list = context.Products.Where(b => b.ProductBrand == BrandsId).ToList();
-            if(list.Count == 0) { return true; }
-            return false;
-        }
-
+      
 
     }
 }

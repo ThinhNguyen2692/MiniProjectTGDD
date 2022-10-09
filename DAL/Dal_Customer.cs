@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ModelProject.Models;
+using DAL.DataModel;
 
 namespace DAL
 {
@@ -17,34 +18,38 @@ namespace DAL
 
     public class Dal_Customer:IDalCustomer
     {
-        
-        private static MiniProjectTGDDContext context;
 
-        public  Dal_Customer (MiniProjectTGDDContext miniProjectTGDDContext)
+        private IRepository<Customer> repository;
+        private IUnitOfWork _uniOfWork;
+
+
+        public  Dal_Customer (IUnitOfWork uniOfWork)
         {
-            context = miniProjectTGDDContext; 
+            _uniOfWork = uniOfWork;
+            this.repository = _uniOfWork.Repository<Customer>();
         }
 
         //lấy danh sách khách hàng
         public List<Customer> GetCustomers()
         {
-            var data = context.Customers.ToList();
+            var data = repository.List().ToList();
             return data;
         }
 
         //cập nhật thông tin khách hàng
         public Customer UpdateCustomer(Customer customer)
         {
-            context = new MiniProjectTGDDContext();
-             context.Customers.Update(customer);
-             context.SaveChanges();
+            var old_information = GetCustomerByphone(customer.CustomerPhone);
+             repository.Update(old_information,customer);
+             _uniOfWork.SaveChanges();
             return customer;
         }
 
         //lấy thông tin 1 khách hàng
         public Customer GetCustomerByphone(string NumberPhone)
         {
-            var data = context.Customers.Where(c => c.CustomerPhone == NumberPhone).FirstOrDefault();
+            var data = repository.GetById(c => c.CustomerPhone == NumberPhone);
+
             return data;
         }
     }

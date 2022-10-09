@@ -16,14 +16,14 @@ namespace ModelProject.Models
 
         public string ProductId { get; set; } = null!;
         public string ProuctName { get; set; } = null!;
-        public string ProductType { get; set; } = null!;
+        public string? ProductType { get; set; }
         public string ProductBrand { get; set; } = null!;
         public string ProductPhoto { get; set; } = null!;
         public string? ProductDescription { get; set; }
         public DateTime? ReleaseTime { get; set; }
 
         public virtual ProductBrand ProductBrandNavigation { get; set; } = null!;
-        public virtual ProductType ProductTypeNavigation { get; set; } = null!;
+        public virtual ProductType? ProductTypeNavigation { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<EventDetail> EventDetails { get; set; }
         public virtual ICollection<Gift> Gifts { get; set; }

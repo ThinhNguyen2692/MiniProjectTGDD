@@ -9,8 +9,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="6.0.9" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
-    <PackageReference Include="Owin" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

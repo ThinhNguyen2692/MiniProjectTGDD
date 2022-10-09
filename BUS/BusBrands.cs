@@ -59,11 +59,8 @@ namespace BUS
         }
         public AddBrandViewModel? RemoveBrand(AddBrandViewModel addBrandViewModel)
         {
-           
-            if (iDalBrands.CheckProduct(addBrandViewModel.BrandId) == true)
+            if (iDalBrands.DalRemoveBrand(addBrandViewModel.BrandId) == true)
             {
-                if(iDalBrands.DalRemoveBrand(addBrandViewModel.BrandId) == true)
-               
                 // Xóa ảnh
                 File.Delete("wwwroot\\images\\Logo\\" + addBrandViewModel.BrandPhoto);
                 addBrandViewModel = null;
@@ -111,9 +108,6 @@ namespace BUS
             return iDalBrands.DalGetbrandsByStatus();
         }
 
-        public bool CheckProduct(string BrandsId)
-        {
-            return iDalBrands.CheckProduct(BrandsId);
-        }
+        
     }
 }

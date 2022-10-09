@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
+using DAL.DataModel;
 
 namespace DAL
 {
@@ -21,18 +22,21 @@ namespace DAL
     {
 
 
-        public MiniProjectTGDDContext context;
+        private IRepository<InformationProperty> repository;
+        private IUnitOfWork _unitOfWork;
 
-        public Dal_InformationProperties (MiniProjectTGDDContext miniProjectTGDDContext)
+        public Dal_InformationProperties (IUnitOfWork _unitOfWork)
         {
-               context = miniProjectTGDDContext;
+
+            this._unitOfWork = _unitOfWork;
+            repository = _unitOfWork.Repository<InformationProperty>();
         }
 
         //Thêm thông tin thuộc tính
         public void AddInformationProperties(InformationProperty informationProperty)
         {
-            context.InformationProperties.Add(informationProperty);
-            context.SaveChanges();
+            repository.Add(informationProperty);
+            _unitOfWork.SaveChanges();
         }
 
    
@@ -44,13 +48,12 @@ namespace DAL
         //Xóa thuộc tính
         public bool DalDeleteProperty(int property)
         {
-            
-            var item = context.PropertiesValues.Where(p => p.PropertiesId == property).ToList();
+            var item = repository.List(p => p.PropertiesId == property).ToList();
             if (item.Count == 0)
             {
-                var data = context.InformationProperties.FirstOrDefault(p => p.PropertiesId == property);
-                context.InformationProperties.Remove(data);
-                context.SaveChanges();
+                var data = repository.GetById(p => p.PropertiesId == property);
+                repository.Delete(data);
+                _unitOfWork.SaveChanges();
                 return true;
             }
             return false;
@@ -63,7 +66,7 @@ namespace DAL
 
         public bool CheckInformationProperty(int SpecificationId)
         {
-            var data = context.InformationProperties.Where(s => s.SpecificationsId == SpecificationId).ToList();
+            var data = repository.List(s => s.SpecificationsId == SpecificationId).ToList();
             if (data.Count == 0) return true;
             else return false;
         }

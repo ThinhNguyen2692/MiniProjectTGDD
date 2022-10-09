@@ -7,7 +7,7 @@ namespace ModelProject.Models
     {
         public int Id { get; set; }
         public int OrderDetail { get; set; }
-        public string GiftProduct { get; set; } = null!;
+        public string? GiftProduct { get; set; }
         public string ProuctName { get; set; } = null!;
         public int ProductPrice { get; set; }
         public string ProductPhoto { get; set; } = null!;

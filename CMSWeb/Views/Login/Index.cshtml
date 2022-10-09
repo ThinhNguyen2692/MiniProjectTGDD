@@ -38,7 +38,7 @@
                             <h6 class="font-weight-light">Đăng nhập</h6>
                             @using (Html.BeginForm("Index", "Login"))
                             {
-                            
+                            @Html.HiddenFor(m => m.GetUrl)
                                 <div class="form-group">
                                    
                                     @Html.TextBoxFor(m => m.UserId, new{@class="form-control form-control-lg", placeholder="userId"})

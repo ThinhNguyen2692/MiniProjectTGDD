@@ -56,9 +56,10 @@
                                                 }
                                                 <td style=" width:200px;">
                                                     <div class="Action">
-                                                        <a class="btn btn btn-outline-danger" href="/FormUpdateBrands?idBrands=@item.BrandId">
+                                                        <a class="btn btn btn-outline-danger"  asp-action="ShowDetail" asp-controller="Home" asp-route-idBrands="@item.BrandId">
                                                                 Cập nhật
                                                         </a>
+                                                         <a asp-action="RemoveBrands" asp-controller="Home" asp-route-id="@item.BrandId" class="btn btn-outline-danger">Xóa</a>
                                                     </div>
 
                                              </td>

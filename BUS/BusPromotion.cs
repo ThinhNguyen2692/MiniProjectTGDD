@@ -48,7 +48,7 @@ namespace BUS
 
         public ProductPromotionViewModel AddGift(ProductPromotionViewModel viewModel)
         {
-            if (iDAlProduct.CheckProduct(viewModel.ProductId) == false)
+            if (iDAlProduct.DalReadProduct(viewModel.ProductId) == null)
             {
                 viewModel.Message = "ProductIdFalse";
                 return viewModel;

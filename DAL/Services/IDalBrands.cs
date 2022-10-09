@@ -16,6 +16,6 @@ namespace DAL
         public ProductBrand GetBrandById(string id);
         public bool DalUpdateBrands(ProductBrand name);
         public List<ProductBrand> DalGetbrandsByStatus();
-        public bool CheckProduct(string BrandsId);
+       
     }
 }

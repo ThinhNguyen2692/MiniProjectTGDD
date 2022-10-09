@@ -62,7 +62,7 @@ namespace BUS
             product.ReleaseTime = productViewModel.ReleaseTime;
             product.ProductPhoto = productViewModel.FileImage.FileName;
             product.ProductDescription = productViewModel.ProdutDescription;
-            if(dal_Product.CheckProduct(product.ProductId) == false)
+            if(dal_Product.DalReadProduct(product.ProductId) == null)
             {
                 dal_Product.AddProduct(product);
                 AddFileImage(productViewModel.FileImage);
@@ -240,7 +240,7 @@ namespace BUS
         public bool DelProductVerion(string id, string productID)
         {
             //kiểm tra số lượng phiên bản sản phẩm còn lại
-            var data = dal_Product.CheckVersionQuantity(id);
+            var data = dal_ProductVersion.CheckVersionQuantity(id);
             //số lượng > 0 không đc xóa phiên bản sản phẩm
             if(data == false) { return false; }
             //checkDelete nhận kết quả xóa phiên bản sản phẩm
@@ -284,7 +284,12 @@ namespace BUS
         /// <returns>false sản phẩm không được thêm</returns>
         public bool CheckProduct(string ProductId)
         {
-            return dal_Product.CheckProduct(ProductId);
+            if(dal_Product.DalReadProduct(ProductId) == null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -294,7 +299,11 @@ namespace BUS
         /// <returns></returns>
         public bool CheckProductVersion(string versionID)
         {
-            return dal_ProductVersion.CheckProductVersion(versionID);
+            if(dal_ProductVersion.DalReadProduct(versionID) == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -303,11 +312,7 @@ namespace BUS
         /// <param name="id">id phiên bản tồn tại</param>
         /// <returns>true: số lượng sản phảm = 0</returns>
         /// <returns>false: số lượng sản phảm > 0</returns>
-        public bool CheckVersionQuantity(string id)
-        {
-            return dal_Product.CheckVersionQuantity(id);
-        }
-
+       
         /// <summary>
         /// cập nhật sản phẩm
         /// </summary>

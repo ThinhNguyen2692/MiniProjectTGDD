@@ -43,8 +43,10 @@ namespace BUS
         //lấy thông tin 1 khách hàng
         public Customer GetCustomerByphone(string NumberPhone)
         {
-            return dal_Customer.GetCustomerByphone(NumberPhone);
-
+            var customer = dal_Customer.GetCustomerByphone(NumberPhone);
+            if (customer == null) { return new Customer(); }
+            return customer;
+           
         }
     }
 }

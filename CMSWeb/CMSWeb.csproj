@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\vendors\chart.js\" />
-    <Folder Include="wwwroot\images\Logo\" />
     <Folder Include="wwwroot\images\ProductDefault\" />
     <Folder Include="wwwroot\images\Products\" />
   </ItemGroup>

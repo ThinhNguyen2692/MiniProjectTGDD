@@ -6,34 +6,35 @@
             <div class="card-body">
                 <h4></h4>
                 <h4 class="card-title">Nhập thông số kỹ thuật SP</h4>
-                
-                <form class="forms-sample" id="form-add-Specification" method="post" enctype="multipart/form-data" asp-controller="Type" asp-action="AddSpecification" >
+
+                @using (Html.BeginForm("AddSpecification", "type", FormMethod.Post, new { @class = "forms-sample", id = "form-add-Specification" }))
+                {
+                    @Html.HiddenFor(m => m.typeId)
 
                     <div class="form-group">
-                        <label asp-for="@Model.typeId">Mã ngành hàng</label>
-                        <input asp-for="@Model.typeId" class="form-control SpecificationId" readonly   />
-                        
+                        <label>Tên thông số</label>
+                        @Html.TextBoxFor(m => m.ProductPecificationName, new{@class="form-control SpecificationName"})
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            không được bỏ trống
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.ProductPecificationName">Tên thông số</label>
-                        <input  class="form-control SpecificationName" asp-for="@Model.ProductPecificationName"/>
-                         <div class="valid-feedback">
-                         Chính xác
+                        <label>Mô tả</label>
+                        @Html.TextBoxFor(m => m.ProductPecificationDrecription, new{@class="form-control"})
                     </div>
-                    <div class="invalid-feedback">
-                        không được bỏ trống
-                    </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.ProductPecificationDrecription">Mô tả</label>
-                        <input  class="form-control" asp-for="@Model.ProductPecificationDrecription"/>
-                    </div>
-                     <button type="submit" id="btn-add-Type" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                    <button type="submit" id="btn-add-Type" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
-                    
-                </form>
-                 <br />
-                 <a class="btn btn-outline-danger" href="/Formtype">Kết thúc nhập</a>  
+                }
+
+
+
+
+
+                <br />
+                <a class="btn btn-outline-danger" href="/Formtype">Kết thúc nhập</a>
             </div>
             <br />
 

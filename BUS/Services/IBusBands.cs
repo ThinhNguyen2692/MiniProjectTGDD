@@ -16,6 +16,6 @@ namespace BUS.Services
         public AddBrandViewModel? RemoveBrand(AddBrandViewModel addBrandViewModel);
         public bool UpdateBrands(AddBrandViewModel brandViewModel);
         public List<ProductBrand> DalGetbrandsByStatus();
-        public bool CheckProduct(string BrandsId);
+       
     }
 }

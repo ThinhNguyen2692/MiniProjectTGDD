@@ -12,7 +12,7 @@ namespace ModelProject.Models
 
         public int OrderDetail { get; set; }
         public string OrderId { get; set; } = null!;
-        public string OrderProduct { get; set; } = null!;
+        public string? OrderProduct { get; set; }
         public string OrderProudctName { get; set; } = null!;
         public string OrderProductPhoto { get; set; } = null!;
         public int OrderPrice { get; set; }

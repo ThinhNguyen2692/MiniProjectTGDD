@@ -58,8 +58,7 @@ namespace ModelProject.ViewModel
         {
             var ProductInformationNew = new List<ProductInformation>();
             foreach (var item in type.ProductSpecifications)
-            {
-                
+            {               
                 foreach (var item2 in item.InformationProperties)
                 {
                     ProductInformation productInformation = new ProductInformation();

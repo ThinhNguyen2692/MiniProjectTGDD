@@ -5,57 +5,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.DataModel;
 
 namespace DAL
 {
 
     public interface IDal_Gift
     {
-        public List<ProductType> GetProductType();
-        public List<ProductType> GetProductTypeGift();
-        public List<Gift> GetGift(string IdProduct);
+     
         public void AddGift(Gift gift);
         public void UpdaeGift(int IdGift);
     }
 
     public class Dal_Gift : IDal_Gift
     {
-        private MiniProjectTGDDContext context;
-        public Dal_Gift(MiniProjectTGDDContext context)
-        {
-            this.context = context;
-        }
-        public List<ProductType> GetProductType()
-        {
-            var data = context.ProductTypes.Include(p => p.Products).ThenInclude(pv => pv.ProductVersions.Where(v => v.ProductPrice < 500000).Where(v => v.ProductStatus == 1)).ToList();
-            return data;
-        }
+        private IRepository<Gift> repository;
+        private IUnitOfWork _unitOfWork;
 
-        public List<ProductType> GetProductTypeGift()
+        public Dal_Gift(IUnitOfWork uniOfWork)
         {
-            var data = context.ProductTypes.Include(p => p.Products).ThenInclude(pv => pv.ProductVersions.Where(v => v.ProductStatus == 1)).ToList();
-            return data;
+            _unitOfWork = uniOfWork;
+            this.repository = _unitOfWork.Repository<Gift>();
+           
         }
-
-        public List<Gift> GetGift(string IdProduct)
-        {
-            var data = context.Gifts.Where(g => g.ProductId == IdProduct).ToList();
-            return data;
-        }
+        
 
         public void AddGift(Gift gift)
         {
-            context.Gifts.Add(gift);
-            context.SaveChanges();
+            repository.Add(gift);
+            _unitOfWork.SaveChanges();
         }
 
 
         public void UpdaeGift(int IdGift)
         {
-            var data = context.Gifts.Where(g => g.GiftId == IdGift).First();
+            var data = repository.GetById(g => g.GiftId == IdGift);
             data.GiftStatus = 0;
-            context.Gifts.Update(data);
-            context.SaveChanges();
+            //context.Update(data);
+            _unitOfWork.SaveChanges();
         }
 
         

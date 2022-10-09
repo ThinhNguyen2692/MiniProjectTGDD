@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
-
+using DAL.DataModel;
 
 namespace DAL
 {
@@ -17,16 +17,19 @@ namespace DAL
     }
     public class Dal_Photo:IDalPhoto
     {
-        private MiniProjectTGDDContext context;
-       public  Dal_Photo(MiniProjectTGDDContext context)
+
+        private IRepository<Photo> repository;
+        private IUnitOfWork _unitOfWork;
+        public  Dal_Photo(IUnitOfWork _unitOfWork)
         {
-        this.context = context;
+            this._unitOfWork = _unitOfWork;
+            repository = _unitOfWork.Repository<Photo>();
         }
         
         // Them hinh cho sản phẩm
         public int AddPhoto(Photo photo)
         {
-            var data = context.Photos.ToList();
+            var data = ReadAll();
             foreach (var item in data)
             {
                 if(String.Compare(item.PhotoPath, photo.PhotoPath) == 0)
@@ -34,16 +37,16 @@ namespace DAL
                     return item.PhotoId;
                 }
             }
-            
-                context.Photos.Add(photo);
-                context.SaveChanges();
+
+            repository.Add(photo);
+                _unitOfWork.SaveChanges();
              return photo.PhotoId;
         }
 
         public List<Photo> ReadAll()
         {
-            var data = context.Photos.ToList();
-            
+            var data = repository.List().ToList();
+
             return data;
         }
 
@@ -55,17 +58,17 @@ namespace DAL
         /// <returns>danh sách đường dẫn hình (Xóa hình khỏi thư mục)</returns>
         public List<string> DeletePhoto()
         {
-            List<string> paths = new List<string>();
+            //List<string> paths = new List<string>();
          
-            var data = context.Photos.Include(p => p.ProductPhotos).Where(p => p.ProductPhotos.Count == 0).ToList();
-            context.Photos.RemoveRange(data);
-            context.SaveChanges();
-            // lấy danh sách path
-            foreach (var item in data)
-            {
-                paths.Add(item.PhotoPath);
-            }
-            return paths;
+            //var data = context.Photos.Include(p => p.ProductPhotos).Where(p => p.ProductPhotos.Count == 0).ToList();
+            //context.Photos.RemoveRange(data);
+            //context.SaveChanges();
+            //// lấy danh sách path
+            //foreach (var item in data)
+            //{
+            //    paths.Add(item.PhotoPath);
+            //}
+            return null;
         }
     }
 }

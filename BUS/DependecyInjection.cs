@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL;
+using DAL.DataModel;
 using BUS.Services;
 using ModelProject.Models;
 
@@ -43,6 +44,7 @@ namespace BUS
             services.AddSingleton<IBusPurchaseOrder, BusPurchaseOrder>();
             services.AddSingleton<IBusUser, BusUser>();
             services.AddSingleton<IBusStatistical, BusStatistical>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }

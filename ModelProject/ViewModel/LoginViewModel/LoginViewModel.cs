@@ -11,6 +11,8 @@ namespace ModelProject.ViewModel
         public LoginViewModel() { }
         public int? UserId { get; set; }
         public string Password { get; set; }
+
+        public string GetUrl { get; set; }
         
     }
 }

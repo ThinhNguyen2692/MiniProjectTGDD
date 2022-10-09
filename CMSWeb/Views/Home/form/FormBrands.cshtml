@@ -24,7 +24,7 @@
 
                 }
                 <h2 style="text-align:center;" class="card-title">Nhập thông tin thương hiệu mới</h2>
-                @using (Html.BeginForm("AddBrands", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("AddBrands", "Home", FormMethod.Post, new {id="form-brands" ,enctype = "multipart/form-data" }))
                 {
 
                     <div class="form-group">

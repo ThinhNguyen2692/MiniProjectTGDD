@@ -257,7 +257,7 @@ namespace CMSWeb.Controllers
 
 
        
-        [Route("")]
+        
         public IActionResult ShowDetailProductJson()
         {
             var ProductDetailViewModel = IBusProduct.DalReadProductDetail("IP12");
