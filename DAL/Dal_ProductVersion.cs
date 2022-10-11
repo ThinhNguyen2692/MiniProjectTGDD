@@ -22,10 +22,10 @@ namespace DAL
 
     public class Dal_ProductVersion:IDalProductVersion
     {
-        private  MiniProjectTGDDContext context;
+        
         private IRepository<ProductVersion> repository;
         private IUnitOfWork _unitOfWork;
-        public  Dal_ProductVersion(MiniProjectTGDDContext context, IUnitOfWork _unitOfWork)
+        public  Dal_ProductVersion(IUnitOfWork _unitOfWork)
         {
             this._unitOfWork = _unitOfWork;
             repository = _unitOfWork.Repository<ProductVersion>();
@@ -59,12 +59,15 @@ namespace DAL
         //lấy chi tiết sản phẩm
         public ProductVersion DalReadProduct(string id)
         {
-
-            var data2 = context.ProductVersions.Where(p => p.VersionId == id).Include(pv => pv.Product).Include(p => p.PropertiesValues).ThenInclude(p=>p.Properties).ThenInclude(p => p.Specifications).Include(p => p.VersionQuantities).ThenInclude(p => p.Color).Include(p => p.Product).ThenInclude(p => p.ProductBrandNavigation).Include(p => p.Product).ThenInclude(p => p.ProductTypeNavigation).FirstOrDefault();
-            if (data2 == null) return null;
-            var data = context.Products.Where(p => p.ProductId == data2.ProductId).Include(g => g.ProductVersions).Include(p => p.EventDetails).ThenInclude(p => p.Event).Include(p => p.ProductBrandNavigation).FirstOrDefault();
-            if (data == null) return null;
-            data2.Product = data;
+           // var data2 = context.ProductVersions.Where(p => p.VersionId == id).Include(pv => pv.Product).Include(p => p.PropertiesValues).ThenInclude(p=>p.Properties).ThenInclude(p => p.Specifications).Include(p => p.VersionQuantities).ThenInclude(p => p.Color).Include(p => p.Product).ThenInclude(p => p.ProductBrandNavigation).Include(p => p.Product).ThenInclude(p => p.ProductTypeNavigation).FirstOrDefault();
+            var data2 = repository.GetAll(predicate: p => p.VersionId == id, 
+                include: p => p.Include(p => p.Product).ThenInclude(p => p.ProductColors)
+                .Include(p => p.Product).ThenInclude(e => e.EventDetails).ThenInclude(e => e.Event)
+                .Include(p => p.Product).ThenInclude(p => p.ProductBrandNavigation)
+                .Include(p => p.Product).ThenInclude(p => p.ProductTypeNavigation)
+                .Include(pv => pv.PropertiesValues).ThenInclude(pv => pv.Properties).ThenInclude(pv => pv.Specifications)
+                .Include(pv => pv.VersionQuantities).ThenInclude(vq => vq.Color)).FirstOrDefault();
+            if (data2 == null) return new ProductVersion();
             return data2;
         }
 
@@ -74,7 +77,7 @@ namespace DAL
         /// <returns>danh sách sản phẩm</returns>
         public List<ProductVersion> DalReadProductAll()
         {
-            var data = repository.ListIncludes(p => p.Product).ToList();
+            var data = repository.GetAll(include: p => p.Include(p => p.Product)).ToList();
             return data;
         }
 
@@ -85,9 +88,9 @@ namespace DAL
 
         public bool UpdateProductVersion(ProductVersion productVersion)
         {
-            context = new MiniProjectTGDDContext();
-            context.ProductVersions.Update(productVersion);
-            context.SaveChanges();
+            var data = repository.GetById(p => p.VersionId == productVersion.VersionId);
+            repository.Update(data,productVersion);
+            _unitOfWork.SaveChanges();
             return true;
         }
 

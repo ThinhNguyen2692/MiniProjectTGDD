@@ -55,7 +55,7 @@ namespace BUS
             foreach (var item in data)
             {
                 InformationPhoto photo = new InformationPhoto();
-                photo.PhotoId = item.PhotoId;
+                photo.ProductPhotoId = item.PhotoId;
                 photo.PathImage = item.PhotoPath;
                 photoViewModel.informationPhoto.Add(photo);
             }

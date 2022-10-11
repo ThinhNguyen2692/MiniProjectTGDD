@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.DataModel;
 using Microsoft.EntityFrameworkCore;
 using ModelProject.Models;
 
@@ -18,19 +19,25 @@ namespace DAL
     }
     public class DalPurchaseOrder:IDalPurchaseOrder
     {
-        private MiniProjectTGDDContext context;
+        private IRepository<PurchaseOrder> repository;
+        private IUnitOfWork _unitOfWork;
+        public DalPurchaseOrder(IUnitOfWork _unitOfWork)
+        {
+            this._unitOfWork = _unitOfWork;
+            repository = _unitOfWork.Repository<PurchaseOrder>();
+        }
 
-        public DalPurchaseOrder(MiniProjectTGDDContext context) { this.context = context; }
+       
         public List<PurchaseOrder> GetPurchaseOrderAll()
         {
-            var data = context.PurchaseOrders.Include(p => p.PurchaseOrderDetails).ToList();
+            var data = repository.ListIncludes(p => p.PurchaseOrderDetails).ToList();
             return data;
         }
 
         public PurchaseOrder GetPurchaseOrderById(string OrderId)
         {
-            var data = context.PurchaseOrders.Include(p => p.PurchaseOrderDetails).ThenInclude(p => p.GiftDetails).FirstOrDefault(p => p.OrderId == OrderId);
-            if (data == null) return null;
+            var data = repository.GetAll(predicate: p => p.OrderId == OrderId, include: p => p.Include(p => p.PurchaseOrderDetails).ThenInclude(p => p.GiftDetails)).FirstOrDefault();
+            if (data == null) return new PurchaseOrder();
             return data;
         }
 
@@ -41,23 +48,23 @@ namespace DAL
         /// <param name="OrderId"></param>
         public void Update(string OrderId, int stastus)
         {
-            var data = context.PurchaseOrders.FirstOrDefault(p => p.OrderId == OrderId);
-            if (data == null) return;
+            var data = repository.GetAll(predicate: p => p.OrderId == OrderId).FirstOrDefault();
+            if (data == null) { _unitOfWork.SaveChanges(); return; }
             data.OrderStatus = stastus;
-            context.SaveChanges();
+            _unitOfWork.SaveChanges();
         }
 
         public List<PurchaseOrder> GetPurchaseOrdersMonth()
         {
             DateTime dateTime = DateTime.Now;
-            var data = context.PurchaseOrders.Where(p => p.SetupTime.Value.Month == dateTime.Month).Where(p => p.SetupTime.Value.Year == dateTime.Year).ToList();
+            var data = repository.GetAll(predicate: p => p.SetupTime.Value.Month == dateTime.Month && p.SetupTime.Value.Year == dateTime.Year).ToList();
             return data;
         }
 
         public List<PurchaseOrder> GetPurchaseOrdersMonthProduct()
         {
             DateTime dateTime = DateTime.Now;
-            var data = context.PurchaseOrders.Where(p => p.SetupTime.Value.Month == dateTime.Month || p.SetupTime.Value.Year == dateTime.Year || p.OrderStatus == 0 || p.OrderStatus == 1).Include(p => p.PurchaseOrderDetails).ToList();
+            var data = repository.GetAll(predicate: p => p.SetupTime.Value.Month == dateTime.Month || p.SetupTime.Value.Year == dateTime.Year || p.OrderStatus == 0 || p.OrderStatus == 1, include: p => p.Include(p => p.PurchaseOrderDetails)).ToList();
             return data;
         }
 

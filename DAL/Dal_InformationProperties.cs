@@ -16,7 +16,7 @@ namespace DAL
         bool DalDeleteProperty(int property);
       
     
-        public bool CheckInformationProperty(int SpecificationId);
+       
     }
     public class Dal_InformationProperties:IDalInformationProperties
     {
@@ -57,18 +57,6 @@ namespace DAL
                 return true;
             }
             return false;
-        }
-
-        //Xóa danh sách thông tin thuộc tính khi ngành hàng bị xóa
-        
-      
-
-
-        public bool CheckInformationProperty(int SpecificationId)
-        {
-            var data = repository.List(s => s.SpecificationsId == SpecificationId).ToList();
-            if (data.Count == 0) return true;
-            else return false;
         }
     }
 }

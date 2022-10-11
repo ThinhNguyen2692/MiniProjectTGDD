@@ -11,7 +11,7 @@ namespace ModelProject.ViewModel
     {
         public InformationPhoto() { }
         public string PathImage { get; set; }
-        public int PhotoId { get; set; }
+        public int ProductPhotoId { get; set; }
         public bool IsPhoto { get; set; } = false;
     }
     public class PhotoViewModel

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using ModelProject.Models;
+using DAL.DataModel;
 
 
 namespace DAL
@@ -16,19 +17,23 @@ namespace DAL
         public void DelPhoto(string id);
         public List<ProductPhoto> GetProductPhotos();
         public List<ProductPhoto> GetProductPhoto(string VersionId);
+        public void DelPhotoProduct(ProductPhoto photo);
+        public ProductPhoto GetById(int id);
     }
     public class Dal_productphotos : IDalProductPhoto
     {
-        private MiniProjectTGDDContext context;
+        private IRepository<ProductPhoto> repository;
+        private IUnitOfWork _uniOfWork;
 
-        public Dal_productphotos(MiniProjectTGDDContext context)
+        public Dal_productphotos(IUnitOfWork _uniOfWork)
         {
-            this.context = context;
+           this._uniOfWork = _uniOfWork;
+            repository = _uniOfWork.Repository<ProductPhoto>();
         }
 
         public List<ProductPhoto> GetProductPhoto(string VersionId)
         {
-            var data = context.ProductPhotos.Where(p => p.VersionId == VersionId).Include(p => p.Photo).ToList();
+            var data = repository.GetAll(predicate: p => p.VersionId == VersionId, include: p => p.Include(p => p.Photo)).ToList();
             return data;
         }
 
@@ -41,8 +46,8 @@ namespace DAL
         /// <returns></returns>
         public bool DalAddProductPhoto(ProductPhoto productPhoto)
         {
-            context.ProductPhotos.Add(productPhoto);
-            context.SaveChanges();
+            repository.Add(productPhoto);
+            _uniOfWork.SaveChanges();
             return true;
         }
         /// <summary>
@@ -51,7 +56,7 @@ namespace DAL
         /// <returns></returns>
         public List<ProductPhoto> GetProductPhotos()
         {
-            var GetProductPhotos = context.ProductPhotos.ToList();
+            var GetProductPhotos = repository.List().ToList();
             return GetProductPhotos;
         }
         /// <summary>
@@ -63,9 +68,29 @@ namespace DAL
         {
 
             //lấy danh sách hình sản phẩm cần xóa
-            var data = context.ProductPhotos.Where(c => c.VersionId == id);
-            context.ProductPhotos.RemoveRange(data);
-            context.SaveChanges();
+            var data = repository.GetAll(predicate: c => c.VersionId == id);
+            if(data == null) return;
+            repository.RemoveRange(data);
+            _uniOfWork.SaveChanges();
         }
+
+        /// <summary>
+        /// Xóa hình sản phẩm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public void DelPhotoProduct(ProductPhoto photo)
+        { 
+            repository.Delete(photo);
+            _uniOfWork.SaveChanges();
+        }
+
+        public ProductPhoto GetById(int id)
+        {
+             var data = repository.GetAll(predicate: c => c.ProductPhotoId == id).FirstOrDefault();
+            if (data == null) return null;
+            return data;
+        }
+
     }
 }

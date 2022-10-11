@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
+using DAL.DataModel;
 
 namespace DAL
 {
@@ -13,16 +14,18 @@ namespace DAL
         public bool Update(QuantityProductVerSion quantityProductVerSion);
         public bool AddVersionQuantity(VersionQuantity versionQuantity);
         public List<VersionQuantity> ReadQuantity(string id);
-        public bool DelQuantyti(string id);
+      
         public bool CheckQuantity(List<VersionQuantity> versionQuantities);
         public void UpdateOrderCanned(VersionQuantity versionQuantity);
     }
     public class Dal_VersionQuantity : IDalVersionQuantity
     {
-        private MiniProjectTGDDContext context ;
-        public Dal_VersionQuantity(MiniProjectTGDDContext context)
+        private IRepository<VersionQuantity> repository;
+        private IUnitOfWork _unitOfWork;
+        public Dal_VersionQuantity(IUnitOfWork _unitOfWork)
         {
-           this.context = context;
+            this._unitOfWork = _unitOfWork;
+            repository = _unitOfWork.Repository<VersionQuantity>();
         }
 
         /// <summary>
@@ -32,9 +35,9 @@ namespace DAL
         /// <returns>thêm thành công</returns>
         public bool AddVersionQuantity(VersionQuantity versionQuantity)
         {
-                var context = new MiniProjectTGDDContext();
-                context.VersionQuantities.Add(versionQuantity);
-                context.SaveChanges();
+                
+                repository.Add(versionQuantity);
+                _unitOfWork.SaveChanges();
             return true;
         }
 
@@ -47,35 +50,20 @@ namespace DAL
         public List<VersionQuantity> ReadQuantity(string id)
         {
                
-                var data = context.VersionQuantities.Where(v => v.VersionId == id).Include(q => q.Color).ToList(); 
+                var data = repository.GetAll(predicate: v => v.VersionId == id, include: vq => vq.Include(q => q.Color)).ToList();
             return data;
         }
 
         public bool Update(QuantityProductVerSion quantityProductVerSion) {
 
-            var data = context.VersionQuantities.First(v => v.Id == quantityProductVerSion.idQuantity);
-            if (data == null) return false;
+            var data = repository.GetAll(predicate: v => v.Id == quantityProductVerSion.idQuantity).FirstOrDefault();
+            if (data == null) { return false; _unitOfWork.SaveChanges(); }
             data.Quantity = quantityProductVerSion.Quantity;
-            context.SaveChanges();
+            _unitOfWork.SaveChanges();
             return true;
         }
 
-        /// <summary>
-        /// Hàm xóa thông tin số lượng sản phẩm
-        /// </summary>
-        /// <param name="id">mã phiên bản sản phẩm</param>
-        /// <returns>true xóa thành công</returns>
-        /// <returns>true không thể xóa</returns>
-        public bool DelQuantyti(string id)
-        {
-          
-            var data = context.VersionQuantities.Where(c => c.VersionId == id).ToList();
-
-            if(CheckQuantity(data) == false || data.Count == 0) { return false; }
-            context.VersionQuantities.RemoveRange(data);
-            context.SaveChanges();
-            return true;
-        }
+       
 
         /// <summary>
         /// kiểm tra số lượng sản phẩm
@@ -104,10 +92,10 @@ namespace DAL
         public void UpdateOrderCanned(VersionQuantity versionQuantity)
         {
 
-            var data = context.VersionQuantities.Where(v => v.VersionId == versionQuantity.VersionId).Where(v => v.ColorId == versionQuantity.ColorId).FirstOrDefault();
-            if (data == null) return ;
+            var data = repository.GetAll(v => v.VersionId == versionQuantity.VersionId && v.ColorId == versionQuantity.ColorId).FirstOrDefault();
+            if (data == null) return;
             data.Quantity = data.Quantity + versionQuantity.Quantity;
-            context.SaveChanges();
+            _unitOfWork.SaveChanges();
         }
 
         /// <summary>
@@ -118,11 +106,10 @@ namespace DAL
         public void UpdateOrder(VersionQuantity versionQuantity)
         {
 
-            var data = context.VersionQuantities.Where(v => v.VersionId == versionQuantity.VersionId).Where(v => v.ColorId == versionQuantity.ColorId).FirstOrDefault();
+            var data = repository.GetAll(v => v.VersionId == versionQuantity.VersionId && v.ColorId == versionQuantity.ColorId).FirstOrDefault();
             if (data == null) return;
             data.Quantity = data.Quantity - versionQuantity.Quantity;
-            context.SaveChanges();
+            _unitOfWork.SaveChanges();
         }
-
     }
 }

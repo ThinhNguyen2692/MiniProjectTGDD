@@ -59,30 +59,7 @@ namespace CMSWeb.Controllers
 
 
 
-        [HttpGet]
-        public IActionResult FormAddPhoto(string ProductIdVersion, string ProductNameVersion)
-        {
-            var viewModel = IBusProduct.GetPhotoViewModel();
-            ProductPhotoViewModel productPhotoViewModel = new ProductPhotoViewModel();
-            productPhotoViewModel.photoViewModel = viewModel;
-            productPhotoViewModel.ProductVerSionName = ProductNameVersion;
-            productPhotoViewModel.ProductVersionId = ProductIdVersion;
-            return View("form/AddPhotoProduct", viewModel);
-        }
-
-        /// <summary>
-        /// Thêm hình cho sản phẩm
-        /// </summary>
-        /// <param name="ListImage">danh sách file hình cần thêm</param>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult AddPhoto(PhotoViewModel viewModel)
-        {
-            
-            IBusProduct.AddImageProduct(viewModel);
-             viewModel = IBusProduct.GetPhotoViewModel();
-            return View("form/FormAddPhoto", viewModel);
-        }
+      
 
 
         /// <summary>
@@ -246,22 +223,57 @@ namespace CMSWeb.Controllers
             return View("ShowDetailProduct", ProductDetailViewModelNew);
         }
 
+
+        //mở fomr
         [HttpGet]
         [Route("FormAddPhoto")]
         public IActionResult FormAddPhoto(string ProductIdVersion)
         {
-            var viewModel = iBusPhoto.GetPhotoViewModel();
+            var viewModel = IBusProduct.GetPhotoViewModel(ProductIdVersion);
             viewModel.ProductVersionId = ProductIdVersion;
+            return View("form/FormAddPhoto", viewModel);
+        }
+      
+
+        /// <summary>
+        /// Thêm hình cho sản phẩm
+        /// </summary>
+        /// <param name="ListImage">danh sách file hình cần thêm</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult AddPhoto(PhotoViewModel viewModel)
+        {
+
+            IBusProduct.AddImageProduct(viewModel);
+            viewModel = IBusProduct.GetPhotoViewModel(viewModel.ProductVersionId);
             return View("form/FormAddPhoto", viewModel);
         }
 
 
-       
-        
+
         public IActionResult ShowDetailProductJson()
         {
             var ProductDetailViewModel = IBusProduct.DalReadProductDetail("IP12");
             return Ok(ProductDetailViewModel);
+        }
+
+
+        public IActionResult DeleteImageProduct(int id)
+        {
+            var viewModel = IBusProduct.DeletePhotoProduct(id);
+            return View("form/FormAddPhoto", viewModel);
+        }
+
+        public IActionResult FormPhoto()
+        {
+            var viewModel = IBusProduct.GetPhotoViewModel();
+            return View("form/Photo", viewModel);
+        }
+
+        public IActionResult PhotoClean()
+        {
+            var viewModel = IBusProduct.DeletePhoto();
+            return View("form/Photo", viewModel);
         }
 
 

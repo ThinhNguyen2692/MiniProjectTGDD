@@ -8,6 +8,7 @@ using CMSWeb.Models.ProductBrands;
 using ModelProject.ViewModel;
 using CMSWeb.ViewModels.ProductBrandsViewModel;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
 
 namespace CMSWeb.Controllers
 {
@@ -21,38 +22,36 @@ namespace CMSWeb.Controllers
         {
             _logger = logger;
             bus_Brands = brands;
-           
-        }
-       
-       
 
-       /// <summary>
-       /// Hiện danh sách thương hiệu
-       /// </summary>
-       /// <returns>View: FormBrands.cshtml</returns>
-       /// <returns>danh sách thương hiệu</returns>
+        }
+
+
+
+        /// <summary>
+        /// Hiện danh sách thương hiệu
+        /// </summary>
+        /// <returns>View: FormBrands.cshtml</returns>
+        /// <returns>danh sách thương hiệu</returns>
         [HttpGet]
-        public IActionResult ShowBrands()
+        public IActionResult ShowBrands(int page = 1)
         {
             var brandsView = new List<ShowBrandsViewModel>();
-           //lấy danh sách thương hiệu
+            //lấy danh sách thương hiệu
             brandsView = bus_Brands.GetProductBrands();
-            return View("ShowBrands", brandsView);
+            var viewModel = brandsView.ToPagedList(page, 10);
+
+            return View("ShowBrands", viewModel);
         }
 
 
-        
+      
         public IActionResult FormBrands()
         {
             var item = new AddBrandViewModel();
             return View("form/FormBrands", item);
         }
 
-        public IActionResult Index()
-        {
-            
-            return View();
-        }
+    
 
 
         /// <summary>

@@ -28,8 +28,6 @@ namespace DAL
             this.repository = _unitOfWork.Repository<Gift>();
            
         }
-        
-
         public void AddGift(Gift gift)
         {
             repository.Add(gift);

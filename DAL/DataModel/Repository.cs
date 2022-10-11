@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using ModelProject.Models;
 
 namespace DAL.DataModel
@@ -31,7 +32,10 @@ namespace DAL.DataModel
         {
             _context.Set<T>().Remove(entity);
         }
-
+        public void RemoveRange(IEnumerable<T> entity)
+        {
+            _context.Set<T>().RemoveRange(entity);
+        }
         public void Update(T entity, T entity2)
         {
 
@@ -41,7 +45,7 @@ namespace DAL.DataModel
 
         public T GetById(Func<T, bool> predicate)
         {
-            var entity = _context.Set<T>().Where(predicate).FirstOrDefault();
+            var entity = _context.Set<T>().FirstOrDefault(predicate);
             if (entity == null) return null;
             return entity;
         }
@@ -61,7 +65,42 @@ namespace DAL.DataModel
             var query = _context.Set<T>().AsQueryable();
             return includes.Aggregate(query, (q, w) => q.Include(w));
         }
-      
+        public IQueryable<T> GetAll(
+            Expression<Func<T, bool>> predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
+        {
+            var query = _context.Set<T>().AsQueryable();
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (ignoreQueryFilters)
+            {
+                query = query.IgnoreQueryFilters();
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query);
+            }
+            else
+            {
+                return query;
+            }
+        }
 
     }
 }

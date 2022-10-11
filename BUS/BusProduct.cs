@@ -416,6 +416,25 @@ namespace BUS
         /// Đọc ảnh trong database Photo
         /// </summary>
         /// <returns>PhotoViewModel</returns>
+        public PhotoViewModel GetPhotoViewModel(string versionId)
+        {
+            var data = iDalPhoto.ReadProductPhoto(versionId);
+            PhotoViewModel photoViewModel = new PhotoViewModel();
+            foreach (var item in data)
+            {
+                InformationPhoto photo = new InformationPhoto();
+                photo.ProductPhotoId = item.ProductPhotoId;
+                photo.PathImage = item.Photo.PhotoPath;
+                photoViewModel.informationPhoto.Add(photo);
+            }
+
+            return photoViewModel;
+        }
+
+        /// <summary>
+        /// lay ds hình trong bang photo
+        /// </summary>
+        /// <returns></returns>
         public PhotoViewModel GetPhotoViewModel()
         {
             var data = iDalPhoto.ReadAll();
@@ -423,13 +442,29 @@ namespace BUS
             foreach (var item in data)
             {
                 InformationPhoto photo = new InformationPhoto();
-                photo.PhotoId = item.PhotoId;
+                photo.ProductPhotoId = item.PhotoId;
                 photo.PathImage = item.PhotoPath;
                 photoViewModel.informationPhoto.Add(photo);
             }
 
             return photoViewModel;
         }
-     
+
+        public PhotoViewModel DeletePhoto()
+        {
+            iDalPhoto.DeletePhoto();
+            return GetPhotoViewModel();
+        }
+
+        public PhotoViewModel DeletePhotoProduct(int photoId)
+        {
+            var data = iDalProductPhoto.GetById(photoId);
+            if(data == null) { return new PhotoViewModel(); }
+            var versionId = data.VersionId;
+            iDalProductPhoto.DelPhotoProduct(data);
+
+            return GetPhotoViewModel(versionId);
+        }
+
     }
 }

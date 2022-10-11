@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using ModelProject.Models;
 using ModelProject.ViewModel;
+using DAL.DataModel;
 
 namespace DAL
 {
@@ -22,15 +23,21 @@ namespace DAL
     }
     public class DalUser:IDAlUser
     {
-        private MiniProjectTGDDContext context;
+        private IRepository<User> repository;
+        private IUnitOfWork _unitOfWork;
 
-        public DalUser(MiniProjectTGDDContext context) { this.context = context; }
+
+        public DalUser(IUnitOfWork _unitOfWork)
+        {
+            this._unitOfWork = _unitOfWork;
+            this.repository = _unitOfWork.Repository<User>();
+        }
 
         public bool UserAdd(User user)
         {
             user.Password = GenerateMD5(user.Password);
-            context.Users.Add(user);
-            context.SaveChanges();
+            repository.Add(user);
+            _unitOfWork.SaveChanges();
             return true;
         }
         /// <summary>
@@ -39,7 +46,7 @@ namespace DAL
         /// <returns>Danh sách user</returns>
         public List<User> GetUser()
         {
-            var data = context.Users.ToList();
+            var data = repository.List().ToList();
             return data;
         }
 
@@ -51,7 +58,7 @@ namespace DAL
        /// <returns>user?</returns>
         public User GetUserById(int UserId) {
         
-            var data = context.Users.FirstOrDefault(x => x.UserId == UserId);
+            var data = repository.GetById(x => x.UserId == UserId);
             if (data == null) return null;
             return data;
         
@@ -65,7 +72,7 @@ namespace DAL
         /// <returns></returns>
         public User UpdateUser(User user)
         {
-            var data = context.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            var data = repository.GetById(u => u.UserId == user.UserId);
             if (data == null) return null;
             data.UserName = user.UserName;
             data.UserPhone = user.UserPhone;
@@ -75,7 +82,7 @@ namespace DAL
             {
                 data.UserPhoto = user.UserPhoto;
             }
-            context.SaveChanges();
+            _unitOfWork.SaveChanges();
 
             return data;
         }
@@ -89,10 +96,10 @@ namespace DAL
         public User UpdatePassword(int UserId)
         {
             string Newpassword = GenerateMD5("123456789");
-            var data = context.Users.FirstOrDefault(u => u.UserId == UserId);
+            var data = repository.GetById(u => u.UserId == UserId);
             if (data == null) return null;
             data.Password = Newpassword;
-            context.SaveChanges();
+            _unitOfWork.SaveChanges();
 
             return data;
         }
@@ -102,9 +109,8 @@ namespace DAL
         public User Login(string pass, int UserId)
         {
             string Password = GenerateMD5(pass);
-            var data = context.Users.Where(u => u.UserId == UserId).Where(u => u.Password == Password).FirstOrDefault();
+            var data = repository.GetById(u => u.UserId == UserId && u.Password == Password);
             if (data == null) return null;
-            data.Password = "";
             return data;
         }
 
@@ -118,10 +124,10 @@ namespace DAL
         public User UpdatePassword(string pass, int UserId)
         {
             string Newpassword = GenerateMD5(pass);
-            var data = context.Users.FirstOrDefault(u => u.UserId == UserId);
+            var data = repository.GetById(u => u.UserId == UserId);
             if (data == null) return null;
             data.Password = Newpassword;
-            context.SaveChanges();
+            _unitOfWork.SaveChanges();
 
             return data;
         }

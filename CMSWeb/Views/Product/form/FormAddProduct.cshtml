@@ -11,10 +11,11 @@
                     default: <div></div> break;
                 }
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
-                <form class="forms-sample form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="AddProduct">
-                    <div class="form-group">
+                @using (Html.BeginForm("AddProduct", "Product", FormMethod.Post, new {@class="forms-sample form-Product" ,enctype = "multipart/form-data" }))
+                {
+                       <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input class="form-control ProductId" asp-for="@Model.ProductId" />
+                        @Html.TextBoxFor(m => m.ProductId, new {@class="form-control ProductId"})
                          <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -22,9 +23,9 @@
                             Mã thương hiệu: a-z,A-Z,0-9 
                         </div>
                     </div>
-                    <div class="form-group">
+                      <div class="form-group">
                         <label >Tên sản phẩm</label>
-                        <input class="form-control ProuctName" asp-for="@Model.ProductName"/>
+                         @Html.TextBoxFor(m => m.ProductName, new {@class="form-control ProuctName"})
                          <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -32,47 +33,37 @@
                             Không được bỏ trống
                         </div>
                     </div>
-                     <div class="form-group">
+                      <div class="form-group">
                          <label >Ngành hàng</label>
-                        <select class="form-control" asp-for="@Model.TypeId">
-                            @{
-                                
-                                for (int i = 0; i < Model.ListTypes.Count; i++)
-                                {
-                                    <option value="@Model.ListTypes[i].TypeId">@Model.ListTypes[i].TyName</option>
-                                }
-                            }
-                        </select>
+                          @Html.DropDownListFor(m => m.TypeId, new SelectList(Model.ListTypes, "TypeId", "TyName"), new {@class="form-control"} )
+                      
                     </div> 
-                    <div class="form-group">
+                         <div class="form-group">
                          <label >Thương hiệu</label>
-                        <select class="form-control" asp-for="@Model.BrandId">
-                            @{
-                                for (int i = 0; i < Model.ListBrands.Count; i++)
-                                {
-                                    <option value="@Model.ListBrands[i].BrandsId">@Model.ListBrands[i].BrandsName</option>
-                                }
-                            }
-                        </select>
+                          @Html.DropDownListFor(m => m.BrandId, new SelectList(Model.ListBrands, "BrandsId", "BrandsName"), new {@class="form-control"} )
+                       
                     </div>
-                    <div class="form-group">
+                       <div class="form-group">
                         <label>Chọn hình: </label>
                         <br />
-                        <input class="form-control fileImage" asp-for="@Model.FileImage" />
+                          @Html.TextBoxFor(m => m.FileImage, new {@class="form-control fileImage", type="file"})
                         <br />
                         <img id="preview" src="#" width="auto" height="auto" class="hidden" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nhập mô tả cho</label>
-                        <textarea style="height: 100px;" asp-for="@Model.ProdutDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu..." ></textarea>
+                       
+                          @Html.TextAreaFor(m => m.ProdutDescription, new {@class="form-control", placeholder="Nhập mô tả...", style="height: 100px;"})
                     </div>
+                         
                      <div class="form-group">
                         <label >Thời gian ra mắt</label>
-                        <input asp-for="@Model.ReleaseTime" class="form-control" />
+                         @Html.TextBoxFor(m => m.ReleaseTime, new {@class="form-control", type="date"})
                     </div>
                      <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
-                </form>
+                }
+              
             </div>
         </div>
     </div>

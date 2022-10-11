@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
+using DAL.DataModel;
 
 namespace DAL
 {
@@ -21,11 +22,18 @@ namespace DAL
     public class Dal_ProductType:IDaltype
     {
 
-        private MiniProjectTGDDContext context;
+        private IRepository<ProductType> repository;
+        private IRepository<ProductSpecification> repositorySpecification;
+        private IRepository<InformationProperty> repositoryProperty;
+        private IUnitOfWork _unitOfWork;
 
-        public Dal_ProductType(MiniProjectTGDDContext context)
+
+        public Dal_ProductType(IUnitOfWork _unitOfWork)
         {
-            this.context = context;
+            this._unitOfWork = _unitOfWork;
+            this.repository = _unitOfWork.Repository<ProductType>();
+            this.repositorySpecification = _unitOfWork.Repository<ProductSpecification>();
+            this.repositoryProperty = _unitOfWork.Repository<InformationProperty>();
         }
 
 
@@ -38,38 +46,38 @@ namespace DAL
             {
                 return false;
             }
-            context.ProductTypes.Add(type);
-                context.SaveChanges();
+            repository.Add(type);
+                _unitOfWork.SaveChanges();
             return true;
         }
 
         //Cập nhật thông tin ngành hàng
         public bool DalUpdateType(ProductType type)
         {
-            context = new MiniProjectTGDDContext();
-            context.ProductTypes.Update(type);
-            context.SaveChanges();
+            //thông tin ngành hàng cũ
+            var data = ReadType(type.Typeid);
+            repository.Update(data,type);
+            _unitOfWork.SaveChanges();
             
             return true;
         }
 
 
         //lấy 1 loại sản phẩm 
-        public ProductType ReadType(string id)
+        public   ProductType ReadType(string id)
         {
-            context = new MiniProjectTGDDContext();
-            var item = context.ProductTypes.Include(i => i.ProductSpecifications).ThenInclude(s => s.InformationProperties).Where(t => t.Typeid == id).FirstOrDefault();  
-            if (item == null)
+            var data = repository.GetAll(predicate: t => t.Typeid == id, include: i => i.Include(t => t.ProductSpecifications).ThenInclude(p => p.InformationProperties)).FirstOrDefault();
+            if (data == null)
             {
                 return null;
             }
-            return item;
+            return data;
         }
 
         //lấy danh sách ngành hàng
         public List<ProductType> ReadTypes()
         {         
-            var data = context.ProductTypes.ToList();
+            var data = repository.List().ToList();
             return data;
         }
 
@@ -82,15 +90,11 @@ namespace DAL
             {
                 foreach (var item2 in item.ProductSpecifications)
                 {
-                    foreach (var item3 in item2.InformationProperties)
-                    {
-                        context.InformationProperties.Remove(item3);
-                    }
-                    context.ProductSpecifications.Remove(item2);
-
+                    repositoryProperty.RemoveRange(item2.InformationProperties);
+                    repositorySpecification.Delete(item2);
                 }
-                context.ProductTypes.Remove(item);
-                context.SaveChanges();
+                repository.Delete(item);
+                _unitOfWork.SaveChanges();
             }
         }
 
@@ -103,8 +107,8 @@ namespace DAL
         /// <returns>false không được xóa sản phẩm</returns>
         public bool CheckProductByTypeId(string typeId)
         {
-            var data = context.Products.Where(p => p.ProductType == typeId).ToList();
-            if (data.Count == 0) return true;
+            var data = repository.GetAll(predicate: p => p.Typeid == typeId, include: p => p.Include(p => p.Products)).FirstOrDefault();
+            if(data != null) if (data.Products.Count == 0) return true; else return false;
             else return false;
         }
 

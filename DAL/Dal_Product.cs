@@ -21,17 +21,21 @@ namespace DAL
     public class Dal_Product:IDAlProduct
     {
         private IRepository<Product> repository;
+        private IRepository<VersionQuantity> repositoryVersionQuantity;
+        private IRepository<ProductColor> repositoryProductColor;
         private IUnitOfWork _unitOfWork;
 
-        public MiniProjectTGDDContext context = new MiniProjectTGDDContext();
+     
 
 
         public Dal_Product(IUnitOfWork _unitOfWork)
         {
             this._unitOfWork = _unitOfWork;
             repository = _unitOfWork.Repository<Product>();
+            repositoryVersionQuantity = _unitOfWork.Repository<VersionQuantity>();
+            repositoryProductColor = _unitOfWork.Repository<ProductColor>();
         }
-     
+
         /// <summary>
         ///thêm sản phẩm mới
         /// </summary>
@@ -60,12 +64,13 @@ namespace DAL
     
         public List<string> DeleteProductAuto(string id)
         {
-            var data = context.ProductVersions.Where(p => p.ProductId == id).ToList();
+            var data = repository.GetAll(predicate: p => p.ProductId == id).ToList();
             if(data.Count == 0)
             {
                 //danh sách tên hình cần xóa
                 List<string> path = new List<string>();
-                var data2 = context.Products.Include(c => c.ProductColors).ThenInclude(p => p.VersionQuantities).First(p => p.ProductId == id);
+                var data2 = repository.GetAll(predicate: p => p.ProductId == id, include: p =>p.Include(c => c.ProductColors).ThenInclude(p => p.VersionQuantities)).FirstOrDefault();
+                if (data2 == null) return null;
                 path.Add(data2.ProductPhoto);
                 foreach (var item in data2.ProductColors)
                 {
@@ -75,12 +80,12 @@ namespace DAL
                 {
                     if(item.VersionQuantities.Count > 0)
                     {
-                        context.VersionQuantities.RemoveRange(item.VersionQuantities);
+                        repositoryVersionQuantity.RemoveRange(item.VersionQuantities);
                     }
                 }
-                context.ProductColors.RemoveRange(data2.ProductColors);
-                context.Products.Remove(data2);
-                context.SaveChanges();
+                repositoryProductColor.RemoveRange(data2.ProductColors);
+                repository.Delete(data2);
+                _unitOfWork.SaveChanges();
                 return path;
             }
             else
@@ -89,6 +94,10 @@ namespace DAL
             }
            
         }
+
+
+        
+
 
 
 

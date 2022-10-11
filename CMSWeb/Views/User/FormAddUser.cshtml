@@ -13,15 +13,16 @@
                                 case "AddBrandsIDfalse":  <div class="alert alert-danger">Mã sản phẩm đã tồn tại</div> break;
                                 case "AddBrandsFalse":  <div class="alert alert-success">Thêm thương hiệu thất bại</div> break;
                             default: break;
-                        }     
+                        }    
+                        
+                        
                 }
                 <h2 style="text-align:center;" class="card-title"> Nhân viên</h2>
-                <form class="forms-sample" id="form-User" method="post" enctype="multipart/form-data" asp-action="AddUser" asp-controller="User">
-                    <div class="form-group">
-                        <label asp-for="@Model.UserName">Tên quản trị viên</label>
-
-                        <input class="form-control" asp-for="@Model.UserName" placeholder="Nhập tên quản trị viên" />
-
+                @using (Html.BeginForm("AddUser", "User", FormMethod.Post, new {@class="forms-sample",id="form-User" ,enctype = "multipart/form-data" }))
+                {
+                     <div class="form-group">
+                        <label>Tên quản trị viên</label>
+                         @Html.TextBoxFor(m => m.UserName, new {@class="form-control",  placeholder="Nhập tên quản trị viên"})
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -29,10 +30,9 @@
                             Không được bỏ trống
                         </div>
                     </div>
-
-                    <div class="form-group">
+                      <div class="form-group">
                         <label asp-for="@Model.UserPhone">Số điện thoại</label>
-                        <input asp-for="@Model.UserPhone" class="form-control UserPhone" type="number" placeholder="" />
+                         @Html.TextBoxFor(m => m.UserPhone, new {@class="form-control UserPhone",  placeholder="", type="number"})
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -40,40 +40,42 @@
                             Định dạng số điện thoại sai
                         </div>
                     </div>
-                        
-                    
-                    <div class="form-group">
+
+                       <div class="form-group">
                         <label asp-for="@Model.Email"  >Nhập Email</label>
-                        <input asp-for="@Model.Email" type="email" class="form-control" placeholder="Email" />
-                       
+                        @Html.TextBoxFor(m => m.Email, new {@class="form-control",  placeholder="Email", type="email"})
                     </div>
-                   
+                           
                     <div class="form-group">
                         <label asp-for="@Model.Password" >Nhập password </label>
-                        <input asp-for="@Model.Password" type="password" class="form-control" placeholder="Password" />
                        
+                         @Html.TextBoxFor(m => m.Password, new {@class="form-control",  placeholder="password", type="password"})
                     </div>
-                     <div class="form-group">
-                        <label asp-for="@Model.roleID">Vị trí</label>
-                        <select class="form-control" asp-for="@Model.roleID">
-                            @{
-                               foreach (var item in Model.role.GetRoleUsers())
-                                {
-                                     <option value="@item.RoleId">@item.RoleName</option>
-                                }
-                            }
-                        </select>
+                         <div class="form-group">
+                        <label>Vị trí</label>
+                           @Html.DropDownListFor(m => m.roleID, new SelectList(Model.role.GetRoleUsers(), "RoleId", "RoleName"), new {@class="form-control"} )
                         </div>
                         <br />
                     <div class="form-group">
                         <h4>Ảnh</h4>
-                        <input asp-for="@Model.UserPhoto" class="fileImage form-control" accept="image/*" />
+                          @Html.TextBoxFor(m => m.UserPhoto, new {@class="fileImage form-control",  accept="image/*" , type="file"})
                         <br />
                         <br />
                         <img id="preview" src="#" width="auto" height="auto" class="hidden" />
                     </div>
                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
+                }
+                <form class="forms-sample" id="form-User" method="post" enctype="multipart/form-data" asp-action="AddUser" asp-controller="User">
+                 
+
+                  
+                        
+                    
+                 
+                   
+                
+                  
                 </form>
             </div>
         </div>

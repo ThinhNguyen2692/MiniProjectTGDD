@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ModelProject.Models;
 using DAL.DataModel;
+using X.PagedList;
+
 namespace DAL
 {
     
@@ -48,6 +50,7 @@ namespace DAL
         public List<ProductBrand> DalGetBrand()
         {
             var data = repository.List().OrderByDescending(b => b.BrandStatus).ToList();
+
             return data;
         }
         //Xóa thương hiệu

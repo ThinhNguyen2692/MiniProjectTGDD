@@ -7,27 +7,34 @@
             <div class="card-body">
                 <h4></h4>
                 <h4 class="card-title">Thêm ảnh cho sản phẩm</h4>
-                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="AddPhoto">
+                @using (Html.BeginForm("AddPhoto", "Product", FormMethod.Post, new {@class="forms-sample", id="form-Product" ,enctype = "multipart/form-data" }))
+                {
                     <div class="form-group">
                         <label>Chọn hình: </label>
-                        <input asp-for="@Model.photos"  class="form-control"  accept="image/*" multiple />
-                        @Html.HiddenFor(m => m.ProductVersionId);
+                        
+                        @Html.TextBoxFor(m => m.photos, new {@class="form-control",  accept="image/*", multiple="True", type="file"})
+                        @Html.HiddenFor(m => m.ProductVersionId)
                     </div>
                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
-                </form>
+                }
+               
 
                 <div style="margin-top: 40px; margin-bottom: 40px;"></div>
 
                 <div  class="row">
                     @{
-                       
                             foreach (var value in Model.informationPhoto)
                             {
-                                              <div class="col-3">
-                                        <img style="width: 160px; heigh: 160px;" src="/images//Products/@value.PathImage"/>
-                                        <div><span>@value.PathImage</span></div>
-                                        </div>
+                                                  <div class="col-3">
+                                            <img style="width: 160px; heigh: 160px;" src="/images//Products/@value.PathImage"/>
+                                            <div>
+                                            <span>@value.PathImage</span>
+                                            <br/>
+                                             <a onclick=" return   ConfirmDelete();" asp-route-id="@value.ProductPhotoId" asp-action="DeleteImageProduct" asp-controller="Product" >Xóa hình</a>
+                                            </div>
+                                           
+                                            </div>
                             }
                      
                     }

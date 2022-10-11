@@ -23,7 +23,7 @@ namespace CMSWeb.Controllers
 
         }
 
-    
+        [Route("")]
         public IActionResult Statistical()
         {
             var viewModel = iBusStatistical.GetStatisticalViewModel();

@@ -30,6 +30,9 @@ namespace BUS.Services
 
         public void AddImageProduct(PhotoViewModel viewModel);
 
+        public PhotoViewModel GetPhotoViewModel(string versionId);
+        public PhotoViewModel DeletePhotoProduct(int photoId);
+        public PhotoViewModel DeletePhoto();
         public PhotoViewModel GetPhotoViewModel();
     }
 }

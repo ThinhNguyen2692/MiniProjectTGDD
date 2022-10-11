@@ -16,11 +16,7 @@
 
                 @using (Html.BeginForm("UpdateCustomer", "Customer", FormMethod.Post, new {  @class="forms-sample", id="form-brands" }))
                 {
-                   
-                }
-                <form class="forms-sample" id="form-brands" method="post" asp-controller="Customer" asp-action="UpdateCustomer">
-
-                    <div class="form-group">
+                     <div class="form-group">
                         <label>Số điện thoại</label>
                       @Html.TextBoxFor(m => m.createCustomer.CustomerPhone, new {@class="form-control", @readonly="true"})
                         <div class="valid-feedback">
@@ -30,8 +26,7 @@
                             Mã thương hiệu: a-z,A-Z,0-9
                         </div>
                     </div>
-                   
-                      <div class="form-group">
+                       <div class="form-group">
                         <label>Tên khách hàng</label>
                          @Html.TextBoxFor(m => m.createCustomer.CustomerName, new {@class="form-control"})
                         <div class="valid-feedback">
@@ -41,10 +36,10 @@
                             Không được bỏ trống
                         </div>
                     </div>
-
-                       <div class="form-group">
-                        <label asp-for="@Model.createCustomer.ProvinceCity">Tỉnh - Thành phố</label>
-                        <input asp-for="@Model.createCustomer.ProvinceCity" class="form-control" />
+                      
+                           <div class="form-group">
+                        <label>Tỉnh - Thành phố</label>
+                          @Html.TextBoxFor(m => m.createCustomer.ProvinceCity, new {@class="form-control"})
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -52,10 +47,9 @@
                             Không được bỏ trống
                         </div>
                     </div>
-
                        <div class="form-group">
-                        <label asp-for="@Model.createCustomer.District">Quận - huyện</label>
-                        <input asp-for="@Model.createCustomer.District" class="form-control" />
+                        <label>Quận - huyện</label>
+                           @Html.TextBoxFor(m => m.createCustomer.District, new {@class="form-control"})
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -63,35 +57,32 @@
                             Không được bỏ trống
                         </div>
                     </div>
-
+                              <div class="form-group">
+                        <label>Xã</label>
+                         @Html.TextBoxFor(m => m.createCustomer.CommuneWard, new {@class="form-control"})
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
+                       
+                       <div class="form-group">
+                        <label>Địa chỉ</label>
+                        @Html.TextBoxFor(m => m.createCustomer.CustomerAddress, new {@class="form-control"})
+                        <div class="valid-feedback">
+                            Chính xác
+                        </div>
+                        <div class="invalid-feedback">
+                            Không được bỏ trống
+                        </div>
+                    </div>
                     
-                       <div class="form-group">
-                        <label asp-for="@Model.createCustomer.CommuneWard">Xã</label>
-                        <input asp-for="@Model.createCustomer.CommuneWard" class="form-control"  />
-                        <div class="valid-feedback">
-                            Chính xác
-                        </div>
-                        <div class="invalid-feedback">
-                            Không được bỏ trống
-                        </div>
-                    </div>
-
-                    
-                       <div class="form-group">
-                        <label asp-for="@Model.createCustomer.CustomerAddress">Địa chỉ</label>
-                        <input asp-for="@Model.createCustomer.CustomerAddress" class="form-control" />
-                        <div class="valid-feedback">
-                            Chính xác
-                        </div>
-                        <div class="invalid-feedback">
-                            Không được bỏ trống
-                        </div>
-                    </div>
-
                       <div class="form-group">
-                        <label asp-for="@Model.createCustomer.RegistrationTime">Lần cuối đăng nhập</label>
+                        <label>Lần cuối đăng nhập</label>
                         <br />
-                        <input asp-for="@Model.createCustomer.RegistrationTime"  readonly  class="form-control"/>
+                         @Html.TextBoxFor(m => m.createCustomer.RegistrationTime, new {@class="form-control", @readonly="True"})
                         <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -99,10 +90,9 @@
                             Không được bỏ trống
                         </div>
                     </div>
-                   
-                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật</button>
+                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
-                </form>
+                }
             </div>
         </div>
     </div>

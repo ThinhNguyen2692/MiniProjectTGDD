@@ -17,7 +17,7 @@ namespace ModelProject.ViewModel
         public string Password { get; set; } = null!;
         public int roleID { get; set; } 
         public string Message { get; set; }
-        public Role role { get; set; }
+        public Role role { get; set; } = new Role();
 
 
         public AddUserViewModel() { }

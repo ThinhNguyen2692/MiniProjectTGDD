@@ -15,14 +15,14 @@
                     }
                 }
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
-                <form class="forms-sample" id="form-color" method="post" enctype="multipart/form-data" action="/AddProductColor">
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input type="text" class="form-control ProductId" readonly asp-for="@Model.ProductId"/>
-                    </div>
-                    <div class="form-group">
+                @using (Html.BeginForm("AddProductColor", "Product", FormMethod.Post, new {@class="forms-sample", id="form-color" ,enctype = "multipart/form-data" }))
+                {
+                    
+                          @Html.HiddenFor(m => m.ProductId)
+                           
+                      <div class="form-group">
                         <label >Màu</label>
-                        <input class="form-control ColorDescription" asp-for="@Model.colorName"/>
+                          @Html.TextBoxFor(m => m.colorName, new {@class="form-control ColorDescription"})
                        <div class="valid-feedback">
                             Chính xác
                         </div>
@@ -30,11 +30,11 @@
                             Không được bỏ trống
                         </div>
                     </div>
-                   
+                      
                     <div class="form-group">
                         <label>Chọn hình: </label>
                         <br />
-                        <input asp-for="@Model.Fileimage" class="form-control fileImage" />
+                        @Html.TextBoxFor(m => m.Fileimage, new {@class="form-control fileImage", accept="image/*", multiple="True"})
                         <br />
                         <img id="preview" src="#" width="auto" height="auto" class="hidden" />
 
@@ -42,7 +42,8 @@
                     
                      <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>
-                </form>
+                }
+               <br />
                 <a class="btn btn-light" href="/FormAddProductVersion?productId=@Model.ProductId">Kết thúc thêm</a>
             </div>
         </div>

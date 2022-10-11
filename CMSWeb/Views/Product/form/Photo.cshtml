@@ -1,0 +1,33 @@
+﻿@using ModelProject.ViewModel;
+@model PhotoViewModel;
+
+<div class="content-wrapper">
+    <div class="grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4></h4>
+                <h4 class="card-title">Thư viện ảnh</h4>
+                <div style="margin-top: 40px; margin-bottom: 40px;"></div>
+                <a onclick=" return   ConfirmDelete();" asp-controller="Product" asp-action="PhotoClean" class="btn btn-gradient-primary">Xóa ảnh</a>
+                <div class="row">
+                    @{
+                        foreach (var value in Model.informationPhoto)
+                        {
+                            <div class="col-3">
+                                <img style="width: 160px; heigh: 160px;" src="/images//Products/@value.PathImage" />
+                                <div>
+                                    <span>@value.PathImage</span>
+                                    <br />
+                                   
+                                </div>
+
+                            </div>
+                        }
+
+                    }
+                </div>
+               
+            </div>
+        </div>  
+    </div>
+</div>

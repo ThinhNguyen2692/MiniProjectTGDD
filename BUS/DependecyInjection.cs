@@ -16,7 +16,6 @@ namespace BUS
     {
         public static IServiceCollection serviceDescriptors(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<MiniProjectTGDDContext>();
             services.AddSingleton<IDalBrands, Dal_Brands>();
             services.AddSingleton<IDaltype, Dal_ProductType>();
             services.AddSingleton<IDalProductPecification, Dal_ProductPecification>();

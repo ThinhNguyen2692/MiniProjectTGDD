@@ -21,5 +21,11 @@ formAddProperties.addEventListener("submit", function (e) {
     }
 });
 
-
+function ConfirmDelete() {
+    var x = confirm("Xóa?");
+    if (x)
+        return true;
+    else
+        return false;
+}
 
