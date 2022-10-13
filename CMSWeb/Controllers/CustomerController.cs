@@ -6,10 +6,10 @@ using ModelProject.Models;
 using CMSWeb.ViewModels.CustomerViewModel;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-
+using X.PagedList;
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "2,5")]
     public class CustomerController : Controller
     {
         private readonly ILogger<CustomerController> _logger;
@@ -30,10 +30,10 @@ namespace CMSWeb.Controllers
         }
 
         [Route("ShowCustomer")]
-        public IActionResult ShowCustomer()
+        public IActionResult ShowCustomer(int page = 1)
         {
-            List<Customer> customers = busCustomer.GetCustomers();
-            
+            var customers = busCustomer.GetCustomers().ToPagedList(page, 10);
+
             return View(customers);
         }
 

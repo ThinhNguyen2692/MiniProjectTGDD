@@ -12,7 +12,7 @@ using X.PagedList;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "1,5")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,6 +27,10 @@ namespace CMSWeb.Controllers
 
 
 
+
+        
+
+
         /// <summary>
         /// Hiện danh sách thương hiệu
         /// </summary>
@@ -35,10 +39,9 @@ namespace CMSWeb.Controllers
         [HttpGet]
         public IActionResult ShowBrands(int page = 1)
         {
-            var brandsView = new List<ShowBrandsViewModel>();
             //lấy danh sách thương hiệu
-            brandsView = bus_Brands.GetProductBrands();
-            var viewModel = brandsView.ToPagedList(page, 10);
+            var brandsView = bus_Brands.GetProductBrands();
+            var viewModel = brandsView.ToPagedList(page, 5);
 
             return View("ShowBrands", viewModel);
         }
@@ -103,14 +106,12 @@ namespace CMSWeb.Controllers
         public IActionResult RemoveBrands(string id)
         {
             var brands = bus_Brands.GetBrandById(id);
-            if (brands == null)
+            var brandsCheck = bus_Brands.RemoveBrand(id);
+            if (brands == null || brandsCheck == false)
             {
+                ModelState.AddModelError("ErrorBrands", "Không thể xóa thương hiệu này "+id);
                 return ShowBrands();
-            }
-            brands = bus_Brands.RemoveBrand(brands);
-            if (brands == null)
-            {
-              return  ShowBrands();
+
             }
 
             return View("form/FormUpdateBrands", brands);
@@ -147,7 +148,7 @@ namespace CMSWeb.Controllers
             //kiểm tra có file ảnh mới
             if (addBrandViewModel.fileImage != null)
             {
-                addBrandViewModel.BrandPhoto = addBrandViewModel.fileImage.FileName;
+                addBrandViewModel.BrandPhoto = "https://localhost:7079/images/Logo/" + addBrandViewModel.fileImage.FileName;
                 AddFileImage(addBrandViewModel.fileImage);
                 try
                 {

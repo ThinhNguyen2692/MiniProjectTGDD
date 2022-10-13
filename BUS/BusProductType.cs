@@ -194,10 +194,12 @@ namespace BUS
         {
             // kiểm tra sản phẩm ngành hàng còn tồn tại
             //true sản phẩm ngành hàng = 0 được xóa
-
-            if (iDalProductPecification.DeleteSpecification(SpecificationId) == true)
+            if(iDalProductPecification.GetProductSpecification(SpecificationId).InformationProperties.Count == 0)
             {
-                return true;
+                if (iDalProductPecification.DeleteSpecification(SpecificationId) == true)
+                {
+                    return true;
+                }
             }
             return false;
         }

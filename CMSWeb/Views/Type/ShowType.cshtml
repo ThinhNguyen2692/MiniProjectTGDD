@@ -1,5 +1,8 @@
 ﻿@using ModelProject.ViewModel;
-@model List<ListProductTypeViewModel>;
+@using X.PagedList;
+@using X.PagedList.Mvc.Bootstrap4.Core
+@using X.PagedList.Mvc.Core;
+@model IPagedList<ListProductTypeViewModel>;
 <div class="content-wrapper">
     <div class="page-header">
        
@@ -47,6 +50,7 @@
 
                 </tbody>
             </table>
+            @Html.PagedListPager((IPagedList)Model,page=>Url.Action("ShowType", new{page}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
         </div>
     </div>
 </div>

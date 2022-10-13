@@ -69,7 +69,14 @@ namespace CMSWeb.Controllers
 
         private async Task SignInUser(User user)
         {
-           
+
+            //switch (user.RoleId)
+            //{
+            //    case 1: break;
+            //    default:
+            //        break;
+            //}
+
             var claims = new List<Claim> {
                  new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                  new Claim(ClaimTypes.Name, user.UserName.ToString()),

@@ -6,8 +6,6 @@ namespace ModelProject.ViewModel
     {
        public string TypeName { get; set; }
        public string TypeId { get; set; }
-       public string message { get; set; }
-
         public ListProductTypeViewModel() { }
     }
 }

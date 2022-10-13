@@ -14,7 +14,8 @@ namespace DAL
     {
      
         public void AddGift(Gift gift);
-        public void UpdaeGift(int IdGift);
+        public void RemoveGift(int IdGift);
+        public void RemoveGift(List<Gift> gifts);
     }
 
     public class Dal_Gift : IDal_Gift
@@ -35,14 +36,23 @@ namespace DAL
         }
 
 
-        public void UpdaeGift(int IdGift)
+        public void RemoveGift(int IdGift)
         {
             var data = repository.GetById(g => g.GiftId == IdGift);
-            data.GiftStatus = 0;
-            //context.Update(data);
+            if (data == null) return;
+            repository.Delete(data);
             _unitOfWork.SaveChanges();
         }
 
-        
+        /// <summary>
+        /// Xóa danh sách khuyến mãi
+        /// </summary>
+        /// <param name="gifts"></param>
+        public void RemoveGift(List<Gift> gifts)
+        {
+            
+            repository.RemoveRange(gifts);
+            _unitOfWork.SaveChanges();
+        }
     }
 }

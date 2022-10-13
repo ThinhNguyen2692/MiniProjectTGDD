@@ -17,6 +17,7 @@ namespace DAL
         bool DeleteSpecification(int specification);
        
         public string GetTypeIdBySpecification(int SpecificationId);
+        public ProductSpecification GetProductSpecification(int id);
     }
 
     public class Dal_ProductPecification : IDalProductPecification
@@ -43,7 +44,12 @@ namespace DAL
         //Cập nhật thông tin
 
        
-       
+       public ProductSpecification GetProductSpecification(int id)
+        {
+            var data = repository.GetAll(predicate: p => p.SpecificationsId == id, include: p => p.Include(p => p.InformationProperties)).FirstOrDefault();
+            if (data == null) return null;
+            return data;
+        }
 
 
         public bool DeleteSpecification(int specification)
@@ -68,6 +74,9 @@ namespace DAL
             var TypeId = data.TypeId;
             return TypeId;
         }
+
+        
+
     }
 
 }

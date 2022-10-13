@@ -1,8 +1,12 @@
+using BUS;
+using ModelProject.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+Setting.ConnectionStrings = builder.Configuration.GetConnectionString("MiniProjectTGDD");
+builder.Services.serviceDescriptors(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

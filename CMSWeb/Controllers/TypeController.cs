@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BUS.Services;
 using Newtonsoft.Json;
-
+using X.PagedList;
 using ModelProject.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+
+    [Authorize(Roles = "1,5")]
     public class TypeController : Controller
     {
         private readonly ILogger<TypeController> _logger;
@@ -53,9 +54,10 @@ namespace CMSWeb.Controllers
         /// <returns>ShowType.cshtml</returns>
         /// <returns>Danh sách ngành hàng</returns>
         [Route("ShowType")]
-        public IActionResult ShowType()
+        public IActionResult ShowType(int page = 1)
         {
-            return View("ShowType", Ibus_ProductType.ReadAll());
+            var viewModel = Ibus_ProductType.ReadAll().ToPagedList(page, 10);
+            return View("ShowType", viewModel);
         }
 
 
@@ -187,7 +189,7 @@ namespace CMSWeb.Controllers
             else
             {
                 ProductDetail = Ibus_ProductType.BusReadType(typeid);
-                ProductDetail.messageDelete = "removePropertyRemoveFalse";
+                ModelState.AddModelError("ErrorType", "Không thê xóa thông số của ngành hàng");
             }
             return View("ShowTypeDetail", ProductDetail);
         }
@@ -207,7 +209,8 @@ namespace CMSWeb.Controllers
             else
             {
                 ProductDetail = Ibus_ProductType.BusReadType(typeid);
-                ProductDetail.messageDelete = "removeSpecificationRemoveFale";
+                
+                ModelState.AddModelError("ErrorType", "Không thê xóa thông số của ngành hàng");
             }
 
             return View("ShowTypeDetail", ProductDetail);
@@ -223,7 +226,8 @@ namespace CMSWeb.Controllers
             if (Ibus_ProductType.deletetype(typeid) == true) return ShowType();
             else
             {
-                ProductDetail.messageDelete = "removeSpecificationRemoveFale";
+                
+                ModelState.AddModelError("ErrorType", "Không thê xóa thông số của ngành hàng");
             }
             return View("ShowTypeDetail", ProductDetail);
         }

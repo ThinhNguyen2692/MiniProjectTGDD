@@ -8,10 +8,10 @@
                     switch (Model.MessageUpdate)
                     {
                         case "UpdatePropertyValueFale":
-                            <div class="alert alert-danger">Cập nhật thông tin thuộc tính chi tiết thất bại</div>
+                                <div class="alert alert-danger">Cập nhật thông tin thuộc tính chi tiết thất bại</div>
                             break;
                         case "UpdateVersionQuantityFale":
-                            <div class="alert alert-danger">Cập nhật số lượng thất bại</div>
+                                <div class="alert alert-danger">Cập nhật số lượng thất bại</div>
                             break;
                         default: break;
                     }
@@ -19,22 +19,25 @@
                 <h2 style="text-align:center">Thông tin chi tiết sản phẩm</h2>
                 <div>
                     <a href="/FormAddPhoto?ProductIdVersion=@Model.VersionId" class="btn btn-gradient-primary">Thêm ảnh cho sản phẩm</a>
-                    
+                    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target=".bd-example-modal-lg">Sản phẩm khyến mãi</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Sự kiện</button>
                     <a href="/DeleteProductVerSion?versionId=@Model.VersionId&productId=@Model.ProductId" class="btn btn-outline-danger" id="deleteProduct">Xóa</a>
-                    <!-- The Modal -->
-                    <!-- Modal -->
+                    <!-- Button trigger modal -->
 
 
                 </div>
                 <br />
-                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="UpdateProduct">
+
+                @using (Html.BeginForm("UpdateProduct", "Product", FormMethod.Post, new { @class = "forms-sample", id = "form-Product", enctype = "multipart/form-data" }))
+                {
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input asp-for="@Model.ProductId" readonly class="form-control" />
+                        @Html.TextBoxFor(m => m.ProductId, new{@class="form-control", @readonly="True"})
                     </div>
+
                     <div class="form-group">
                         <label>Tên sản phẩm</label>
-                        <input asp-for="@Model.ProuctName" class="form-control" />
+                        @Html.TextBoxFor(m => m.ProuctName, new{@class="form-control"})
                     </div>
                     <div class="form-group">
                         <label>Ngành hàng</label>
@@ -48,71 +51,50 @@
                             <option value="@Model.ProductBrand">@Model.ProductBrandName</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label>Chọn hình: </label>
                         <br />
-                        <input class="fileImage form-control" asp-for="@Model.fileImage" accept="image/*" />
+                        @Html.TextBoxFor(m => m.fileImage, new{@class="fileImage form-control", type="file", accept="image/*" })
                         <br />
-                        <img id="preview" src="/images/ProductDefault/@Model.ProductPhoto" width="auto" height="auto" class="hidden" />
+                        <img id="preview" src="@Model.ProductPhoto" width="auto" height="auto" class="hidden" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Mô tả cho</label>
-                        <textarea style="height: 100px;" asp-for="@Model.ProductDescription" class="form-control" placeholder="Nhập mô tả cho thương hiệu...">@Model.ProductDescription</textarea>
+                        @Html.TextAreaFor(m => m.ProductDescription, new{@class="form-control", placeholder="Nhập mô tả cho thương hiệu..."})
                     </div>
                     <div class="form-group">
                         <label>Thời gian ra mắt</label>
-                        @{
-                            DateTime datetime = (DateTime)Model.ReleaseTime;
-                        }
-                        <input asp-for="@Model.ReleaseTime" class="form-control" />
+                        @Html.TextBoxFor(m => m.ReleaseTime, new{@class="form-control", @readonly="True" })
                     </div>
                     <h3>Thông tin </h3>
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
-                        <input class="form-control" readonly asp-for="@Model.VersionId" />
+                        @Html.TextBoxFor(m => m.VersionId, new{@class="form-control", @readonly="True" })
                     </div>
                     <div class="form-group">
                         <label>Tên phiên bản sản phẩm</label>
-                        <input type="text" value="@Model.VersionName" class="form-control" id="VersionName" name="VersionName" />
-
+                        @Html.TextBoxFor(m => m.VersionName, new{@class="form-control", id="VersionName"})
                     </div>
                     <div class="form-group">
                         <label>Giá sản phẩm</label>
-                        <input class="form-control" asp-for="@Model.ProductPrice">
+                        @Html.TextBoxFor(m => m.ProductPrice, new{@class="form-control", type="number", min=0 })
                     </div>
                     <div class="form-group">
                         <label>Trạng thái</label>
-                        <select class="form-control" asp-for="@Model.ProductStatus">
-
-                            @{
-                                for (int i = 0; i < Model.status.GetStatus().Count; i++)
-                                {
-                                    if (i == Model.ProductStatus)
-                                    {
-                                        <option value="@Model.ProductStatus">@Model.status.GetStatus()[i]</option>
-                                        continue;
-                                    }
-                                    <option value="@i">@Model.status.GetStatus()[i]</option>
-                                }
-                            }
-                        </select>
+                        @Html.DropDownListFor(m => m.ProductStatus, new SelectList(Model.status, "id", "name"), new {@class="form-control"} )
                     </div>
 
+                    for (int i = 0; i < Model.productVerSionDetailInformation.Count; i++)
+                    {
+                        <div class="tag-informationType">
+                            <label>  @Model.productVerSionDetailInformation[i].SpecificationName </label>
+                            <label>  @Model.productVerSionDetailInformation[i].PropertyName @Html.TextBoxFor(m => m.productVerSionDetailInformation[i].vauleId, new{@class="form-control InputProperty",  style="width:100px; margin-right:40px;", @readonly="true", }) </label>
 
 
-                    @{
+                            <label> Thông tin: @Html.TextBoxFor(m => m.productVerSionDetailInformation[i].Value, new{@class="form-control InputProperty", style="width:400px; margin-right:40px;"})</label>
 
-                        for (int i = 0; i < Model.productVerSionDetailInformation.Count; i++)
-                        {
-                            <div class="tag-informationType">
-                                <label>  @Model.productVerSionDetailInformation[i].SpecificationName </label>
-                                <label>  @Model.productVerSionDetailInformation[i].PropertyName <input style="width:100px; margin-right:40px;" asp-for="@Model.productVerSionDetailInformation[i].vauleId" readonly class="form-control InputProperty" /> </label>
-                                <label> Thông tin:<input style="width:400px; margin-right:40px;" asp-for="@Model.productVerSionDetailInformation[i].Value" class="form-control InputProperty" /></label>
-                            </div>
-                        }
+                        </div>
                     }
-
                     <div>
                         <h3>
                             Số lượng
@@ -121,41 +103,112 @@
                             for (int i = 0; i < Model.quantityProductVerSions.Count; i++)
                             {
 
-                                <label>@Model.quantityProductVerSions[i].color: <input style="width:100px;" readonly asp-for="@Model.quantityProductVerSions[i].idQuantity" class="form-control input-quantity" /></label>
-                                <label>Số lượng: <input style="width:300px;" asp-for="@Model.quantityProductVerSions[i].Quantity" class="form-control input-quantity" /></label>
+                                    <label>@Model.quantityProductVerSions[i].color: @Html.TextBoxFor(m => m.quantityProductVerSions[i].idQuantity, new{@class="form-control input-quantity", style="width:100px;", @readonly="True" })</label>
+
+                                    <label>Số lượng:    @Html.TextBoxFor(m => m.quantityProductVerSions[i].Quantity, new{@class="form-control input-quantity", style="width:300px;"})</label>
+
                             }
                         }
 
                     </div>
                     <br />
                     <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật thông tin</button>
-                </form>
+                }
                 <br />
 
 
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Khuyến mãi</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <h5>Sản phẩm khuyến mãi</h5>
-                                <div>Tên sản phẩm: giá  <a href="/DeleteGift?id=" class="btn-google">Xóa khuyến mãi</a></div>
-                                <h5>Giảm giá</h5>
-                                 <div>Tên sự kiện: giá  </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        
+                        <th> Tên sự kiện </th>
+                        <th> Khuyến mãi (%)</th>
+                        <th> Ngày bắt đầu </th>
+                        <th> Ngày kết thúc </th>
+                        <th> Trạng thái </th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model.PricePromation)
+                        {
+                            <tr>
+                               
+                                <th> @item.PromationName </th>
+                                <th> @item.PromationPrice%</th>
+                                <th> @item.StartTime.ToString()</th>
+                                <th> @item.EndTime.ToString()</th>
+                                <th style="color: red;">@item.StatusName</th>
+                               
+                                    <th>
+                                    <a onclick="return ConfirmDelete()" class="btn btn-outline-danger" asp-action="UpdateEvent" asp-controller="Product" asp-route-id="@item.Id" asp-route-versionid="@item.productVersionId">Xóa khuyến mãi</a>
+                                </th>
+
+
+                                
+                           </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th> Tên sản phẩm </th>
+                        <th> Giá (vnd)</th>
+                        <th> Trạng thái </th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var item in Model.ProductPromation)
+                        {
+                            <tr>
+                                <th> <img style="width: 50px;height: 50px; border-radius: 0;" src="/images/ProductDefault/@item.ProductImage" /> </th>
+                                <th> @item.PromationName </th>
+                                <th> @item.PromationPrice</th>
+                                <th style="color: red;">@item.StatusName</th>
+
+                                <th>
+                                    <a onclick="return ConfirmDelete()" class="btn btn-outline-danger" asp-action="UpdateGift" asp-controller="Product" asp-route-id="@item.Id" asp-route-versionid="@item.productVersionId">Kết thúc khuyến mãi</a>
+
+                                </th>
+
+
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

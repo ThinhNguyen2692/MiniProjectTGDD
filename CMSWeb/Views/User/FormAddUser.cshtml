@@ -13,9 +13,9 @@
                                 case "AddBrandsIDfalse":  <div class="alert alert-danger">Mã sản phẩm đã tồn tại</div> break;
                                 case "AddBrandsFalse":  <div class="alert alert-success">Thêm thương hiệu thất bại</div> break;
                             default: break;
-                        }    
-                        
-                        
+                        }
+
+                    @Html.ValidationMessage("UserId", new { @class = "text-danger alert alert-success" })
                 }
                 <h2 style="text-align:center;" class="card-title"> Nhân viên</h2>
                 @using (Html.BeginForm("AddUser", "User", FormMethod.Post, new {@class="forms-sample",id="form-User" ,enctype = "multipart/form-data" }))

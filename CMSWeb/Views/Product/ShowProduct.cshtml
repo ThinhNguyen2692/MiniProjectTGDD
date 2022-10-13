@@ -1,5 +1,8 @@
 ﻿@using ModelProject.ViewModel;
-@model List<ListProductViewModel>;
+@using X.PagedList;
+@using X.PagedList.Mvc.Bootstrap4.Core
+@using X.PagedList.Mvc.Core;
+@model IPagedList<ListProductViewModel>;
 <div class="content-wrapper">
     <div class="page-header">
          
@@ -50,7 +53,7 @@
                         foreach (var item in Model)
                         {
                             <tr>
-                                <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="/images/ProductDefault/@item.path"/> </th>
+                                <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="@item.path"/> </th>
                                 <th> @item.ProductName </th>
                                 <th> @item.Price</th>
                                
@@ -63,6 +66,7 @@
 
                 </tbody>
             </table>
+            @Html.PagedListPager((IPagedList)Model,page=>Url.Action("ShowProduct", new{page}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
         </div>
     </div>
 </div>

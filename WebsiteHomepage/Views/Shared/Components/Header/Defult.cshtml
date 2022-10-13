@@ -1,0 +1,68 @@
+﻿@using ModelProject.ViewModel;
+@model HeaderViewModel;
+
+<header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-2">
+                <div class="header__logo">
+                    <a href="./index.html"><img src="/ashion_master/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-7">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a href="./index.html">Home</a></li>
+                        <li>
+                            <a href="#">Thương hiệu</a>
+                            <ul class="dropdown">
+                                @{
+                                    foreach (var item in Model.showBrandsViewModels)
+                                    {
+                                        <li><a href="#"><img style="width:50px; height: 50px;" src="@item.BrandPhoto" alt="@item.BrandName"/></a></li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                        
+                      @foreach (var item in Model.listProductTypeViewModels)
+                        {
+                            <li><a href="#">@item.TypeName</a></li>
+                        }
+
+                        <li><a href="./shop.html">Shop</a></li>
+                       
+                        <li><a href="./blog.html">Blog</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__right">
+                    <div class="header__right__auth">
+                        <a href="#">Login</a>
+                        <a href="#">Register</a>
+                    </div>
+                    <ul class="header__right__widget">
+                        <li><span class="icon_search search-switch"></span></li>
+                        <li>
+                            <a href="#">
+                                <span class="icon_heart_alt"></span>
+                                <div class="tip">2</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon_bag_alt"></span>
+                                <div class="tip">2</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>

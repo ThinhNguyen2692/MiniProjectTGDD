@@ -4,8 +4,8 @@
     <div style="width: 1200px; margin: auto;" class="grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Nhập ngành hàng mới</h4>
                 @{
+
                     switch (Model.messageUpdate)
                     {
                         case "UpdateProductTypeTrue":
@@ -18,16 +18,13 @@
                         default: break;
                     }
 
-                    switch (Model.messageDelete)
-                    {
-                        case "DeleteTrue":
-                            <div class="alert alert-success">Xóa thành công</div>
-                            break;
-                        case "DeleteFalse":
-                            <div class="alert alert-danger">Xóa thất bại</div>
-                            break;
-                    }
+
                 }
+
+                @Html.ValidationMessage("ErrorType", new { @class = "text-danger" })
+
+                <h4 class="card-title">Nhập ngành hàng mới</h4>
+               
                 <form class="forms-sample" asp-action="UpdataType" asp-controller="Type" method="post" id="form-add-type">
 
                     <div class="form-group">
@@ -54,7 +51,7 @@
                     </div>
 
                     <a class="btn btn-outline-danger" href="/FormSpecification?typeid=@Model.TypeId">Thêm</a>
-                    <a class="btn btn-outline-danger" href="/DeleteType?typeid=@Model.TypeId">Xóa</a>
+                    <a class="btn btn-outline-danger" onclick="return ConfirmDelete()" href="/DeleteType?typeid=@Model.TypeId">Xóa</a>
                     <br />
                     <br />
                     <br />
@@ -63,12 +60,12 @@
                         for (var i = 0; i < Model.createListProductSpecification.Count; i++)
                         {
 
-                            <label>Mã: <input class="form-control" readonly style="width: 100px;" asp-for="@Model.createListProductSpecification[i].SpecificationId" /> </label>  <label style="margin-left: 30px;margin-right: 515px;">Thông số:  <input class="form-control " asp-for="@Model.createListProductSpecification[i].SpecificationName" /></label> <a href="/ShowFormSpecification?idSpecification=@Model.createListProductSpecification[i].SpecificationId&TypeId=@Model.TypeId" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@Model.createListProductSpecification[i].SpecificationId&typeid=@Model.TypeId" class="btn btn-outline-danger">Xóa</a>
+                            <label>Mã: <input class="form-control" readonly style="width: 100px;" asp-for="@Model.createListProductSpecification[i].SpecificationId" /> </label>  <label style="margin-left: 30px;margin-right: 515px;">Thông số:  <input class="form-control " asp-for="@Model.createListProductSpecification[i].SpecificationName" /></label> <a href="/ShowFormSpecification?idSpecification=@Model.createListProductSpecification[i].SpecificationId&TypeId=@Model.TypeId" class="btn btn-outline-danger">Thêm</a> <a href="/DeleteSpecification?id=@Model.createListProductSpecification[i].SpecificationId&typeid=@Model.TypeId" onclick="return ConfirmDelete()" class="btn btn-outline-danger">Xóa</a>
                             <br />
                             <br />
                             for (var j = 0; j < Model.createListProductSpecification[i].listInformationProperty.Count; j++)
                             {
-                                <label style="margin-left: 20px;">Mã: <input style="width: 100px;" asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertyId" class="form-control" readonly /></label>  <label style="margin-left: 30px;margin-right: 30px;">Thuộc tính:  <input asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertyName" class="form-control" /></label> <label style="margin-right: 485px;">Đơn vị: <input style="width: 100px;" class="form-control" asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertiesDescription" /></label> <a href="/DeleteProperty?id=@Model.createListProductSpecification[i].listInformationProperty[j].PropertyId&typeid=@Model.TypeId" class="btn btn-outline-danger">Xoá</a>
+                                <label style="margin-left: 20px;">Mã: <input style="width: 100px;" asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertyId" class="form-control" readonly /></label>  <label style="margin-left: 30px;margin-right: 30px;">Thuộc tính:  <input asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertyName" class="form-control" /></label> <label style="margin-right: 485px;">Đơn vị: <input style="width: 100px;" class="form-control" asp-for="@Model.createListProductSpecification[i].listInformationProperty[j].PropertiesDescription" /></label> <a href="/DeleteProperty?id=@Model.createListProductSpecification[i].listInformationProperty[j].PropertyId&typeid=@Model.TypeId" onclick="return ConfirmDelete()" class="btn btn-outline-danger">Xoá</a>
                             }
                         }
                     }

@@ -8,3 +8,9 @@
     
    
 }
+
+.pagination {
+    float: right;
+   padding-top: 20px;
+   padding-right: 30px;
+}

@@ -9,10 +9,15 @@ using ModelProject.ViewModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+
+
+    [Authorize(Roles = "4,5")]
+    
+   
     public class PurchaseOrderController : Controller
     {
 
@@ -56,6 +61,7 @@ namespace CMSWeb.Controllers
             return tylerJson;
         }
 
+       
         [HttpGet]
         [Route("/Delivering")]
         public IActionResult UpdateStatusOrder(string OrderId, int status)

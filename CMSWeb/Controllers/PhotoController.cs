@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+
+    [Authorize(Roles = "1,5")]
     public class PhotoController : Controller
     {
         private readonly ILogger<PhotoController> _logger;

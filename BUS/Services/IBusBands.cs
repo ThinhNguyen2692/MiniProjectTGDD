@@ -13,7 +13,7 @@ namespace BUS.Services
         public bool AddBrands(AddBrandViewModel brandViewModel);
         public List<ShowBrandsViewModel> GetProductBrands();
         public AddBrandViewModel GetBrandById(string id);
-        public AddBrandViewModel? RemoveBrand(AddBrandViewModel addBrandViewModel);
+        public bool? RemoveBrand(string brandsId);
         public bool UpdateBrands(AddBrandViewModel brandViewModel);
         public List<ProductBrand> DalGetbrandsByStatus();
        

@@ -18,6 +18,7 @@ namespace ModelProject.ViewModel
                 new RoleUser(){RoleName = "Quản lý User", RoleId = 3},
                 new RoleUser(){RoleName = "Giao nhận", RoleId = 4},
                 new RoleUser(){RoleName = "Quản lý", RoleId = 5},
+                new RoleUser(){RoleName = "Thống kê", RoleId = 6},
             };
             
 

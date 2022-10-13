@@ -12,7 +12,7 @@ namespace DAL
 {
     public interface IDAlUser
     {
-        public bool UserAdd(User user);
+        public int UserAdd(User user);
         public List<User> GetUser();
         public User GetUserById(int UserId);
         public User UpdateUser(User user);
@@ -33,12 +33,12 @@ namespace DAL
             this.repository = _unitOfWork.Repository<User>();
         }
 
-        public bool UserAdd(User user)
+        public int UserAdd(User user)
         {
             user.Password = GenerateMD5(user.Password);
             repository.Add(user);
             _unitOfWork.SaveChanges();
-            return true;
+            return user.UserId;
         }
         /// <summary>
         /// Lấy danh sách user

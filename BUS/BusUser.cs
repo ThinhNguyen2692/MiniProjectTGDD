@@ -45,13 +45,13 @@ namespace BUS
                 UserName = viewModel.UserName,
                 UserPhone = viewModel.UserPhone,
                 Password = viewModel.Password,
-                UserPhoto = viewModel.UserPhoto.FileName,
+                UserPhoto = "https://localhost:7079/images/User/" + viewModel.UserPhoto.FileName,
                 RoleId = viewModel.roleID
             };
-
-            if (iDalUser.UserAdd(user) == true) {
+            var userID = iDalUser.UserAdd(user);
+            if ( userID!= 0) {
                 AddFileImage(viewModel.UserPhoto);
-                viewModel = new AddUserViewModel();
+                viewModel.UserId = userID;
                 viewModel.Message = "addTrue";
                         
             }
@@ -109,7 +109,7 @@ namespace BUS
             user.Email = editUserViewModel.Email;
             if(editUserViewModel.FileImage != null)
             {
-                user.UserPhoto = editUserViewModel.FileImage.FileName;
+                user.UserPhoto = "https://localhost:7079/images/User/" + editUserViewModel.FileImage.FileName;
                 AddFileImage(editUserViewModel.FileImage);
             }
             user = iDalUser.UpdateUser(user);

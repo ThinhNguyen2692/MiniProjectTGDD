@@ -14,6 +14,8 @@ namespace ModelProject.ViewModel
         public string BrandPhoto { get; set; } = null!;
         public int? BrandStatus { get; set; }
 
+        
+
         public string GetStatus(int? Status)
         {
             switch (Status)

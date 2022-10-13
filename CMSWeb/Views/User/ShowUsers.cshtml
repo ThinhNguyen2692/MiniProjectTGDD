@@ -48,7 +48,7 @@
                         foreach (var item in Model)
                         {
                             <tr>
-                                <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="/images/User/@item.UserPhoto"/> </th>
+                                <th> <img style="width: 100px;height: 100px; border-radius: 0;" src="@item.UserPhoto"/> </th>
                                 <th> @item.UserName </th>
                                
                                         <th>@item.role.GetRoleUser(item.RoleId)</th>

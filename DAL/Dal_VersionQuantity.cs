@@ -58,6 +58,7 @@ namespace DAL
 
             var data = repository.GetAll(predicate: v => v.Id == quantityProductVerSion.idQuantity).FirstOrDefault();
             if (data == null) { return false; _unitOfWork.SaveChanges(); }
+            repository.Attach(data);
             data.Quantity = quantityProductVerSion.Quantity;
             _unitOfWork.SaveChanges();
             return true;

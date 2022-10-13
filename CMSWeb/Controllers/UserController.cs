@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+    
     public class UserController : Controller
     {
         private readonly IBusUser iBusUser;
@@ -18,6 +18,8 @@ namespace CMSWeb.Controllers
             this.iBusUser = iBusUser;
        
         }
+
+        [Authorize(Roles = "5")]
         /// <summary>
         /// load form nhap thong tin nhan vien
         /// </summary>
@@ -28,6 +30,8 @@ namespace CMSWeb.Controllers
             var viewModel = new AddUserViewModel();
             return View("FormAddUser", viewModel);
         }
+
+        [Authorize(Roles = "5")]
         /// <summary>
         /// Thêm quản trị vien
         /// </summary>
@@ -37,8 +41,11 @@ namespace CMSWeb.Controllers
         public IActionResult AddUser(AddUserViewModel viewModel)
         {
             viewModel = iBusUser.UserAdd(viewModel);
+            ModelState.AddModelError("UserId", viewModel.UserId.ToString());
             return View("FormAddUser", viewModel);
         }
+
+        [Authorize(Roles = "5")]
         /// <summary>
         /// show danh sách nhân viên
         /// </summary>
@@ -49,6 +56,8 @@ namespace CMSWeb.Controllers
             var viewModel = iBusUser.GetUsers();
             return View("ShowUsers", viewModel);
         }
+
+
         /// <summary>
         /// form hiện thông tin chi tiết nhân viên
         /// </summary>
@@ -72,11 +81,15 @@ namespace CMSWeb.Controllers
             viewModel = iBusUser.UpdateUser(viewModel);
             return View("ShowUserDetail", viewModel);
         }
+
+        
         public IActionResult UpdatePass(int Userid)
         {
             EditUserViewModel viewModel = iBusUser.UpdatePassword(Userid);
             return View("ShowUserDetail", viewModel);
         }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

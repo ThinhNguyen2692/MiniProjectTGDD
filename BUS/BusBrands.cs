@@ -57,19 +57,29 @@ namespace BUS
 
             return ListBrandsShow;
         }
-        public AddBrandViewModel? RemoveBrand(AddBrandViewModel addBrandViewModel)
+        public bool? RemoveBrand(string brandsId)
         {
-            if (iDalBrands.DalRemoveBrand(addBrandViewModel.BrandId) == true)
+            var data = iDalBrands.GetProductBrand(brandsId);
+            if(data.Products.Count == 0)
             {
-                // Xóa ảnh
-                File.Delete("wwwroot\\images\\Logo\\" + addBrandViewModel.BrandPhoto);
-                addBrandViewModel = null;
+                if (iDalBrands.DalRemoveBrand(data.BrandId) == true)
+                {
+                    try
+                    {
+                         // Xóa ảnh
+                    File.Delete("wwwroot\\images\\Logo\\" + data.BrandPhoto);
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+                    return true;
+                }
             }
-            else
-            {
-                addBrandViewModel.MessageUpdate = "removeFail";
-            }
-            return addBrandViewModel;
+            
+            return false;
         }
 
         public AddBrandViewModel GetBrandById(string id)
@@ -108,6 +118,7 @@ namespace BUS
             return iDalBrands.DalGetbrandsByStatus();
         }
 
+       
         
     }
 }

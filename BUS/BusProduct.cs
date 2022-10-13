@@ -23,7 +23,9 @@ namespace BUS
         private readonly IDalBrands iDalBrands;
         private readonly IDalPhoto iDalPhoto;
         private readonly IDalProductPhoto iDalProductPhoto;
-        public BusProduct(IDAlProduct product, IDalProductPhoto iDalProductPhoto, IDalPhoto iDalPhoto, IDalVersionQuantity dal_VersionQuantity, IDalPropertyValue dal_PropertyValue , IDalProductColor dal_ProductColor, IDaltype dal_ProductType, IDalBrands iDalBrands, IDalProductVersion dal_ProductVersion)
+        private readonly IDalEvent iDalEvent;
+        private readonly IDal_Gift iDalGift;
+        public BusProduct(IDAlProduct product, IDalEvent iDalEvent, IDal_Gift iDalGift, IDalProductPhoto iDalProductPhoto, IDalPhoto iDalPhoto, IDalVersionQuantity dal_VersionQuantity, IDalPropertyValue dal_PropertyValue , IDalProductColor dal_ProductColor, IDaltype dal_ProductType, IDalBrands iDalBrands, IDalProductVersion dal_ProductVersion)
         {
             dal_Product = product;
             this.dal_VersionQuantity = dal_VersionQuantity;
@@ -34,6 +36,8 @@ namespace BUS
             this.dal_ProductVersion = dal_ProductVersion;
             this.iDalPhoto = iDalPhoto;
             this.iDalProductPhoto = iDalProductPhoto;
+            this.iDalEvent = iDalEvent;
+            this.iDalGift = iDalGift;
         }
 
         /// <summary>
@@ -60,7 +64,7 @@ namespace BUS
             product.ProductBrand = productViewModel.BrandId;
             product.ProductType = productViewModel.TypeId;
             product.ReleaseTime = productViewModel.ReleaseTime;
-            product.ProductPhoto = productViewModel.FileImage.FileName;
+            product.ProductPhoto = "https://localhost:7079/images/ProductDefault/" + productViewModel.FileImage.FileName;
             product.ProductDescription = productViewModel.ProdutDescription;
             if(dal_Product.DalReadProduct(product.ProductId) == null)
             {
@@ -85,7 +89,7 @@ namespace BUS
            ProductColor productColor = new ProductColor();
             productColor.ProductId = addColorProduct.ProductId;
             productColor.ColorDescription = addColorProduct.colorName;
-            productColor.ColorPath = addColorProduct.Fileimage.FileName;
+            productColor.ColorPath = "https://localhost:7079/images/ProductDefault/" + addColorProduct.Fileimage.FileName;
             if (dal_ProductColor.AddProductColor(productColor) == true)
             {
                 AddFileImage(addColorProduct.Fileimage);
@@ -109,9 +113,9 @@ namespace BUS
             var ProductType = dal_ProductType.ReadType(Product.ProductType);
 
 
-            productVersionViewModeal.ProductId = productId;
-            productVersionViewModeal.ProductVersionId = productId;
-            productVersionViewModeal.ProductVersionName = Product.ProuctName;
+            productVersionViewModeal.productVersionModel.ProductId = productId;
+            productVersionViewModeal.productVersionModel.ProductVersionId = productId;
+            productVersionViewModeal.productVersionModel.ProductVersionName = Product.ProuctName;
             productVersionViewModeal.information = productVersionViewModeal.GetProductInformation(ProductType);
             var listcolor = dal_ProductColor.DalReadProductColors(productId);
             if (listcolor != null) productVersionViewModeal.ColorProduct = productVersionViewModeal.GetColors(listcolor);
@@ -126,24 +130,24 @@ namespace BUS
         public ProductVersionViewModel AddProductVersion(ProductVersionViewModel productVersionViewModel)
             {
             var ProductVersion = new ProductVersion();
-            ProductVersion.ProductId = productVersionViewModel.ProductId;
-            ProductVersion.VersionName = productVersionViewModel.ProductVersionName;
-            ProductVersion.VersionId = productVersionViewModel.ProductVersionId;
-            ProductVersion.ProductPrice = productVersionViewModel.ProductVersionPrice;
-            ProductVersion.ProductStatus = productVersionViewModel.ProductVersionStatus;
+            ProductVersion.ProductId = productVersionViewModel.productVersionModel.ProductId;
+            ProductVersion.VersionName = productVersionViewModel.productVersionModel.ProductVersionName;
+            ProductVersion.VersionId = productVersionViewModel.productVersionModel.ProductVersionId;
+            ProductVersion.ProductPrice = productVersionViewModel.productVersionModel.ProductVersionPrice;
+            ProductVersion.ProductStatus = productVersionViewModel.productVersionModel.ProductVersionStatus;
            
             foreach (var item in productVersionViewModel.information)
             {
                 PropertiesValue propertiesValue = new PropertiesValue();
                 propertiesValue.PropertiesId = item.ProperTyId;
-                propertiesValue.VersionId = productVersionViewModel.ProductVersionId;
+                propertiesValue.VersionId = productVersionViewModel.productVersionModel.ProductVersionId;
                 propertiesValue.Value = item.Value + " "+item.Description;
                 ProductVersion.PropertiesValues.Add(propertiesValue);
             }
             foreach (var item in productVersionViewModel.ColorProduct)
             {
                 VersionQuantity versionQuantity = new VersionQuantity();
-                versionQuantity.VersionId = productVersionViewModel.ProductVersionId;
+                versionQuantity.VersionId = productVersionViewModel.productVersionModel.ProductVersionId;
                 versionQuantity.ColorId = item.ColoId;
                 versionQuantity.Quantity = item.QuantityProduct;
                 ProductVersion.VersionQuantities.Add(versionQuantity);
@@ -181,29 +185,51 @@ namespace BUS
             ProductDetail.VersionName = data.VersionName;
             ProductDetail.ProductStatus = data.ProductStatus;
             ProductDetail.ProductPrice = data.ProductPrice;
-
             ProductDetail.quantityProductVerSions = ProductDetail.GetQuantityProductVerSions(data.VersionQuantities.ToList());
             ProductDetail.productVerSionDetailInformation = ProductDetail.GetProductVerSionDetailInformation(data.PropertiesValues.ToList());
 
             foreach (var item in data.Product.Gifts)
             {
                 Promation promation = new Promation();
+                promation.productVersionId = ProductDetail.VersionId;
                 promation.Id = item.GiftId;
                 promation.PromationName = item.GiftProductNavigation.VersionName;
                 promation.PromationPrice = (int)item.GiftProductNavigation.ProductPrice;
+                promation.productVersionId = item.GiftProductNavigation.VersionId;
+                promation.Status = item.GiftStatus;
+                promation.ProductImage = item.GiftProductNavigation.Product.ProductPhoto;
+                var gift = dal_ProductVersion.DalReadProduct(item.GiftProduct);
+                if (gift != null)
+                {
+                    var Quantity = 0;
+                    foreach (var value in gift.VersionQuantities)
+                    {
+                        Quantity += (int)value.Quantity;
+                    }
+                    if(Quantity == 0)
+                    {
+                        promation.StatusName = "Sản phẩm khuyến mãi hết hàng";
+                    }
+                }
                 ProductDetail.ProductPromation.Add(promation);    
-            
+                
             }
+            ProductDetail.ProductPromation.OrderBy(x => x.Status);
             foreach (var item in data.Product.EventDetails)
             {
                 Promation promation = new Promation();
+                promation.productVersionId = ProductDetail.VersionId;
                 promation.Id = item.EventId;
                 promation.PromationName = item.Event.EventName;
                 promation.PromationPrice = item.Event.Promotion;
+                promation.StartTime = item.Event.StartTime;
+                promation.EndTime = item.Event.EndTime;
+                if (promation.EndTime < DateTime.Now) { promation.StatusName = "Hết thời gian khuyến mãi"; promation.Status = 0; }
+                else if (promation.StartTime > DateTime.Now) promation.StatusName = "Chưa đến thời gian khuyến mãi";
                 ProductDetail.PricePromation.Add(promation);
 
             }
-
+            ProductDetail.PricePromation.OrderBy(x => x.Status);
             return ProductDetail;
 
         }
@@ -239,10 +265,14 @@ namespace BUS
         /// <returns></returns>
         public bool DelProductVerion(string id, string productID)
         {
+            var productversinDetail = dal_ProductVersion.DalReadProduct(id);
             //kiểm tra số lượng phiên bản sản phẩm còn lại
             var data = dal_ProductVersion.CheckVersionQuantity(id);
             //số lượng > 0 không đc xóa phiên bản sản phẩm
             if(data == false) { return false; }
+            //Xóa khuyến mãi
+            iDalEvent.RemoveEvent(productversinDetail.Product.EventDetails.ToList());
+            iDalGift.RemoveGift(productversinDetail.Gifts.ToList());
             //checkDelete nhận kết quả xóa phiên bản sản phẩm
             var checkDelete = dal_ProductVersion.DelProductVerion(id);
             //kiểm tra có xóa thông tin sản phẩm chung
@@ -324,12 +354,11 @@ namespace BUS
             product.ProuctName = productDetailViewModel.ProuctName;
             product.ProductBrand = productDetailViewModel.ProductBrand;
             product.ProductType = productDetailViewModel.ProductType;
-            product.ProductBrand = productDetailViewModel.ProductBrand;
             product.ReleaseTime = productDetailViewModel.ReleaseTime;
             product.ProductDescription = productDetailViewModel.ProductDescription;
             if (productDetailViewModel.fileImage != null)
             {
-                product.ProductPhoto = productDetailViewModel.fileImage.FileName;
+                product.ProductPhoto = "https://localhost:7079/images/ProductDefault/" + productDetailViewModel.fileImage.FileName;
             }
             else
             {
@@ -342,6 +371,7 @@ namespace BUS
             productVersion.VersionName = productDetailViewModel.VersionName;
             productVersion.ProductPrice = productDetailViewModel.ProductPrice;
             productVersion.ProductStatus = productDetailViewModel.ProductStatus;
+            
             dal_ProductVersion.UpdateProductVersion(productVersion);
             foreach (var item in productDetailViewModel.productVerSionDetailInformation)
             {
@@ -391,7 +421,7 @@ namespace BUS
             foreach (var item in  viewModel.photos)
             {
                 Photo photo = new Photo();
-                photo.PhotoPath = item.FileName;
+                photo.PhotoPath = "https://localhost:7079/images/Products/" + item.FileName;
                 var idPhoto = iDalPhoto.AddPhoto(photo);
                 string fileName = item.FileName;
                 ProductPhoto productPhoto = new ProductPhoto();
@@ -450,12 +480,22 @@ namespace BUS
             return photoViewModel;
         }
 
+        /// <summary>
+        /// Xóa hình
+        /// </summary>
+        /// <returns></returns>
         public PhotoViewModel DeletePhoto()
         {
             iDalPhoto.DeletePhoto();
             return GetPhotoViewModel();
         }
 
+
+        /// <summary>
+        /// Xóa  hình cho sản phẩm
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <returns></returns>
         public PhotoViewModel DeletePhotoProduct(int photoId)
         {
             var data = iDalProductPhoto.GetById(photoId);
@@ -464,6 +504,28 @@ namespace BUS
             iDalProductPhoto.DelPhotoProduct(data);
 
             return GetPhotoViewModel(versionId);
+        }
+
+
+
+        /// <summary>
+        /// Xóa Khuyến mãi
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <returns></returns>
+        public void RemoveEvent(int eventId)
+        {
+            iDalEvent.Remove(eventId);
+        }
+
+        /// <summary>
+        /// Xóa Khuyến mãi
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <returns></returns>
+        public void RemoveGift(int giftId)
+        {
+            iDalGift.RemoveGift(giftId);
         }
 
     }

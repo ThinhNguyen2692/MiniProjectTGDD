@@ -9,7 +9,7 @@ namespace ModelProject.ViewModel
 {
     public class AddUserViewModel
     {
-      
+        public int UserId { get; set; } = 0; 
         public string UserName { get; set; } = null!;
         public string UserPhone { get; set; } = null!;
         public IFormFile UserPhoto { get; set; } = null!;

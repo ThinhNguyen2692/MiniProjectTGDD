@@ -33,7 +33,7 @@ namespace BUS
             services.AddSingleton<IDAlUser, DalUser>();
             services.AddSingleton<IDalEvent, DalEvent>();
 
-
+            services.AddSingleton<IBusShowProducts, BusShowProducts>();
             services.AddSingleton<IBusBands, BusBrands>();
             services.AddSingleton<IBusProductType, BusProductType>();
             services.AddSingleton<IBusCustomer, Bus_Customer>();

@@ -7,10 +7,13 @@ using ModelProject.Models;
 using Newtonsoft.Json;
 using ModelProject.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+
+    [Authorize(Roles = "1,5")]
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
@@ -41,32 +44,16 @@ namespace CMSWeb.Controllers
         /// Load danh sách sản phẩm 
         /// </summary>
         /// <returns>trả về danh sách tất cả sản phẩm (chỉ lấy dữ liệu cần)</returns>
-        public IActionResult ShowProduct()
+        public IActionResult ShowProduct(int page = 1)
         {
             
-            var listProductVersions = IBusProduct.DalReadProductAll();
+            var listProductVersions = IBusProduct.DalReadProductAll().ToPagedList(page, 10);
 
             return View(listProductVersions);
         }
 
 
-        /// <summary>
-        /// load form thêm hình cho sản phẩm
-        /// </summary>
-        /// <param name="ProductIdVersion">mã phiên bản sản phẩm</param>
-        /// <param name="ProductNameVersion">tên phiên bản sản phẩm</param>
-        /// <returns></returns>
-
-
-
       
-
-
-        /// <summary>
-        /// lưu ảnh vào folder
-        /// </summary>
-        /// <param name="fileImage">file hình cần thêm vào</param>
-        
 
         /// <summary>
         /// Thêm product
@@ -169,7 +156,7 @@ namespace CMSWeb.Controllers
         public IActionResult ShowDetailProduct(string id)
         {
             var ProductDetailViewModel = IBusProduct.DalReadProductDetail(id);
-            return View(ProductDetailViewModel);
+            return View("ShowDetailProduct", ProductDetailViewModel);
         }
 
         [HttpGet]
@@ -216,10 +203,8 @@ namespace CMSWeb.Controllers
         [Route("UpdateProduct")]
         public IActionResult UpdateProduct(ProductDetailViewModel productDetailViewModel)
         {
-
-
-            var ProductDetailViewModelNew = IBusProduct.DalReadProductDetail(productDetailViewModel.VersionId);
             productDetailViewModel.MessageUpdate = IBusProduct.UpdateProduct(productDetailViewModel);
+            var ProductDetailViewModelNew = IBusProduct.DalReadProductDetail(productDetailViewModel.VersionId);
             return View("ShowDetailProduct", ProductDetailViewModelNew);
         }
 
@@ -251,11 +236,6 @@ namespace CMSWeb.Controllers
 
 
 
-        public IActionResult ShowDetailProductJson()
-        {
-            var ProductDetailViewModel = IBusProduct.DalReadProductDetail("IP12");
-            return Ok(ProductDetailViewModel);
-        }
 
 
         public IActionResult DeleteImageProduct(int id)
@@ -270,11 +250,29 @@ namespace CMSWeb.Controllers
             return View("form/Photo", viewModel);
         }
 
+        /// <summary>
+        /// Xóa ảnh không còn dùng
+        /// </summary>
+        /// <returns></returns>
         public IActionResult PhotoClean()
         {
             var viewModel = IBusProduct.DeletePhoto();
             return View("form/Photo", viewModel);
         }
+
+
+        public IActionResult UpdateEvent(int id, string versionid)
+        {
+            IBusProduct.RemoveEvent(id);
+            return ShowDetailProduct(versionid);
+        }
+
+        public IActionResult UpdateGift(int id, string versionid)
+        {
+            IBusProduct.RemoveGift(id);
+            return ShowDetailProduct(versionid);
+        }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+
+    [Authorize(Roles = "1,5")]
     public class ProductPromotionController : Controller
     {
         private readonly ILogger<ProductPromotionController> _logger;

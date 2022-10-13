@@ -24,15 +24,32 @@ namespace ModelProject.ViewModel
         public int QuantityProduct { get; set; }
     }
 
-    public class ProductVersionViewModel
+    public class ProductVersionModel
     {
+        public ProductVersionModel() {}
         public string ProductId { get; set; }
         public string ProductVersionId { get; set; }
         public string ProductVersionName { get; set; }
         public int ProductVersionPrice { get; set; }
         public int ProductVersionStatus { get; set; }
+    }
+
+    public class ProductVersionViewModel
+    {
+
+        public ProductVersionModel productVersionModel { get; set; } = new ProductVersionModel();
+
         public List<Color> ColorProduct { get; set; }
-        public Status status { get; set; } = new Status();
+        public IEnumerable<StatusBrands> status { get; set; } = new List<StatusBrands>()
+        {
+            new StatusBrands(){name = "Tạm ngưng kinh doanh", id = 0},
+            new StatusBrands(){name = "kinh doanh", id = 1}
+
+        };
+
+
+       
+
 
         public List<ProductInformation> information { get; set; }
        

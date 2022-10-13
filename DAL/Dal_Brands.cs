@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ModelProject.Models;
 using DAL.DataModel;
 using X.PagedList;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
@@ -106,7 +107,13 @@ namespace DAL
 
         }
 
-      
+        public ProductBrand GetProductBrand(string brandsId)
+        {
+            var data = repository.GetAll(predicate: p => p.BrandId == brandsId, include: p => p.Include(p => p.Products)).FirstOrDefault();
+            if (data == null) return null;
+            return data;
+        }
+
 
     }
 }

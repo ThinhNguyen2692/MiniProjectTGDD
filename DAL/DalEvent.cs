@@ -12,10 +12,13 @@ namespace DAL
     public interface IDalEvent
     {
         public bool AddEvent(Event EventItem);
+        public void Remove(int EventId);
+        public void RemoveEvent(List<EventDetail> EventDetail);
     }
     public class DalEvent:IDalEvent
     {
         private IRepository<Event> repository;
+        private IRepository<EventDetail> repositoryEventDetail;
         private IUnitOfWork _unitOfWork;
 
 
@@ -23,6 +26,7 @@ namespace DAL
         {
             this._unitOfWork = _unitOfWork;
             this.repository = _unitOfWork.Repository<Event>();
+            this.repositoryEventDetail = _unitOfWork.Repository<EventDetail>();
         }
 
         public bool AddEvent(Event EventItem)
@@ -35,6 +39,24 @@ namespace DAL
             repository.Add(EventItem);
             _unitOfWork.SaveChanges();
             return true;
+        }
+
+        /// <summary>
+        /// Xóa khuyến mãi sản phẩm
+        /// </summary>
+        /// <param name="EventId"></param>
+        public void Remove(int EventId)
+        {
+            var data = repositoryEventDetail.GetAll(predicate: e=> e.Id == EventId).FirstOrDefault();
+            if (data == null) return;
+            repositoryEventDetail.Delete(data);
+            _unitOfWork.SaveChanges();
+        }
+
+        public void RemoveEvent(List<EventDetail> EventDetail)
+        {
+            repositoryEventDetail.RemoveRange(EventDetail);
+            _unitOfWork.SaveChanges();
         }
     }
 }

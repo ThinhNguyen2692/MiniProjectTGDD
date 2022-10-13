@@ -6,52 +6,44 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
-                <form class="forms-sample" id="form-Product" method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="AddVerSionProduct">
-                    <div class="form-group">
+                @using (Html.BeginForm("AddVerSionProduct", "Product", FormMethod.Post, new { @class = "forms-sample", id = "form-Product", enctype = "multipart/form-data" }))
+                {
+                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        <input class="form-control ProductID" readonly asp-for="@Model.ProductId" />
+
+                        @Html.TextBoxFor(m => m.productVersionModel.ProductId, new{@class="form-control ProductID", @readonly="True"})
                     </div>
-                    <div class="form-group">
+                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
-                        <input class="form-control VersionID" asp-for="@Model.ProductVersionId" />
+                        @Html.TextBoxFor(m => m.productVersionModel.ProductVersionId, new{@class="form-control VersionID"})
                     </div>
-                    <div class="form-group">
+                      <div class="form-group">
                         <label>Tên phiên bản sản phẩm</label>
-                        <input asp-for="@Model.ProductVersionName" class="form-control VersionName" />
+                        @Html.TextBoxFor(m => m.productVersionModel.ProductVersionName, new{@class="form-control VersionName"})
 
                     </div>
-                    <div class="form-group">
+
+                      <div class="form-group">
                         <label>Giá sản phẩm</label>
-                        <input type="number" class="form-control VersionPrice" asp-for="@Model.ProductVersionPrice">
+                        @Html.TextBoxFor(m => m.productVersionModel.ProductVersionPrice, new{@class="form-control VersionPrice", type="number", min=0})
                     </div>
-
                     <div class="form-group">
                         <label>Trạng thái</label>
-                        <select class="form-control" asp-for="@Model.ProductVersionStatus">
-                            @{
-                                for (int i = 0; i < Model.status.GetStatus().Count; i++)
-                                {
-                                     <option value="@i">@Model.status.GetStatus()[i]</option>
-                                }
-                            }
-                        </select>
+
+                        @Html.DropDownListFor(m => m.productVersionModel.ProductVersionStatus, new SelectList(Model.status, "id", "name"), new {@class="form-control"} )
+                      
                     </div>
+                    for (int i = 0; i < Model.information.Count; i++)
+                    {
 
-                    @{
-
-                        for (int i = 0; i < Model.information.Count; i++)
-
-                        {
-
-                            <div class="tag-informationType">
-                                <h3>@Model.information[i].SpecificationName</h3>
-                                <br />
-                                <br />
-                                <h4 class="DataProperty" style="margin-left: 20px;">@Model.information[i].PropertyName </h4>
-                                <label>Mã thuộc tính: <input readonly width="100px" asp-for="@Model.information[i].ProperTyId" class="form-control" /></label>
-                                <label><input style="width:500px;" asp-for="@Model.information[i].Value" class="form-control InputProperty" /><input style="width:100px;" asp-for="@Model.information[i].Description" class="form-control InputProperty" />  </label>
-                            </div>
-                        }
+                        <div class="tag-informationType">
+                            <h3>@Model.information[i].SpecificationName</h3>
+                            <br />
+                            <br />
+                            <h4 class="DataProperty" style="margin-left: 20px;">@Model.information[i].PropertyName </h4>
+                            <label>Mã thuộc tính: @Html.TextBoxFor(m => m.information[i].ProperTyId, new{@class="form-control", @readonly="True", width="100px" })  </label>
+                            <label>@Html.TextBoxFor(m => m.information[i].Value, new{@class="form-control InputProperty",  style="width:500px;"  })@Html.TextBoxFor(m => m.information[i].Description, new{@class="form-control InputProperty",  style="width:100px;"  })  </label>
+                        </div>
                     }
 
                     <div>
@@ -61,8 +53,8 @@
                         @{
                             for (int i = 0; i < Model.ColorProduct.Count; i++)
                             {
-                                <h3 class="list-color-id">Mã màu:  <input asp-for="@Model.ColorProduct[i].ColoId"/></h3>
-                                <label> <h3>@Model.ColorProduct[i].ColoName</h3> <input style="width:500px;" asp-for="@Model.ColorProduct[i].QuantityProduct"  class="form-control input-quantity"  /></label>
+                                <h3 class="list-color-id">Mã màu:  @Html.TextBoxFor(m => m.ColorProduct[i].ColoId)</h3>
+                                <label> <h3>@Model.ColorProduct[i].ColoName</h3>  @Html.TextBoxFor(m => m.ColorProduct[i].QuantityProduct, new{@class="form-control input-quantity",  style="width:500px;"  })</label>
                             }
                         }
 
@@ -70,7 +62,11 @@
                     <br />
                     <button type="reset" class=" btn btn-gradient-primary me-2">Làm mới</button>
                     <button class="btn btn-gradient-primary me-2">Thêm mới</button>
-                </form>
+                  
+                }
+
+
+               
                 <br />
                 
             </div>

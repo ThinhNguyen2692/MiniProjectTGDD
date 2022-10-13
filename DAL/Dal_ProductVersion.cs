@@ -66,8 +66,10 @@ namespace DAL
                 .Include(p => p.Product).ThenInclude(p => p.ProductBrandNavigation)
                 .Include(p => p.Product).ThenInclude(p => p.ProductTypeNavigation)
                 .Include(pv => pv.PropertiesValues).ThenInclude(pv => pv.Properties).ThenInclude(pv => pv.Specifications)
-                .Include(pv => pv.VersionQuantities).ThenInclude(vq => vq.Color)).FirstOrDefault();
-            if (data2 == null) return new ProductVersion();
+                .Include(pv => pv.VersionQuantities).ThenInclude(vq => vq.Color)
+                .Include(pv => pv.Product).ThenInclude(p => p.Gifts).ThenInclude(g => g.GiftProductNavigation).ThenInclude(g => g.Product)).FirstOrDefault();
+                
+            if (data2 == null) return null;
             return data2;
         }
 
@@ -93,9 +95,6 @@ namespace DAL
             _unitOfWork.SaveChanges();
             return true;
         }
-
-     
-
         public bool CheckVersionQuantity(string id)
         {
             var data = repository.ListIncludes(v => v.VersionQuantities).First(p => p.VersionId == id);

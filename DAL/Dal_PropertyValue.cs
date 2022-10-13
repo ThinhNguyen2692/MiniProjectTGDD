@@ -31,6 +31,7 @@ namespace DAL
         {
             var data = repository.GetAll(predicate: p => p.ValueId == productVerSionDetailInformation.vauleId).FirstOrDefault();
             if (data == null) return false;
+            repository.Attach(data);
             data.Value = productVerSionDetailInformation.Value;
             _unitOfWork.SaveChanges();
             return true;

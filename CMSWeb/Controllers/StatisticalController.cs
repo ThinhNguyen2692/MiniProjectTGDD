@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CMSWeb.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "5,6")]
     public class StatisticalController : Controller
     {
         private readonly ILogger<StatisticalController> _logger;
@@ -23,7 +23,7 @@ namespace CMSWeb.Controllers
 
         }
 
-        [Route("")]
+        [Route("Statistical")]
         public IActionResult Statistical()
         {
             var viewModel = iBusStatistical.GetStatisticalViewModel();

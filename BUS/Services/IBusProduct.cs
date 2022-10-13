@@ -34,5 +34,7 @@ namespace BUS.Services
         public PhotoViewModel DeletePhotoProduct(int photoId);
         public PhotoViewModel DeletePhoto();
         public PhotoViewModel GetPhotoViewModel();
+        public void RemoveGift(int giftId);
+        public void RemoveEvent(int eventId);
     }
 }
