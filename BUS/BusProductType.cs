@@ -88,6 +88,7 @@ namespace BUS
                     SpecificationsId = item.SpecificationId,
                     TypeId = type.TypeId
                 };
+                iDalProductPecification.Update(value);
                 foreach (var item2 in item.listInformationProperty)
                 {
                     InformationProperty informationProperty = new InformationProperty();
@@ -95,11 +96,10 @@ namespace BUS
                     informationProperty.PropertiesId = item2.PropertyId;
                     informationProperty.SpecificationsId = item.SpecificationId;
                     informationProperty.PropertiesDescription = item2.PropertiesDescription;
-
-                    value.InformationProperties.Add(informationProperty);
+                   iDalInformationProperties.UpdateProperty(informationProperty);
                 }
 
-                productType.ProductSpecifications.Add(value);
+               
             }
             bool check = daltype.DalUpdateType(productType);
             if (check == true)
@@ -181,18 +181,16 @@ namespace BUS
         {
             // kiểm tra sản phẩm ngành hàng còn tồn tại
             //true sản phẩm ngành hàng = 0 được xóa
-            if (daltype.CheckProductByTypeId(typeid) == true)
-            {
+           
 
                 daltype.deletetype(typeid);
                 return true;
-            }
-            return false;
+          
         }
 
         public bool deleteSpecificatio(int SpecificationId)
         {
-            // kiểm tra sản phẩm ngành hàng còn tồn tại
+            
             //true sản phẩm ngành hàng = 0 được xóa
             if(iDalProductPecification.GetProductSpecification(SpecificationId).InformationProperties.Count == 0)
             {
@@ -212,7 +210,7 @@ namespace BUS
         /// <returns>true: đã xóa thông và người ngãm</returns>
         public bool DeleteInformationProperty(int idProperty)
         {
-            if (iDalInformationProperties.DalDeleteProperty(idProperty) == true)
+            if (iDalInformationProperties.DeleteProperty(idProperty) == true)
             {
                 return true;
             }

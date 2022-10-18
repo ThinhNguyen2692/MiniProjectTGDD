@@ -8,6 +8,7 @@
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
                 @using (Html.BeginForm("AddVerSionProduct", "Product", FormMethod.Post, new { @class = "forms-sample", id = "form-Product", enctype = "multipart/form-data" }))
                 {
+                    
                      <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
 
@@ -40,6 +41,9 @@
                             <h3>@Model.information[i].SpecificationName</h3>
                             <br />
                             <br />
+                            @Html.HiddenFor(m => m.information[i].PropertyName)
+                            @Html.HiddenFor(m => m.information[i].ProperTyId)
+                            @Html.HiddenFor(m => m.information[i].Description)
                             <h4 class="DataProperty" style="margin-left: 20px;">@Model.information[i].PropertyName </h4>
                             <label>Mã thuộc tính: @Html.TextBoxFor(m => m.information[i].ProperTyId, new{@class="form-control", @readonly="True", width="100px" })  </label>
                             <label>@Html.TextBoxFor(m => m.information[i].Value, new{@class="form-control InputProperty",  style="width:500px;"  })@Html.TextBoxFor(m => m.information[i].Description, new{@class="form-control InputProperty",  style="width:100px;"  })  </label>
@@ -53,8 +57,10 @@
                         @{
                             for (int i = 0; i < Model.ColorProduct.Count; i++)
                             {
-                                <h3 class="list-color-id">Mã màu:  @Html.TextBoxFor(m => m.ColorProduct[i].ColoId)</h3>
-                                <label> <h3>@Model.ColorProduct[i].ColoName</h3>  @Html.TextBoxFor(m => m.ColorProduct[i].QuantityProduct, new{@class="form-control input-quantity",  style="width:500px;"  })</label>
+                                @Html.HiddenFor(m => m.ColorProduct[i].ColoId)
+                                @Html.HiddenFor(m => m.ColorProduct[i].ColoName)
+                                    <h3 class="list-color-id">Mã màu:  @Html.TextBoxFor(m => m.ColorProduct[i].ColoId)</h3>
+                                    <label> <h3>@Model.ColorProduct[i].ColoName</h3>  @Html.TextBoxFor(m => m.ColorProduct[i].QuantityProduct, new{@class="form-control input-quantity",  style="width:500px;"  })</label>
                             }
                         }
 

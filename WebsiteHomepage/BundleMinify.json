@@ -1,0 +1,18 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [ "wwwroot/css/site.css", "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css", "wwwroot/template/plugins/font-awesome-4.7.0/css/font-awesome.min.css", "wwwroot/template/plugins/OwlCarousel2-2.2.1/owl.carousel.css", "wwwroot/template/plugins/OwlCarousel2-2.2.1/owl.theme.default.css", "wwwroot/template/plugins/OwlCarousel2-2.2.1/animate.css", "wwwroot/template/styles/main_styles.css", "wwwroot/template/styles/responsive.css"],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/outputjs.min.js",
+    "inputFiles": [ "wwwroot/js/site.js", "wwwroot/template/js/jquery-3.2.1.min.js", "wwwroot/template/js/template/styles/bootstrap4/bootstrap.min.js", "wwwroot/template/js/template/plugins/Isotope/isotope.pkgd.min.js", "wwwroot/template/js/template/plugins/OwlCarousel2-2.2.1/owl.carousel.js", "wwwroot/template/js/template/plugins/easing/easing.js", "wwwroot/template/js/template/js/custom.js", "wwwroot/js/lib/jquery/dist/jquery.min.js", "wwwroot/js/lib/bootstrap/dist/js/bootstrap.bundle.min.js"],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  }
+]

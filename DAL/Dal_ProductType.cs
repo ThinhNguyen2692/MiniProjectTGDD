@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using ModelProject.Models;
 using Microsoft.EntityFrameworkCore;
 using DAL.DataModel;
+using Microsoft.AspNetCore.Http.Metadata;
 
 namespace DAL
 {
     public interface IDaltype
     {
-       bool DalAddType(ProductType type);
+        bool DalAddType(ProductType type);
         bool DalUpdateType(ProductType type);
         ProductType ReadType(string id);
         List<ProductType> ReadTypes();
@@ -19,12 +20,10 @@ namespace DAL
         public bool CheckProductByTypeId(string typeId);
 
     }
-    public class Dal_ProductType:IDaltype
+    public class Dal_ProductType : IDaltype
     {
 
         private IRepository<ProductType> repository;
-        private IRepository<ProductSpecification> repositorySpecification;
-        private IRepository<InformationProperty> repositoryProperty;
         private IUnitOfWork _unitOfWork;
 
 
@@ -32,22 +31,20 @@ namespace DAL
         {
             this._unitOfWork = _unitOfWork;
             this.repository = _unitOfWork.Repository<ProductType>();
-            this.repositorySpecification = _unitOfWork.Repository<ProductSpecification>();
-            this.repositoryProperty = _unitOfWork.Repository<InformationProperty>();
         }
 
 
         //Thêm ngành hàng
         public bool DalAddType(ProductType type)
         {
-            
+
 
             if (ReadType(type.Typeid) != null)
             {
                 return false;
             }
             repository.Add(type);
-                _unitOfWork.SaveChanges();
+            _unitOfWork.SaveChanges();
             return true;
         }
 
@@ -55,16 +52,16 @@ namespace DAL
         public bool DalUpdateType(ProductType type)
         {
             //thông tin ngành hàng cũ
-            var data = ReadType(type.Typeid);
-            repository.Update(data,type);
+            var data = repository.GetById(i => i.Typeid == type.Typeid);
+            repository.Update(data, type);
             _unitOfWork.SaveChanges();
-            
+
             return true;
         }
 
 
         //lấy 1 loại sản phẩm 
-        public   ProductType ReadType(string id)
+        public ProductType ReadType(string id)
         {
             var data = repository.GetAll(predicate: t => t.Typeid == id, include: i => i.Include(t => t.ProductSpecifications).ThenInclude(p => p.InformationProperties)).FirstOrDefault();
             if (data == null)
@@ -76,7 +73,7 @@ namespace DAL
 
         //lấy danh sách ngành hàng
         public List<ProductType> ReadTypes()
-        {         
+        {
             var data = repository.List().ToList();
             return data;
         }
@@ -84,18 +81,15 @@ namespace DAL
         //Xóa ngành hàng
         public void deletetype(string typeid)
         {
+
             //kiểm tra sản phẩm ngành hàng
-            var item = ReadType(typeid);
-            if (item.Typeid != null)
+            var item = repository.GetById(t => t.Typeid == typeid);
+            if (item != null)
             {
-                foreach (var item2 in item.ProductSpecifications)
-                {
-                    repositoryProperty.RemoveRange(item2.InformationProperties);
-                    repositorySpecification.Delete(item2);
-                }
                 repository.Delete(item);
                 _unitOfWork.SaveChanges();
             }
+
         }
 
 
@@ -108,7 +102,7 @@ namespace DAL
         public bool CheckProductByTypeId(string typeId)
         {
             var data = repository.GetAll(predicate: p => p.Typeid == typeId, include: p => p.Include(p => p.Products)).FirstOrDefault();
-            if(data != null) if (data.Products.Count == 0) return true; else return false;
+            if (data != null) if (data.Products.Count == 0) return true; else return false;
             else return false;
         }
 

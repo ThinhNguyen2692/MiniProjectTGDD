@@ -155,6 +155,7 @@ namespace BUS
             if (dal_ProductVersion.AddProductVerion(ProductVersion) == true)
             {
                 productVersionViewModel.MessageAdd = "addVersionTrue";
+
             }
             else { productVersionViewModel.MessageAdd = "addVersionFalse"; }
 
@@ -172,26 +173,26 @@ namespace BUS
         public ProductDetailViewModel DalReadProductDetail(string id) {
             var data = dal_ProductVersion.DalReadProduct(id);
             var ProductDetail = new ProductDetailViewModel();
-            ProductDetail.ProductId = data.ProductId;
-            ProductDetail.ProuctName = data.Product.ProuctName;
-            ProductDetail.ProductType = data.Product.ProductType;
-            ProductDetail.ProductTypeName = data.Product.ProductTypeNavigation.Typename;
-            ProductDetail.ProductBrand = data.Product.ProductBrand;
-            ProductDetail.ProductBrandName = data.Product.ProductBrandNavigation.BrandName;
-            ProductDetail.ProductPhoto = data.Product.ProductPhoto;
-            ProductDetail.ProductDescription = data.Product.ProductDescription;
+            ProductDetail.ProductShow.ProductId = data.ProductId;
+            ProductDetail.ProductShow.ProuctName = data.Product.ProuctName;
+            ProductDetail.ProductShow.ProductType = data.Product.ProductType;
+            ProductDetail.ProductShow.ProductTypeName = data.Product.ProductTypeNavigation.Typename;
+            ProductDetail.ProductShow.ProductBrand = data.Product.ProductBrand;
+            ProductDetail.ProductShow.ProductBrandName = data.Product.ProductBrandNavigation.BrandName;
+            ProductDetail.ProductShow.ProductPhoto = data.Product.ProductPhoto;
+            ProductDetail.ProductShow.ProductDescription = data.Product.ProductDescription;
             ProductDetail.ReleaseTime = data.Product.ReleaseTime;
-            ProductDetail.VersionId = data.VersionId;
-            ProductDetail.VersionName = data.VersionName;
-            ProductDetail.ProductStatus = data.ProductStatus;
-            ProductDetail.ProductPrice = data.ProductPrice;
+            ProductDetail.ProductShow.VersionId = data.VersionId;
+            ProductDetail.ProductShow.VersionName = data.VersionName;
+            ProductDetail.ProductShow.ProductStatus = data.ProductStatus;
+            ProductDetail.ProductShow.ProductPrice = data.ProductPrice;
             ProductDetail.quantityProductVerSions = ProductDetail.GetQuantityProductVerSions(data.VersionQuantities.ToList());
             ProductDetail.productVerSionDetailInformation = ProductDetail.GetProductVerSionDetailInformation(data.PropertiesValues.ToList());
 
             foreach (var item in data.Product.Gifts)
             {
                 Promation promation = new Promation();
-                promation.productVersionId = ProductDetail.VersionId;
+                promation.productVersionId = ProductDetail.ProductShow.VersionId;
                 promation.Id = item.GiftId;
                 promation.PromationName = item.GiftProductNavigation.VersionName;
                 promation.PromationPrice = (int)item.GiftProductNavigation.ProductPrice;
@@ -218,7 +219,7 @@ namespace BUS
             foreach (var item in data.Product.EventDetails)
             {
                 Promation promation = new Promation();
-                promation.productVersionId = ProductDetail.VersionId;
+                promation.productVersionId = ProductDetail.ProductShow.VersionId;
                 promation.Id = item.EventId;
                 promation.PromationName = item.Event.EventName;
                 promation.PromationPrice = item.Event.Promotion;
@@ -267,12 +268,24 @@ namespace BUS
         {
             var productversinDetail = dal_ProductVersion.DalReadProduct(id);
             //kiểm tra số lượng phiên bản sản phẩm còn lại
-            var data = dal_ProductVersion.CheckVersionQuantity(id);
+
+            foreach (var item in productversinDetail.VersionQuantities)
+            {
+                if(item.Quantity != 0) { return false; }
+            }
             //số lượng > 0 không đc xóa phiên bản sản phẩm
-            if(data == false) { return false; }
+          
             //Xóa khuyến mãi
             iDalEvent.RemoveEvent(productversinDetail.Product.EventDetails.ToList());
             iDalGift.RemoveGift(productversinDetail.Gifts.ToList());
+            foreach (var item in productversinDetail.VersionQuantities)
+            {
+                dal_VersionQuantity.Delete(item.Id);
+            }
+            foreach (var item in productversinDetail.PropertiesValues)
+            {
+                dal_PropertyValue.Delete(item.ValueId);
+            }
             //checkDelete nhận kết quả xóa phiên bản sản phẩm
             var checkDelete = dal_ProductVersion.DelProductVerion(id);
             //kiểm tra có xóa thông tin sản phẩm chung
@@ -350,12 +363,12 @@ namespace BUS
         public string UpdateProduct(ProductDetailViewModel productDetailViewModel)
         {
             Product product = new Product();
-            product.ProductId = productDetailViewModel.ProductId;
-            product.ProuctName = productDetailViewModel.ProuctName;
-            product.ProductBrand = productDetailViewModel.ProductBrand;
-            product.ProductType = productDetailViewModel.ProductType;
+            product.ProductId = productDetailViewModel.ProductShow.ProductId;
+            product.ProuctName = productDetailViewModel.ProductShow.ProuctName;
+            product.ProductBrand = productDetailViewModel.ProductShow.ProductBrand;
+            product.ProductType = productDetailViewModel.ProductShow.ProductType;
             product.ReleaseTime = productDetailViewModel.ReleaseTime;
-            product.ProductDescription = productDetailViewModel.ProductDescription;
+            product.ProductDescription = productDetailViewModel.ProductShow.ProductDescription;
             if (productDetailViewModel.fileImage != null)
             {
                 product.ProductPhoto = "https://localhost:7079/images/ProductDefault/" + productDetailViewModel.fileImage.FileName;
@@ -367,10 +380,10 @@ namespace BUS
             var productVersion = new ProductVersion();
             productVersion.Product = product;
             productVersion.ProductId = product.ProductId;
-            productVersion.VersionId = productDetailViewModel.VersionId;
-            productVersion.VersionName = productDetailViewModel.VersionName;
-            productVersion.ProductPrice = productDetailViewModel.ProductPrice;
-            productVersion.ProductStatus = productDetailViewModel.ProductStatus;
+            productVersion.VersionId = productDetailViewModel.ProductShow.VersionId;
+            productVersion.VersionName = productDetailViewModel.ProductShow.VersionName;
+            productVersion.ProductPrice = productDetailViewModel.ProductShow.ProductPrice;
+            productVersion.ProductStatus = productDetailViewModel.ProductShow.ProductStatus;
             
             dal_ProductVersion.UpdateProductVersion(productVersion);
             foreach (var item in productDetailViewModel.productVerSionDetailInformation)

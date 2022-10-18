@@ -28,7 +28,7 @@ namespace BUS
         public ProductPromotionViewModel GetProductPromotionViewModel()
         {
             var data = dalProductVersion.DalReadProductAll();
-            var GetPromotion = data.Where(g => g.ProductPrice < 500000).Where(g => g.ProductStatus != 0).ToList();
+            var GetPromotion = data.Where(g => g.ProductPrice < 700000).Where(g => g.ProductStatus != 0).ToList();
 
             var viewModel = new ProductPromotionViewModel();
             foreach (var item in GetPromotion)
@@ -69,16 +69,16 @@ namespace BUS
 
         public PricePromotionViewModel GetPricePromotionViewModel()
         {
-            var data = dalProductVersion.DalReadProductAll();
-            var GetPromotion = data.Where(g => g.ProductStatus != 0).ToList();
+            var data = iDAlProduct.GetProducts();
+            var GetPromotion = data;
             var viewModel = new PricePromotionViewModel();
             foreach (var item in GetPromotion)
             {
                 ItemProductPromotion itemProductPromotion = new ItemProductPromotion();
                 itemProductPromotion.productId = item.ProductId;
-                itemProductPromotion.productName = item.VersionName;
-                itemProductPromotion.Price = (int)item.ProductPrice;
-                itemProductPromotion.productPhoto = item.Product.ProductPhoto;
+                itemProductPromotion.productName = item.ProuctName;
+               
+                itemProductPromotion.productPhoto = item.ProductPhoto;
                 viewModel.listProductPromotions.Add(itemProductPromotion);
             }
             return viewModel;
@@ -89,6 +89,8 @@ namespace BUS
             var eventItem = new Event();
             eventItem.EventName = viewModel.eventName;
             eventItem.Promotion = viewModel.sale;
+            eventItem.StartTime = viewModel.StartTime;
+            eventItem.EndTime = viewModel.EndTime;
             foreach (var item in viewModel.listProductPromotions)
             {
                 if (item.select == true)

@@ -17,7 +17,8 @@ namespace DAL
       
         public bool CheckQuantity(List<VersionQuantity> versionQuantities);
         public void UpdateOrderCanned(VersionQuantity versionQuantity);
-    }
+        public void Delete(int id);
+        }
     public class Dal_VersionQuantity : IDalVersionQuantity
     {
         private IRepository<VersionQuantity> repository;
@@ -112,5 +113,17 @@ namespace DAL
             data.Quantity = data.Quantity - versionQuantity.Quantity;
             _unitOfWork.SaveChanges();
         }
+
+        public void Delete(int id) {
+            var data = repository.GetById(v => v.Id == id);
+            if(data != null)
+            {
+                repository.Delete(data);
+                _unitOfWork.SaveChanges();
+            }
+        }
+
+
+        
     }
 }

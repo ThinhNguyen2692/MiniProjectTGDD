@@ -1,8 +1,8 @@
 using BUS;
 using ModelProject.Models;
 
-var builder = WebApplication.CreateBuilder(args);
-
+var builder = WebApplication.CreateBuilder(args); 
+builder.Services.AddMemoryCache();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 Setting.ConnectionStrings = builder.Configuration.GetConnectionString("MiniProjectTGDD");

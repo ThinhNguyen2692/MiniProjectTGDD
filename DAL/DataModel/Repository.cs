@@ -38,7 +38,6 @@ namespace DAL.DataModel
         }
         public void Update(T entity, T entity2)
         {
-
             _context.Entry(entity).CurrentValues.SetValues(entity2);
 
         }
@@ -102,5 +101,9 @@ namespace DAL.DataModel
             }
         }
 
+        public void Detached(T entity) {
+
+            _context.Entry(entity).State = EntityState.Detached;
+        }
     }
 }

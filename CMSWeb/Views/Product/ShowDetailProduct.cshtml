@@ -18,10 +18,10 @@
                 }
                 <h2 style="text-align:center">Thông tin chi tiết sản phẩm</h2>
                 <div>
-                    <a href="/FormAddPhoto?ProductIdVersion=@Model.VersionId" class="btn btn-gradient-primary">Thêm ảnh cho sản phẩm</a>
+                    <a href="/FormAddPhoto?ProductIdVersion=@Model.ProductShow.VersionId" class="btn btn-gradient-primary">Thêm ảnh cho sản phẩm</a>
                     <button type="button" class="btn btn-primary"  data-toggle="modal" data-target=".bd-example-modal-lg">Sản phẩm khyến mãi</button>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Sự kiện</button>
-                    <a href="/DeleteProductVerSion?versionId=@Model.VersionId&productId=@Model.ProductId" class="btn btn-outline-danger" id="deleteProduct">Xóa</a>
+                    <a href="/DeleteProductVerSion?versionId=@Model.ProductShow.VersionId&productId=@Model.ProductShow.ProductId" class="btn btn-outline-danger" id="deleteProduct">Xóa</a>
                     <!-- Button trigger modal -->
 
 
@@ -32,23 +32,23 @@
                 {
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>
-                        @Html.TextBoxFor(m => m.ProductId, new{@class="form-control", @readonly="True"})
+                        @Html.TextBoxFor(m => m.ProductShow.ProductId, new{@class="form-control", @readonly="True"})
                     </div>
 
                     <div class="form-group">
                         <label>Tên sản phẩm</label>
-                        @Html.TextBoxFor(m => m.ProuctName, new{@class="form-control"})
+                        @Html.TextBoxFor(m => m.ProductShow.ProuctName, new{@class="form-control"})
                     </div>
                     <div class="form-group">
                         <label>Ngành hàng</label>
-                        <select class="form-control" asp-for="@Model.ProductType">
-                            <option value="@Model.ProductType">@Model.ProductTypeName</option>
+                        <select class="form-control" asp-for="@Model.ProductShow.ProductType">
+                            <option value="@Model.ProductShow.ProductType">@Model.ProductShow.ProductTypeName</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Mã thương hiệu</label>
-                        <select class="form-control" asp-for="@Model.ProductBrand">
-                            <option value="@Model.ProductBrand">@Model.ProductBrandName</option>
+                        <select class="form-control" asp-for="@Model.ProductShow.ProductBrand">
+                            <option value="@Model.ProductShow.ProductBrand">@Model.ProductShow.ProductBrandName</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -56,11 +56,11 @@
                         <br />
                         @Html.TextBoxFor(m => m.fileImage, new{@class="fileImage form-control", type="file", accept="image/*" })
                         <br />
-                        <img id="preview" src="@Model.ProductPhoto" width="auto" height="auto" class="hidden" />
+                        <img id="preview" src="@Model.ProductShow.ProductPhoto" width="auto" height="auto" class="hidden" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Mô tả cho</label>
-                        @Html.TextAreaFor(m => m.ProductDescription, new{@class="form-control", placeholder="Nhập mô tả cho thương hiệu..."})
+                        @Html.TextAreaFor(m => m.ProductShow.ProductDescription, new{@class="form-control", placeholder="Nhập mô tả cho thương hiệu..."})
                     </div>
                     <div class="form-group">
                         <label>Thời gian ra mắt</label>
@@ -69,19 +69,19 @@
                     <h3>Thông tin </h3>
                     <div class="form-group">
                         <label for="exampleInputUsername1">Mã phiên bản sản phẩm</label>
-                        @Html.TextBoxFor(m => m.VersionId, new{@class="form-control", @readonly="True" })
+                        @Html.TextBoxFor(m => m.ProductShow.VersionId, new{@class="form-control", @readonly="True" })
                     </div>
                     <div class="form-group">
                         <label>Tên phiên bản sản phẩm</label>
-                        @Html.TextBoxFor(m => m.VersionName, new{@class="form-control", id="VersionName"})
+                        @Html.TextBoxFor(m => m.ProductShow.VersionName, new{@class="form-control", id="VersionName"})
                     </div>
                     <div class="form-group">
                         <label>Giá sản phẩm</label>
-                        @Html.TextBoxFor(m => m.ProductPrice, new{@class="form-control", type="number", min=0 })
+                        @Html.TextBoxFor(m => m.ProductShow.ProductPrice, new{@class="form-control", type="number", min=0 })
                     </div>
                     <div class="form-group">
                         <label>Trạng thái</label>
-                        @Html.DropDownListFor(m => m.ProductStatus, new SelectList(Model.status, "id", "name"), new {@class="form-control"} )
+                        @Html.DropDownListFor(m => m.ProductShow.ProductStatus, new SelectList(Model.status, "id", "name"), new {@class="form-control"} )
                     </div>
 
                     for (int i = 0; i < Model.productVerSionDetailInformation.Count; i++)

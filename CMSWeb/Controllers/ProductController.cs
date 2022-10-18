@@ -47,7 +47,7 @@ namespace CMSWeb.Controllers
         public IActionResult ShowProduct(int page = 1)
         {
             
-            var listProductVersions = IBusProduct.DalReadProductAll().ToPagedList(page, 10);
+            var listProductVersions = IBusProduct.DalReadProductAll().ToPagedList(page, 5);
 
             return View(listProductVersions);
         }
@@ -139,6 +139,7 @@ namespace CMSWeb.Controllers
         public IActionResult AddVerSionProduct(ProductVersionViewModel productVersionViewModeal)
         {
             productVersionViewModeal = IBusProduct.AddProductVersion(productVersionViewModeal);
+            
             return View("form/FormAddProductVersion", productVersionViewModeal);
         }
 
@@ -204,7 +205,7 @@ namespace CMSWeb.Controllers
         public IActionResult UpdateProduct(ProductDetailViewModel productDetailViewModel)
         {
             productDetailViewModel.MessageUpdate = IBusProduct.UpdateProduct(productDetailViewModel);
-            var ProductDetailViewModelNew = IBusProduct.DalReadProductDetail(productDetailViewModel.VersionId);
+            var ProductDetailViewModelNew = IBusProduct.DalReadProductDetail(productDetailViewModel.ProductShow.VersionId);
             return View("ShowDetailProduct", ProductDetailViewModelNew);
         }
 

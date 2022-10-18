@@ -72,7 +72,7 @@ namespace CMSWeb.Controllers
             }
             else
             {
-                brandsViewModel.BrandPhoto = brandsViewModel.fileImage.FileName;
+                brandsViewModel.BrandPhoto = "https://localhost:7079/images/Logo/" + brandsViewModel.fileImage.FileName;
                 if (bus_Brands.AddBrands(brandsViewModel) == true)
                 {
                     AddFileImage(brandsViewModel.fileImage);
@@ -96,7 +96,7 @@ namespace CMSWeb.Controllers
         {
             string fileName = fileImage.FileName;
             string upLoad = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\Logo\\", fileName);
-            var stream = new FileStream(upLoad, FileMode.OpenOrCreate);
+            var stream = new FileStream(upLoad, FileMode.CreateNew);
             fileImage.CopyToAsync(stream);
 
         }
@@ -152,6 +152,7 @@ namespace CMSWeb.Controllers
                 AddFileImage(addBrandViewModel.fileImage);
                 try
                 {
+                    path = path.Remove(0, 34);
                     System.IO.File.Delete("wwwroot\\images\\Logo\\" + path);
                 }
                 catch (Exception)

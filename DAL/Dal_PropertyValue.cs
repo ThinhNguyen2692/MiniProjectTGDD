@@ -12,7 +12,9 @@ namespace DAL
     public interface IDalPropertyValue
     {
         public bool Update(ProductVerSionDetailInformation productVerSionDetailInformation);
-  
+        public void Delete(int id);
+
+
     }
     public class Dal_PropertyValue:IDalPropertyValue
     {
@@ -43,6 +45,17 @@ namespace DAL
                 repository.Add(propertiesValue);
                 _unitOfWork.SaveChanges();
             return true;
+        }
+
+
+      public void Delete(int id)
+        {
+            var data = repository.GetById(i => i.ValueId == id);
+            if(data != null)
+            {
+                repository.Delete(data);
+                _unitOfWork.SaveChanges();
+            }
         }
 
 

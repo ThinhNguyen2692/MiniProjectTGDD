@@ -14,9 +14,12 @@ namespace DAL
         void AddInformationProperties(InformationProperty informationProperty);
       
         bool DalDeleteProperty(int property);
-      
-    
-       
+
+        public bool DeleteProperty(int property);
+        public void UpdateProperty(InformationProperty informationProperty);
+
+
+
     }
     public class Dal_InformationProperties:IDalInformationProperties
     {
@@ -48,15 +51,35 @@ namespace DAL
         //Xóa thuộc tính
         public bool DalDeleteProperty(int property)
         {
-            var item = repository.List(p => p.PropertiesId == property).ToList();
-            if (item.Count == 0)
+            var data = repository.List(p => p.PropertiesId == property).ToList();
+            if (data.Count != 0)
             {
-                var data = repository.GetById(p => p.PropertiesId == property);
+                repository.RemoveRange(data);
+                _unitOfWork.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool DeleteProperty(int property)
+        {
+            var data = repository.GetById(predicate: i => i.PropertiesId == property);
+            if(data != null)
+            {
                 repository.Delete(data);
                 _unitOfWork.SaveChanges();
                 return true;
             }
             return false;
+        }
+
+        public void UpdateProperty(InformationProperty informationProperty)
+        {
+            var data = repository.GetById(i => i.PropertiesId == informationProperty.PropertiesId);
+            if(data != null) {
+                repository.Update(data, informationProperty);
+                _unitOfWork.SaveChanges();
+            }
         }
     }
 }

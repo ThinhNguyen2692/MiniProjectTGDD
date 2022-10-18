@@ -24,12 +24,16 @@ namespace ModelProject.ViewModel
 
     }
 
-
-  
-    public class ProductDetailViewModel
+    public class HomeViewModel
     {
-        public ProductDetailViewModel() { }
-
+        public HomeViewModel() { }
+        public List<ProductShow> ProductSale { get; set; } = new List<ProductShow>();
+        public List<ProductShow> ProductApple { get; set; } = new List<ProductShow>();
+        public List<ProductShow> Products { get; set; } = new List<ProductShow>();
+    }
+    public class ProductShow
+    {
+        public ProductShow() { }
         public string ProductId { get; set; } = null!;
         public string ProuctName { get; set; } = null!;
         public string ProductType { get; set; } = null!;
@@ -37,13 +41,22 @@ namespace ModelProject.ViewModel
         public string ProductBrand { get; set; } = null!;
         public string ProductBrandName { get; set; } = null!;
         public string ProductPhoto { get; set; } = null!;
-        public IFormFile fileImage { get; set; } = null!;
         public string? ProductDescription { get; set; }
-        public DateTime? ReleaseTime { get; set; }
         public string VersionId { get; set; } = null!;
         public string VersionName { get; set; } = null!;
         public int? ProductPrice { get; set; }
         public int? ProductStatus { get; set; }
+        public int? ProductSale { get; set; }
+    }
+
+  
+    public class ProductDetailViewModel
+    {
+        public ProductDetailViewModel() { }
+
+        public ProductShow ProductShow { get; set; } = new ProductShow();
+        public IFormFile fileImage { get; set; } = null!;
+        public DateTime? ReleaseTime { get; set; }
         public IEnumerable<StatusBrands> status { get; set; } = new List<StatusBrands>()
         {
             new StatusBrands(){name = "Tạm ngưng kinh doanh", id = 0},
@@ -85,7 +98,8 @@ namespace ModelProject.ViewModel
             return listProductVerSionDetailInformation;
         }
 
-
+       
 
     }
+
 }

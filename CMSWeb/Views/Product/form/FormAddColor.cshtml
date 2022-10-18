@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <label>Chọn hình: </label>
                         <br />
-                        @Html.TextBoxFor(m => m.Fileimage, new {@class="form-control fileImage", accept="image/*", multiple="True"})
+                        @Html.TextBoxFor(m => m.Fileimage, new {@class="form-control fileImage",type="file" ,accept="image/*", multiple="True"})
                         <br />
                         <img id="preview" src="#" width="auto" height="auto" class="hidden" />
 

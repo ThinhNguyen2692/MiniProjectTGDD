@@ -109,10 +109,11 @@ namespace DAL
 
         public ProductBrand GetProductBrand(string brandsId)
         {
-            var data = repository.GetAll(predicate: p => p.BrandId == brandsId, include: p => p.Include(p => p.Products)).FirstOrDefault();
+            var data = repository.GetAll(predicate: p => p.BrandId == brandsId, include: p => p.Include(p => p.Products).ThenInclude(p => p.ProductVersions)).FirstOrDefault();
             if (data == null) return null;
             return data;
         }
+
 
 
     }

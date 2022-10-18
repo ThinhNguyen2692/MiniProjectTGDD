@@ -14,13 +14,15 @@ namespace DAL
         public bool AddEvent(Event EventItem);
         public void Remove(int EventId);
         public void RemoveEvent(List<EventDetail> EventDetail);
+        public List<EventDetail> GetEventDetails();
+
     }
     public class DalEvent:IDalEvent
     {
         private IRepository<Event> repository;
         private IRepository<EventDetail> repositoryEventDetail;
         private IUnitOfWork _unitOfWork;
-
+       
 
         public DalEvent(IUnitOfWork _unitOfWork)
         {
@@ -57,6 +59,13 @@ namespace DAL
         {
             repositoryEventDetail.RemoveRange(EventDetail);
             _unitOfWork.SaveChanges();
+        }
+
+
+        public List<EventDetail> GetEventDetails()
+        {
+            var data = repositoryEventDetail.GetAll(include: e => e.Include(e => e.Product).ThenInclude(e => e.ProductVersions).Include(e => e.Event)).ToList();
+            return data;
         }
     }
 }

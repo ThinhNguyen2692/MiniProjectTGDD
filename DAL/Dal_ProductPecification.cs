@@ -18,6 +18,7 @@ namespace DAL
        
         public string GetTypeIdBySpecification(int SpecificationId);
         public ProductSpecification GetProductSpecification(int id);
+        public void Update(ProductSpecification productSpecification);
     }
 
     public class Dal_ProductPecification : IDalProductPecification
@@ -55,10 +56,12 @@ namespace DAL
         public bool DeleteSpecification(int specification)
         {
             
-                var data = repository.GetAll(predicate: s => s.SpecificationsId == specification).FirstOrDefault();
+                var data = repository.GetById(predicate: s => s.SpecificationsId == specification);
                 if (data != null)
                 {
-                    repository.Delete(data);
+               
+                repository.Delete(data);
+
                     _unitOfWork.SaveChanges();
                     return true;
                 }
@@ -75,7 +78,15 @@ namespace DAL
             return TypeId;
         }
 
-        
+        public void Update(ProductSpecification productSpecification)
+        {
+            var data = repository.GetById(i => i.SpecificationsId == productSpecification.SpecificationsId);
+            if(data != null)
+            {
+                repository.Update(data, productSpecification);
+                _unitOfWork.SaveChanges();
+            }
+        }
 
     }
 

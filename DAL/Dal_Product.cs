@@ -16,6 +16,7 @@ namespace DAL
         public Product DalReadProduct(string productId);
     
         public List<string> DeleteProductAuto(string id);
+        public List<Product> GetProducts();
 
     }
     public class Dal_Product:IDAlProduct
@@ -60,7 +61,11 @@ namespace DAL
             return data;
         }
        
-
+        public List<Product> GetProducts()
+        {
+            var data = repository.GetAll(include: p => p.Include(p => p.ProductVersions)).ToList();
+            return data;
+        }
     
         public List<string> DeleteProductAuto(string id)
         {
