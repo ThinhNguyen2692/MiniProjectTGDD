@@ -139,7 +139,7 @@ namespace CMSWeb.Controllers
 
         //cập nhật thông tin thương hiệu
         [HttpPost]
-        [Route("UpdateBrands")]
+        [Route("cap-nhat-thuong-hieu")]
         public IActionResult UpdateBrands(AddBrandViewModel addBrandViewModel)
         {
             //lấy path anh cũ

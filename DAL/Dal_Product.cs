@@ -63,7 +63,10 @@ namespace DAL
        
         public List<Product> GetProducts()
         {
-            var data = repository.GetAll(include: p => p.Include(p => p.ProductVersions)).ToList();
+            var data = repository.GetAll(include: p => p.Include(p => p.ProductVersions)
+            .Include(p => p.ProductBrandNavigation)
+            .Include(p => p.ProductTypeNavigation).Include(p => p.EventDetails).ThenInclude(e => e.Event)).ToList();
+            if(data == null) { return new List<Product>(); }
             return data;
         }
     

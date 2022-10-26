@@ -12,9 +12,7 @@
                     case "removeFail": <div class="alert alert-danger">Xóa thất bại</div> break;
                     default: <div></div> break;
                 }
-                
                 <h2 style="text-align:center;" class="card-title">Nhập thông tin thương hiệu mới</h2>
-               
                  @using (Html.BeginForm("UpdateBrands", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                  <div class="form-group">
@@ -26,9 +24,7 @@
                         <div class="invalid-feedback">
                             Mã thương hiệu: a-z,A-Z,0-9
                         </div>
-
                     </div>
-
                     <div class="form-group">
                         <label>Tên thương hiệu</label>
                         @Html.TextBoxFor(m => m.BrandName, new{@class="form-control BrandName", placeholder="Nhập tên thương hiệu"})
@@ -54,23 +50,12 @@
                          @Html.TextBox("fileImage", "",new {@class="form-control fileImage", type="file", accept="image/*",name="fileImage"} )
                         <br />
                         <br />
-                        <div class="imagelogo">  <img id="preview" src="/images/Logo/@Model.BrandPhoto" width="auto" height="auto" class="hidden" /></div>
+                        <div class="imagelogo">  <img id="preview" src="@Model.BrandPhoto" width="auto" height="auto" class="hidden" /></div>
                     </div>
-                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Thêm mới</button>
+                    <button type="submit" id="btn-submit" class="btn btn-gradient-primary me-2">Cập nhật</button>
                     <button type="reset" class="btn btn-light">Làm mới</button>   
                 }
-
-               
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
 </div>

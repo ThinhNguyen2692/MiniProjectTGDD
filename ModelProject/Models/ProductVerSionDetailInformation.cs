@@ -16,4 +16,8 @@ namespace ModelProject.Models
         public string Description { get; set; }
         public string Value { get; set; }
     }
+    public class ProductVerSionInformation{
+        public ProductVerSionInformation() { }
+        public List<ProductVerSionDetailInformation> productVerSionDetailInformation { get; set; } = new List<ProductVerSionDetailInformation>();
+        }
 }

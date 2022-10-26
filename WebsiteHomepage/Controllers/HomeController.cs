@@ -6,6 +6,8 @@ using ModelProject;
 using ModelProject.ViewModel;
 using BUS.Services;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using X.PagedList;
 
 namespace WebsiteHomepage.Controllers
 {
@@ -19,7 +21,7 @@ namespace WebsiteHomepage.Controllers
 
         public HomeController(ILogger<HomeController> logger, IBusShowProducts busShowProducts, IMemoryCache memoryCache)
         {
-            this.busShowProducts = busShowProducts; 
+            this.busShowProducts = busShowProducts;
             _logger = logger;
             this.memoryCache = memoryCache;
         }
@@ -27,30 +29,37 @@ namespace WebsiteHomepage.Controllers
         public IActionResult Index()
         {
             //HomeController viewModel;
-            HomeViewModel viewModel ;
+            HomeViewModel viewModel;
             // Look for cache key.
             if (!memoryCache.TryGetValue("HomeProduct", out viewModel))
             {
-               // Key not in cache, so get data.
-              viewModel = busShowProducts.GetHomeProduct();
+                // Key not in cache, so get data.
+                viewModel = busShowProducts.GetHomeProduct();
 
                 //Set cache options.
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     // Keep in cache for this time, reset time if accessed.
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(30));
 
-//                Save data in cache.
-               memoryCache.Set<HomeViewModel>("HomeProduct", viewModel, cacheEntryOptions);
-
+                //                Save data in cache.
+                memoryCache.Set<HomeViewModel>("HomeProduct", viewModel, cacheEntryOptions);
             }
-
-
             return View(viewModel);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        [Route("ProductDetail")]
+        public IActionResult ProductDetail(string idProduct)
         {
-            HomeViewModel viewModel = busShowProducts.GetHomeProduct();
+            var viewModel = busShowProducts.GetProductDetail(idProduct);
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        [Route("DanhSanPham")]
+        public IActionResult ListProduct(string id, int page = 1)
+        {
+            var viewModel = busShowProducts.GetListProduct(id).ToPagedList(page, 12);
             return View(viewModel);
         }
 

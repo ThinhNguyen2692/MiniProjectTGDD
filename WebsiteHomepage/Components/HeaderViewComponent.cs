@@ -23,27 +23,20 @@ namespace WebsiteHomepage.Component
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            HeaderViewModel viewModel ;
-
+            HeaderViewModel viewModel;
             // Look for cache key.
             if (!cache.TryGetValue("menu", out viewModel))
             {
                 // Key not in cache, so get data.
                 viewModel = busShowProducts.HeaderViewModel();
-
                 // Set cache options.
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     // Keep in cache for this time, reset time if accessed.
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30));
-
                 // Save data in cache.
-                cache.Set<HeaderViewModel>("menu", viewModel, cacheEntryOptions);
-              
+                cache.Set<HeaderViewModel>("menu", viewModel, cacheEntryOptions); 
             }
-         
             return View("Defult", viewModel);
         }
-
-
     }
 }

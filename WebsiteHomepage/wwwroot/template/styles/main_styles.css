@@ -1669,25 +1669,3 @@ section
 {
 	color: #fe4c50;
 }
-.owl-prev {
-	position: absolute;
-	left: -20px;
-	top: -230px;
-	height: 100px;
-	width: 50px;
-}
-
-.owl-next {
-	position: absolute;
-	right: -20px;
-	top: -230px;
-	height: 100px;
-	width: 50px;
-}
-
-.item-owl-button {
-	position: absolute;
-	bottom: 25px;
-	left: 10px;
-	font-size: 2rem;
-}

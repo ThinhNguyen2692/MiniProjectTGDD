@@ -11,5 +11,7 @@ namespace ModelProject.Models
         public int idQuantity { get; set; }
         public string color { get; set; }
         public int Quantity { get; set; }
+
+        public string ColorPath { get; set; }
     }
 }

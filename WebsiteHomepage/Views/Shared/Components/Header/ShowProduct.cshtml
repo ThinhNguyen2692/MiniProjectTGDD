@@ -1,0 +1,51 @@
+﻿@using ModelProject.ViewModel;
+@model List<ProductShow>
+
+<div class="best_sellers">
+	<div class="container">
+		<div class="row">
+			<div class="col text-center">
+				<div class="section_title new_arrivals_title">
+					<h2>Sản phẩm nhà táo</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="product_slider_container">
+					<div class="owl-carousel owl-theme product_slider_1">
+						<!-- Slide 1 -->
+						@{
+							foreach (var item in Model)
+							{
+								<div class="owl-item product_slider_item">
+									<div class="product-item women">
+										<div class="product product_filter">
+											<div class="product_image">
+												<img style="width:221px; height: 221px;" src="@item.ProductPhoto" alt="@item.VersionName">
+											</div>
+											<div class="favorite"></div>
+											<div class="product_info">
+												<h6 class="product_name"><a asp-action="ProductDetail" asp-controller="Home" asp-route-id="@item.VersionId">@item.ProuctName</a></h6>
+												<div class="product_price">@item.ProductPrice</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							}
+						}
+
+
+
+						<!-- Slider Navigation -->
+
+
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>

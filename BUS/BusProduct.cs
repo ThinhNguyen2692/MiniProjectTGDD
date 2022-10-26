@@ -188,7 +188,14 @@ namespace BUS
             ProductDetail.ProductShow.ProductPrice = data.ProductPrice;
             ProductDetail.quantityProductVerSions = ProductDetail.GetQuantityProductVerSions(data.VersionQuantities.ToList());
             ProductDetail.productVerSionDetailInformation = ProductDetail.GetProductVerSionDetailInformation(data.PropertiesValues.ToList());
-
+            ProductDetail.PhotoProduct = new List<InformationPhoto>();
+            foreach (var item in data.ProductPhotos)
+            {
+                InformationPhoto informationPhoto = new InformationPhoto();
+                informationPhoto.ProductPhotoId = item.ProductPhotoId;
+                informationPhoto.PathImage = item.Photo.PhotoPath;
+                ProductDetail.PhotoProduct.Add(informationPhoto);
+            }
             foreach (var item in data.Product.Gifts)
             {
                 Promation promation = new Promation();
@@ -209,6 +216,7 @@ namespace BUS
                     }
                     if(Quantity == 0)
                     {
+                        promation.Status = 0;
                         promation.StatusName = "Sản phẩm khuyến mãi hết hàng";
                     }
                 }
@@ -231,6 +239,9 @@ namespace BUS
 
             }
             ProductDetail.PricePromation.OrderBy(x => x.Status);
+
+            ProductDetail.comments = data.Product.Comments.ToList();
+
             return ProductDetail;
 
         }

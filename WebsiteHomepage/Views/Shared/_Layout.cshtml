@@ -9,14 +9,25 @@
   
     <title>@ViewData["Title"] - WebsiteHomepage</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="~/template/styles/style.css" asp-append-version="true">
 
-	<link href="~/template/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="~/template/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-    <link rel="stylesheet" type="text/css" href="~/template/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-    <link rel="stylesheet" type="text/css" href="~/template/plugins/OwlCarousel2-2.2.1/animate.css">
-    <link rel="stylesheet" type="text/css" href="~/template/styles/main_styles.css">
-    <link rel="stylesheet" type="text/css" href="~/template/styles/responsive.css">
- 
+	<link href="~/template/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/template/plugins/OwlCarousel2-2.2.1/owl.carousel.css" asp-append-version="true" >
+    <link rel="stylesheet" type="text/css" href="~/template/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" asp-append-version="true" >
+    <link rel="stylesheet" type="text/css" href="~/template/plugins/OwlCarousel2-2.2.1/animate.css" asp-append-version="true" >
+	<link rel="stylesheet" type="text/css" href="~/template/styles/main_styles.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="~/template/styles/responsive.css" asp-append-version="true" >
+	<link rel="stylesheet" type="text/css" href="~/template/styles/single_styles.css" asp-append-version="true">
+	<link rel="stylesheet" type="text/css" href="~/template/styles/single_responsive.css" asp-append-version="true">
+	<link rel="stylesheet" type="text/css" href="~/template/styles/categories_styles.css" asp-append-version="true">
+	<link rel="stylesheet" type="text/css" href="~/template/styles/categories_responsive.css" asp-append-version="true">
+	<link rel="stylesheet" type="text/css" href="~/template/styles/main_styles.css" asp-append-version="true">
+	<link rel="stylesheet" type="text/css" href="~/template/styles/magnific-popup.css" asp-append-version="true">
+
+
+
+	@RenderSection("css", false);
+	@RenderSection("cssDetail", false);
 </head>
 <body>
 		<div class="super_container">
@@ -75,10 +86,16 @@
     <script src="~/template/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="~/template/plugins/easing/easing.js"></script>
     <script src="~/template/js/custom.js"></script>
+	<script src="~/template/js/single_custom.js"></script>
+	<script src="~/template/js/categories_custom.js"></script>
+	<script src="~/template/js/main.js"></script>
+	<script src="~/template/js/mixitup.min.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+	@RenderSection("jsDetail", false);
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

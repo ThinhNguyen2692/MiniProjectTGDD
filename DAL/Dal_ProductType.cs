@@ -18,7 +18,7 @@ namespace DAL
         List<ProductType> ReadTypes();
         public void deletetype(string typeid);
         public bool CheckProductByTypeId(string typeId);
-
+        ProductType GetProductType(string typeid);
     }
     public class Dal_ProductType : IDaltype
     {
@@ -59,6 +59,12 @@ namespace DAL
             return true;
         }
 
+        public ProductType GetProductType(string typeid)
+        {
+            var data = repository.GetAll(predicate: t => t.Typeid == typeid, include: t => t.Include(x => x.Products).ThenInclude(t => t.ProductVersions)).FirstOrDefault();
+            if (data == null) return null;
+            return data;
+        }
 
         //lấy 1 loại sản phẩm 
         public ProductType ReadType(string id)

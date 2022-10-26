@@ -1,0 +1,312 @@
+﻿@using ModelProject.ViewModel;
+@model ProductDetailViewModel;
+@section cssDetail{
+	<style>
+		.outer {
+			margin: 0 auto;
+			max-width: 800px;
+		}
+		#big .item {
+			
+			padding: 120px 0px;
+			margin: 2px;
+			color: #FFF;
+			border-radius: 3px;
+			text-align: center;
+		}
+
+		#thumbs .item {
+			background: #C9C9C9;
+			height: 70px;
+			line-height: 70px;
+			padding: 0px;
+			margin: 2px;
+			color: #FFF;
+			border-radius: 3px;
+			text-align: center;
+			cursor: pointer;
+		}
+
+			#thumbs .item h1 {
+				font-size: 18px;
+			}
+
+		#thumbs .current .item {
+			
+		}
+
+		.owl-theme .owl-nav [class*='owl-'] {
+			-webkit-transition: all .3s ease;
+			transition: all .3s ease;
+		}
+
+			.owl-theme .owl-nav [class*='owl-'].disabled:hover {
+				background-color: #D6D6D6;
+			}
+
+		#big.owl-theme {
+			position: relative;
+		}
+
+			#big.owl-theme .owl-next, #big.owl-theme .owl-prev {
+				background: #333;
+				width: 22px;
+				line-height: 40px;
+				height: 40px;
+				margin-top: -20px;
+				position: absolute;
+				text-align: center;
+				top: 50%;
+			}
+
+			#big.owl-theme .owl-prev {
+				left: 10px;
+			}
+
+			#big.owl-theme .owl-next {
+				right: 10px;
+			}
+
+		#thumbs.owl-theme .owl-next, #thumbs.owl-theme .owl-prev {
+			background: #333;
+		}
+	</style>
+}
+@section jsDetail{
+	<script>
+		$('.item-color').on("click", function () {
+			var versionId = @Model.ProductShow.VersionId;
+			var quantity = $('input[name=color]:checked').val();
+		});
+	</script>
+}
+	<!-- Hamburger Menu -->
+
+
+
+	<div class="container single_product_container">
+		<div class="outer">
+			<div style=" height:680px; width:1020px;" id="big" class="owl-carousel owl-theme">
+				
+				@{
+					foreach (var item in Model.PhotoProduct)
+					{
+																								<div class="item" style="background: url(@item.PathImage); height:680px; width:1020px;">
+																								</div>
+				}
+				}
+			</div>
+			<div id="thumbs" class="owl-carousel owl-theme">
+			@{
+				foreach (var item in Model.PhotoProduct)
+				{
+																						<div class="item product_image" style="width:180px; height: 180px;" >
+																							<img style="width:180px; height: 180px;" src="@item.PathImage" alt="@Model.ProductShow.VersionName">
+																						</div>
+				}
+			}
+			</div>
+		</div>
+	<div style="text-align:center;" class="product_details_title">
+		<h2>@Model.ProductShow.VersionName</h2>
+	</div>
+			<div class="row">
+				<div class="col-md-4">
+			
+
+				@if (Model.ProductShow.ProductSale != 0)
+				{
+					<div class="original_price"> @String.Format("Số tiền là: {0:0,00}", Model.ProductShow.ProductPrice)</div>
+				}
+				<div class="product_price"> @String.Format("Số tiền là: {0:0,00}", Model.ProductShow.ProductPrice - Model.ProductShow.ProductPriceSale)</div>
+				<div>
+
+				</div>
+				
+						<span>Màu: </span>
+						
+			@{
+				foreach (var item in Model.quantityProductVerSions)
+				{
+													<label style="margin-right:10px;">
+														@item.color@if (item.Quantity == 0) { <span style="color:red;">Hết hàng</span>}else{ <input class="item-color" type="radio" name="color" id="color" value="@item.idQuantity"/>}
+													</label>
+				}
+					}
+				
+	
+
+					<div class="content-addcart"><button style="background:Cyan;" id="addcart" class="btn" type="submit">Thêm vào giỏ hàng</button></div>
+			
+					
+		
+			
+			</div>
+		<div class="col-md-8">
+			<div><p>@Model.ProductShow.ProductDescription</p></div>
+		</div>
+		</div>
+
+
+	
+	<!-- Tabs -->
+
+	<div class="tabs_section_container">
+
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="tabs_container">
+						<ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
+							<li class="tab active" data-active-tab="tab_1"><span>Khuyến mãi</span></li>
+							<li class="tab" data-active-tab="tab_2"><span>Thông số kỹ thuật</span></li>
+							<li class="tab" data-active-tab="tab_3"><span>Reviews (@Model.comments.Count)</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+
+					<!-- Tab Description -->
+
+					<div id="tab_1" class="tab_container active">
+					<div class="row">
+						<div class="col-6">
+								<h5 style="color:red">Khuyến mãi sản phẩm</h5>
+								@{
+									foreach (var item in Model.ProductPromation)
+									{
+
+												<label><img style="width: 50px;height: 50px; border-radius: 0;" src="@item.ProductImage" /> @item.PromationName</label>
+
+
+									}
+								}
+						</div>
+							<div class="col-6">
+								<h5 style="color:red">Khuyến mãi sản phẩm</h5>
+								@{
+									foreach (var item in Model.PricePromation)
+									{
+												<label>@item.PromationName: Khuyến mãi  <span style="color:red">@item.PromationPrice%</span>. Thời gian kết thúc khuyến mãi  @item.EndTime.ToString()</label>
+									}
+								}
+							</div>
+					</div>
+						
+					</div>
+
+					<!-- Tab Additional Info -->
+
+					<div id="tab_2" class="tab_container">
+						<div class="parameter-all">
+						@{
+								foreach (var item in Model.productVerSionDetailInformation)
+								{
+											<div class="parameter-item">
+												
+												<ul class="ulist ">
+													<li>
+														<div class="row">
+															<div class="col-4"><b>@item.PropertyName:</b></div> <div class="col-8"> @item.Value</div>
+														</div>
+													</li>
+
+												</ul>
+											</div>
+								}
+						}
+                 
+        </div>
+					</div>
+
+					<!-- Tab Reviews -->
+
+					<div id="tab_3" class="tab_container">
+						<div class="row">
+
+							<!-- User Reviews -->
+
+							<div class="col-lg-6 reviews_col">
+								<div class="tab_title reviews_title">
+									<h4>Reviews (@Model.comments.Count)</h4>
+								</div>
+
+								<!-- User Review -->
+								@{
+									foreach (var item in Model.comments)
+									{
+										<div class="user_review_container d-flex flex-column flex-sm-row">
+											<div class="user">
+											
+												<div class="user_rating">
+													<ul class="star_rating">
+													@for (int i = 0; i < item.Rating; i++)
+														{
+															<li><i class="fa fa-star" aria-hidden="true"></i></li>
+														}
+													@for (var i = 0; i < 5 - item.Rating; i++)
+													{
+															<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+													}
+														
+													</ul>
+												</div>
+											</div>
+											<div class="review">
+												<div class="user_name">@item.CustomerName <p>@item.UserPhone</p></div>
+												<p>@item.CommentDescription</p>
+											</div>
+										</div>
+									}
+								}
+							
+							</div>
+
+							<!-- Add Review -->
+
+							<div class="col-lg-6 add_review_col">
+
+								<div class="add_review">
+								 @using (Html.BeginForm("AddBrands", "Home", FormMethod.Post, new {id="form-brands" ,enctype = "multipart/form-data" })){
+										<div>
+											<h1>Add Review</h1>
+											<input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">	
+											<input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
+										</div>
+										<div>
+											<h1>Your Rating:</h1>
+											<ul class="user_star_rating">
+												<li><i class="fa fa-star" aria-hidden="true"></i></li>
+												<li><i class="fa fa-star" aria-hidden="true"></i></li>
+												<li><i class="fa fa-star" aria-hidden="true"></i></li>
+												<li><i class="fa fa-star" aria-hidden="true"></i></li>
+												<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+											</ul>
+											<textarea id="review_message" class="input_review" name="message"  placeholder="Your Review" rows="4" required data-error="Please, leave us a review."></textarea>
+										</div>
+										<div class="text-left text-sm-right">
+											<button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
+										</div>
+								
+									}
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+
+
+		@await Component.InvokeAsync("ShowProductSuggestions",Model.ProductShow.ProductBrandName)
+	</div>
+
+	<!-- Benefit -->
+

@@ -70,7 +70,7 @@ namespace DAL.DataModel
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
         {
             var query = _context.Set<T>().AsQueryable();
-
+    
             if (disableTracking)
             {
                 query = query.AsNoTracking();

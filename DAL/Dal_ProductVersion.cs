@@ -65,9 +65,12 @@ namespace DAL
                 .Include(p => p.Product).ThenInclude(e => e.EventDetails).ThenInclude(e => e.Event)
                 .Include(p => p.Product).ThenInclude(p => p.ProductBrandNavigation)
                 .Include(p => p.Product).ThenInclude(p => p.ProductTypeNavigation)
+                .Include(p => p.Product).ThenInclude(p => p.Comments)
                 .Include(pv => pv.PropertiesValues).ThenInclude(pv => pv.Properties).ThenInclude(pv => pv.Specifications)
                 .Include(pv => pv.VersionQuantities).ThenInclude(vq => vq.Color)
-                .Include(pv => pv.Product).ThenInclude(p => p.Gifts).ThenInclude(g => g.GiftProductNavigation).ThenInclude(g => g.Product)).FirstOrDefault();
+                .Include(pv => pv.Product).ThenInclude(p => p.Gifts).ThenInclude(g => g.GiftProductNavigation).ThenInclude(g => g.Product))
+                .Include(pv => pv.ProductPhotos).ThenInclude(pp => pp.Photo)
+                .FirstOrDefault();
                 
             if (data2 == null) return null;
             return data2;
@@ -108,6 +111,8 @@ namespace DAL
             }
             return true;
         }
+
+      
     }
 
 }

@@ -7,23 +7,26 @@ using ModelProject.Models;
 using ModelProject.ViewModel;
 using DAL;
 using BUS.Services;
-using static ModelProject.ViewModel.ProductDetailViewModel;
 
 namespace BUS
 {
     public class BusShowProducts:IBusShowProducts
     {
         private IDalBrands dalBrands;
+        private IDAlProduct dAlProduct;
         private IDaltype daltype;
         private IDalEvent dalEvent;
         private IDalProductVersion dalProductVersion;
+        private IBusProduct busProduct;
 
-       public BusShowProducts( IDalProductVersion dalProductVersion, IDalBrands dalBrands, IDaltype daltype, IDalEvent dalEvent)
+        public BusShowProducts( IDalProductVersion dalProductVersion, IDalBrands dalBrands, IDaltype daltype, IDalEvent dalEvent, IBusProduct busProduct,IDAlProduct dAlProduct)
         {
             this.dalBrands = dalBrands;
             this.daltype = daltype;
             this.dalProductVersion = dalProductVersion;
             this.dalEvent = dalEvent;
+            this.busProduct = busProduct;
+            this.dAlProduct = dAlProduct;
         }
 
 
@@ -59,12 +62,22 @@ namespace BUS
         public HomeViewModel GetHomeProduct()
         {
             var data = dalEvent.GetEventDetails();
+            var timeNow = DateTime.Now;
+            data = data.Where(e => e.Event.EndTime >= timeNow).ToList();
             HomeViewModel viewModel = new HomeViewModel();
             foreach (var item in data)
             {
                 foreach (var value in item.Product.ProductVersions)
                 {
-                    if (value.ProductStatus != 0)
+                    if (value.ProductStatus == 0)
+                    {
+                        continue;
+                    }
+                  
+                    //Kiểm tra sản phẩm có tồn tại trong viewModel không ? cộng dồn khuyến mãi : thêm mới sản phẩm
+                    int index = viewModel.ProductSale.FindIndex(p => p.VersionId == value.VersionId);
+                    if (index != -1) { viewModel.ProductSale[index].ProductSale += item.Event.Promotion; continue; }
+                    else
                     {
                         var model = new ProductShow();
                         model.ProductId = value.ProductId;
@@ -80,7 +93,8 @@ namespace BUS
                         model.ProductSale = item.Event.Promotion;
                         viewModel.ProductSale.Add(model);
                     }
-                    else continue;
+                
+
                 }
             }
             var productbrnad = dalBrands.GetProductBrand("APPLE");
@@ -123,6 +137,101 @@ namespace BUS
                     model.ProductDescription = item.Product.ProductDescription;
                     model.ProductPhoto = item.Product.ProductPhoto;
                     viewModel.Products.Add(model);
+                }
+            }
+            return viewModel;
+        }
+
+
+
+        /// <summary>
+        /// Lấy chi tiết sản phẩm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ProductDetailViewModel GetProductDetail(string id)
+        {
+            var viewModel = busProduct.DalReadProductDetail(id);
+            viewModel.PricePromation = viewModel.PricePromation.Where(x => x.Status != 0).ToList();
+            viewModel.ProductPromation = viewModel.ProductPromation.Where(x => x.Status != 0).ToList();
+            
+            foreach (var item in viewModel.PricePromation)
+            {
+                viewModel.ProductShow.ProductSale += item.PromationPrice;
+               
+            }
+
+            double sale = (double) viewModel.ProductShow.ProductSale / 100;
+            sale = (double) viewModel.ProductShow.ProductPrice * sale;
+           viewModel.ProductShow.ProductPriceSale = (int) sale;
+
+            foreach (var item in viewModel.comments)
+            {
+               item.UserPhone = item.UserPhone.Substring(0,4);
+                item.UserPhone = item.UserPhone+"xxxxx";
+            }
+            return viewModel;
+        }
+
+        public List<ProductShow> GetProductSuggestions(string id)
+        {
+            var viewModel = new List<ProductShow>();
+            var productbrnad = dalBrands.GetProductBrand(id);
+            
+            if (productbrnad != null)
+            {
+                productbrnad.Products = productbrnad.Products.Take(10).ToList();
+                foreach (var item in productbrnad.Products)
+                {
+                    foreach (var value in item.ProductVersions)
+                    {
+                        var model = new ProductShow();
+                        model.ProductId = value.ProductId;
+                        model.ProuctName = value.VersionName;
+                        model.VersionId = value.VersionId;
+                        model.ProductType = item.ProductType;
+                        model.ProductBrand = item.ProductBrand;
+                        model.ProductPrice = value.ProductPrice;
+                        model.ProductStatus = value.ProductStatus;
+                        model.ProductDescription = item.ProductDescription;
+                        model.ProductPhoto = item.ProductPhoto;
+
+                        viewModel.Add(model);
+                    }
+                }
+               
+            }
+            return viewModel;
+        }
+
+        public List<ProductShow> GetListProduct(string id)
+        {
+            var viewModel = new List<ProductShow>();
+            var data = dAlProduct.GetProducts();
+            data = data.Where(p => p.ProductBrand == id || p.ProductType == id).ToList();
+
+            foreach (var item in data)
+            {
+                foreach (var value in item.ProductVersions)
+                {
+                    var model = new ProductShow();
+                    model.ProductId = value.ProductId;
+                    model.ProuctName = value.VersionName;
+                    model.VersionId = value.VersionId;
+                    model.ProductType = item.ProductType;
+                    model.ProductBrand = item.ProductBrand;
+                    model.ProductPrice = value.ProductPrice;
+                    model.ProductStatus = value.ProductStatus;
+                    model.ProductDescription = item.ProductDescription;
+                    model.ProductPhoto = item.ProductPhoto;
+                    foreach (var item1 in item.EventDetails)
+                    {
+                        model.ProductSale += item1.Event.Promotion;
+                    }
+                    double sale = (double)model.ProductSale / 100;
+                    sale = (double)model.ProductPrice * sale;
+                    model.ProductPriceSale = (int)sale;
+                    viewModel.Add(model);
                 }
             }
             return viewModel;

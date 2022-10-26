@@ -24,7 +24,7 @@
 									@foreach (var item in Model.showBrandsViewModels)
 									{
 										<li>
-											<a href="#">
+											<a asp-action="ListProduct" asp-controller="Home" asp-route-id="@item.BrandId">
 												<img style="display: block;max-width:230px; max-height:95px;width: auto;height: auto;" src="@item.BrandPhoto" />
 											</a>
 										</li>
@@ -39,8 +39,8 @@
 								<ul class="currency_selection">
 									@foreach (var item in Model.listProductTypeViewModels)
 								   {
-									   <li><a href="#">@item.TypeName</a></li>
-								   }
+										<li><a asp-action="ListProduct" asp-controller="Home" asp-route-id="@item.TypeId">@item.TypeName</a></li>
+									}
 									
 								</ul>
 							</li>

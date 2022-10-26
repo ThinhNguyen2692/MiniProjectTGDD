@@ -8,6 +8,14 @@ using ModelProject.Models;
 
 namespace ModelProject.ViewModel
 {
+
+    public class ProductColorViewModel
+    {
+        public ProductColorViewModel() { }
+        public string Name { get; set; }
+        public string PathImage { get; set; }
+    }
+
     public class Promation
     {
         public Promation() { }
@@ -44,9 +52,12 @@ namespace ModelProject.ViewModel
         public string? ProductDescription { get; set; }
         public string VersionId { get; set; } = null!;
         public string VersionName { get; set; } = null!;
-        public int? ProductPrice { get; set; }
+        public int? ProductPrice { get; set; } 
+        public int? ProductPriceSale { get; set; } = 0;
         public int? ProductStatus { get; set; }
-        public int? ProductSale { get; set; }
+        public int? ProductSale { get; set; } = 0;
+
+
     }
 
   
@@ -64,11 +75,13 @@ namespace ModelProject.ViewModel
         };
         public List<Promation> ProductPromation { get; set; } = new List<Promation>();
         public List<Promation> PricePromation { get; set; } = new List<Promation>();
+        public PhotoViewModel? Photo { get; set; } 
         public string MessageUpdate { get; set; } = null!;
         public List<QuantityProductVerSion> quantityProductVerSions { get; set; }
         public List<ProductVerSionDetailInformation> productVerSionDetailInformation { get; set; }
 
-
+        public List<InformationPhoto>? PhotoProduct { get; set; } = new List<InformationPhoto>();
+        public List<Comment> comments { get; set; } = new List<Comment>();
         public List<QuantityProductVerSion> GetQuantityProductVerSions(List<VersionQuantity> listVersionQuantity)
         {
             var listQuantityProductVerSions = new List<QuantityProductVerSion>();
@@ -78,6 +91,7 @@ namespace ModelProject.ViewModel
                 verSionQuantity.idQuantity = item.Id;
                 verSionQuantity.color = item.Color.ColorDescription;
                 verSionQuantity.Quantity = (int)item.Quantity;
+                verSionQuantity.ColorPath = item.Color.ColorPath;
                 listQuantityProductVerSions.Add(verSionQuantity);
             }
             return listQuantityProductVerSions;
@@ -97,8 +111,6 @@ namespace ModelProject.ViewModel
             }
             return listProductVerSionDetailInformation;
         }
-
-       
 
     }
 

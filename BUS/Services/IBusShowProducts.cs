@@ -12,5 +12,8 @@ namespace BUS.Services
     {
         public HeaderViewModel HeaderViewModel();
         public HomeViewModel GetHomeProduct();
-    }
+        public ProductDetailViewModel GetProductDetail(string id);
+		List<ProductShow> GetProductSuggestions(string brands);
+		List<ProductShow> GetListProduct(string id);
+	}
 }
