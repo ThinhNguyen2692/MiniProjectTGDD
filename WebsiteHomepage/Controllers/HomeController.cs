@@ -63,6 +63,15 @@ namespace WebsiteHomepage.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        [Route("GetDataSeach")]
+        public ProductShow GetDataSeach()
+        {
+
+            return new ProductShow();
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

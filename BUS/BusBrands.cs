@@ -118,7 +118,20 @@ namespace BUS
             return iDalBrands.DalGetbrandsByStatus();
         }
 
-       
-        
+        public bool UpdateBrands(string demo)
+        {
+            ProductBrand brandViewModel = iDalBrands.GetBrandById("Apple");
+            var brands = new ProductBrand()
+            {
+                BrandName = demo,
+                BrandId = brandViewModel.BrandId,
+                BrandDescription = brandViewModel.BrandDescription,
+                BrandPhoto = brandViewModel.BrandPhoto,
+                BrandStatus = brandViewModel.BrandStatus
+            };
+
+            return iDalBrands.DalUpdateBrands(brands);
+        }
+
     }
 }

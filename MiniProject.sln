@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BUS", "BUS\BUS.csproj", "{D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMSWeb", "CMSWeb\CMSWeb.csproj", "{BEF13CB7-52DB-48CE-9731-C08C8C7A03D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelProject", "ModelProject\ModelProject.csproj", "{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelProject", "ModelProject\ModelProject.csproj", "{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

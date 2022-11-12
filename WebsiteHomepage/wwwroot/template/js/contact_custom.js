@@ -29,50 +29,11 @@ jQuery(document).ready(function($)
 	var fsOverlay = $('.fs_menu_overlay');
 	var map;
 
-	setHeader();
-
-	$(window).on('resize', function()
-	{
-		setHeader();
-	});
-
-	$(document).on('scroll', function()
-	{
-		setHeader();
-	});
-
+	
 	initMenu();
 	initGoogleMap();
 
-	function setHeader()
-	{
-		if(window.innerWidth < 992)
-		{
-			if($(window).scrollTop() > 100)
-			{
-				header.css({'top':"0"});
-			}
-			else
-			{
-				header.css({'top':"0"});
-			}
-		}
-		else
-		{
-			if($(window).scrollTop() > 100)
-			{
-				header.css({'top':"-50px"});
-			}
-			else
-			{
-				header.css({'top':"0"});
-			}
-		}
-		if(window.innerWidth > 991 && menuActive)
-		{
-			closeMenu();
-		}
-	}
+	
 
 	function initMenu()
 	{
