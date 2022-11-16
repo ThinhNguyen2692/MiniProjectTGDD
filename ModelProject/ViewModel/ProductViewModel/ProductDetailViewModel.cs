@@ -39,6 +39,7 @@ namespace ModelProject.ViewModel
         public List<ProductShow> ProductApple { get; set; } = new List<ProductShow>();
         public List<ProductShow> Products { get; set; } = new List<ProductShow>();
     }
+
     public class ProductShow
     {
         public ProductShow() { }
@@ -60,7 +61,7 @@ namespace ModelProject.ViewModel
 
     }
 
-  
+
     public class ProductDetailViewModel
     {
         public ProductDetailViewModel() { }
@@ -75,11 +76,10 @@ namespace ModelProject.ViewModel
         };
         public List<Promation> ProductPromation { get; set; } = new List<Promation>();
         public List<Promation> PricePromation { get; set; } = new List<Promation>();
-        public PhotoViewModel? Photo { get; set; } 
+        public PhotoViewModel? Photo { get; set; }
         public string MessageUpdate { get; set; } = null!;
         public List<QuantityProductVerSion> quantityProductVerSions { get; set; }
         public List<ProductVerSionDetailInformation> productVerSionDetailInformation { get; set; }
-
         public List<InformationPhoto>? PhotoProduct { get; set; } = new List<InformationPhoto>();
         public List<Comment> comments { get; set; } = new List<Comment>();
         public List<QuantityProductVerSion> GetQuantityProductVerSions(List<VersionQuantity> listVersionQuantity)
@@ -96,7 +96,6 @@ namespace ModelProject.ViewModel
             }
             return listQuantityProductVerSions;
         }
-
         public List<ProductVerSionDetailInformation> GetProductVerSionDetailInformation(List<PropertiesValue> propertiesValues)
         {
             var listProductVerSionDetailInformation = new List<ProductVerSionDetailInformation>();
@@ -113,5 +112,13 @@ namespace ModelProject.ViewModel
         }
 
     }
+
+
+    public class ProductCart
+    {
+
+    }
+
+
 
 }

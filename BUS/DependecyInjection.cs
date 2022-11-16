@@ -16,6 +16,7 @@ namespace BUS
     {
         public static IServiceCollection serviceDescriptors(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<MiniProjectTGDDContext>();
             services.AddSingleton<IDalBrands, Dal_Brands>();
             services.AddSingleton<IDaltype, Dal_ProductType>();
             services.AddSingleton<IDalProductPecification, Dal_ProductPecification>();
@@ -44,6 +45,7 @@ namespace BUS
             services.AddSingleton<IBusUser, BusUser>();
             services.AddSingleton<IBusStatistical, BusStatistical>();
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IBusCart, BusCart>();
             return services;
         }
     }

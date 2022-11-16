@@ -52,6 +52,7 @@ namespace WebsiteHomepage.Controllers
         public IActionResult ProductDetail(string idProduct)
         {
             var viewModel = busShowProducts.GetProductDetail(idProduct);
+            if(viewModel == null) return View("Error");
             return View(viewModel);
         }
 

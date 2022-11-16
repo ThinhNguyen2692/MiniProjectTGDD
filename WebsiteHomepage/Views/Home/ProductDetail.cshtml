@@ -91,8 +91,8 @@
 				@{
 					foreach (var item in Model.PhotoProduct)
 					{
-																								<div class="item" style="background: url(@item.PathImage); height:680px; width:1020px;">
-																								</div>
+																									<div class="item" style="background: url(@item.PathImage); height:680px; width:1020px;">
+																									</div>
 				}
 				}
 			</div>
@@ -100,9 +100,9 @@
 			@{
 				foreach (var item in Model.PhotoProduct)
 				{
-																						<div class="item product_image" style="width:180px; height: 180px;" >
-																							<img style="width:180px; height: 180px;" src="@item.PathImage" alt="@Model.ProductShow.VersionName">
-																						</div>
+																							<div class="item product_image" style="width:180px; height: 180px;" >
+																								<img style="width:180px; height: 180px;" src="@item.PathImage" alt="@Model.ProductShow.VersionName">
+																							</div>
 				}
 			}
 			</div>
@@ -123,21 +123,28 @@
 
 				</div>
 				
-						<span>Màu: </span>
-						
-			@{
-				foreach (var item in Model.quantityProductVerSions)
-				{
-													<label style="margin-right:10px;">
-														@item.color@if (item.Quantity == 0) { <span style="color:red;">Hết hàng</span>}else{ <input class="item-color" type="radio" name="color" id="color" value="@item.idQuantity"/>}
-													</label>
-				}
-					}
-				
-	
+				<span>Màu: </span>
+			@using(Html.BeginForm("AddCart", "Cart", FormMethod.Post))
+			{
+				@Html.AntiForgeryToken()
+				@Html.Hidden("ProductId", Model.ProductShow.VersionId)
 
+				for (var i = 0; i < Model.quantityProductVerSions.Count; i++)
+				{
+					<label style="margin-right:10px;">
+						@Model.quantityProductVerSions[i].color@if (Model.quantityProductVerSions[i].Quantity == 0)
+						{
+							<span style="color:red;">Hết hàng</span>
+						}
+						else
+						{
+							string colorName = Model.quantityProductVerSions[i].color;
+							@Html.RadioButton("QuantityColorId", Model.quantityProductVerSions[i].idQuantity, new {@checked = "true"})
+						}
+					</label>
+				}
 					<div class="content-addcart"><button style="background:Cyan;" id="addcart" class="btn" type="submit">Thêm vào giỏ hàng</button></div>
-			
+			}
 					
 		
 			
@@ -178,7 +185,7 @@
 									foreach (var item in Model.ProductPromation)
 									{
 
-												<label><img style="width: 50px;height: 50px; border-radius: 0;" src="@item.ProductImage" /> @item.PromationName</label>
+													<label><img style="width: 50px;height: 50px; border-radius: 0;" src="@item.ProductImage" /> @item.PromationName</label>
 
 
 									}
@@ -189,7 +196,7 @@
 								@{
 									foreach (var item in Model.PricePromation)
 									{
-												<label>@item.PromationName: Khuyến mãi  <span style="color:red">@item.PromationPrice%</span>. Thời gian kết thúc khuyến mãi  @item.EndTime.ToString()</label>
+													<label>@item.PromationName: Khuyến mãi  <span style="color:red">@item.PromationPrice%</span>. Thời gian kết thúc khuyến mãi  @item.EndTime.ToString()</label>
 									}
 								}
 							</div>
@@ -204,17 +211,17 @@
 						@{
 								foreach (var item in Model.productVerSionDetailInformation)
 								{
-											<div class="parameter-item">
-												
-												<ul class="ulist ">
-													<li>
-														<div class="row">
-															<div class="col-4"><b>@item.PropertyName:</b></div> <div class="col-8"> @item.Value</div>
-														</div>
-													</li>
+												<div class="parameter-item">
+													
+													<ul class="ulist ">
+														<li>
+															<div class="row">
+																<div class="col-4"><b>@item.PropertyName:</b></div> <div class="col-8"> @item.Value</div>
+															</div>
+														</li>
 
-												</ul>
-											</div>
+													</ul>
+												</div>
 								}
 						}
                  
@@ -237,28 +244,28 @@
 								@{
 									foreach (var item in Model.comments)
 									{
-										<div class="user_review_container d-flex flex-column flex-sm-row">
-											<div class="user">
-											
-												<div class="user_rating">
-													<ul class="star_rating">
-													@for (int i = 0; i < item.Rating; i++)
+											<div class="user_review_container d-flex flex-column flex-sm-row">
+												<div class="user">
+												
+													<div class="user_rating">
+														<ul class="star_rating">
+														@for (int i = 0; i < item.Rating; i++)
 														{
-															<li><i class="fa fa-star" aria-hidden="true"></i></li>
+																<li><i class="fa fa-star" aria-hidden="true"></i></li>
 														}
-													@for (var i = 0; i < 5 - item.Rating; i++)
+														@for (var i = 0; i < 5 - item.Rating; i++)
 													{
-															<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+																<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
 													}
-														
-													</ul>
+															
+														</ul>
+													</div>
+												</div>
+												<div class="review">
+													<div class="user_name">@item.CustomerName <p>@item.UserPhone</p></div>
+													<p>@item.CommentDescription</p>
 												</div>
 											</div>
-											<div class="review">
-												<div class="user_name">@item.CustomerName <p>@item.UserPhone</p></div>
-												<p>@item.CommentDescription</p>
-											</div>
-										</div>
 									}
 								}
 							
@@ -305,7 +312,7 @@
 
 
 
-		@await Component.InvokeAsync("ShowProductSuggestions",Model.ProductShow.ProductBrandName)
+		@await Component.InvokeAsync("ShowProductSuggestions",Model.ProductShow.ProductBrand)
 	</div>
 
 	<!-- Benefit -->

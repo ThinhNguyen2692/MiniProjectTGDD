@@ -172,6 +172,7 @@ namespace BUS
         /// <returns>ProductDetailViewModel</returns>
         public ProductDetailViewModel DalReadProductDetail(string id) {
             var data = dal_ProductVersion.DalReadProduct(id);
+            if (data == null) return null;
             var ProductDetail = new ProductDetailViewModel();
             ProductDetail.ProductShow.ProductId = data.ProductId;
             ProductDetail.ProductShow.ProuctName = data.Product.ProuctName;

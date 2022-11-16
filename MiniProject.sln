@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMSWeb", "CMSWeb\CMSWeb.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelProject", "ModelProject\ModelProject.csproj", "{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueApi", "VueApi\VueApi.csproj", "{7B36052C-222F-465E-923B-CDCF6F0DBAF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED2DA063-BB2C-4C47-BD7F-24D36C67FD14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B36052C-222F-465E-923B-CDCF6F0DBAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B36052C-222F-465E-923B-CDCF6F0DBAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B36052C-222F-465E-923B-CDCF6F0DBAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B36052C-222F-465E-923B-CDCF6F0DBAF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

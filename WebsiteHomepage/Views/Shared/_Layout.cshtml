@@ -94,6 +94,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
 	@RenderSection("jsDetail", false);
+	@RenderSection("js", false);
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

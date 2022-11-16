@@ -152,6 +152,7 @@ namespace BUS
         public ProductDetailViewModel GetProductDetail(string id)
         {
             var viewModel = busProduct.DalReadProductDetail(id);
+            if (viewModel == null) return null;
             viewModel.PricePromation = viewModel.PricePromation.Where(x => x.Status != 0).ToList();
             viewModel.ProductPromation = viewModel.ProductPromation.Where(x => x.Status != 0).ToList();
             
@@ -161,8 +162,8 @@ namespace BUS
                
             }
 
-            double sale = (double) viewModel.ProductShow.ProductSale / 100;
-            sale = (double) viewModel.ProductShow.ProductPrice * sale;
+           double sale = (double) viewModel.ProductShow.ProductSale / 100;
+           sale = (double) viewModel.ProductShow.ProductPrice * sale;
            viewModel.ProductShow.ProductPriceSale = (int) sale;
 
             foreach (var item in viewModel.comments)
