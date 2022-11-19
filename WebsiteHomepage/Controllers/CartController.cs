@@ -16,10 +16,11 @@ namespace WebsiteHomepage.Controllers
 	public class CartController : Controller
 	{
 		private readonly IBusCart busCart;
-
-		public CartController(IBusCart busCart)
+        private readonly IBusPurchaseOrder busPurchaseOrder;
+		public CartController(IBusCart busCart, IBusPurchaseOrder busPurchaseOrder)
 		{
 			this.busCart = busCart;
+            this.busPurchaseOrder = busPurchaseOrder;
 		}
 
 		public IActionResult Index()
@@ -76,7 +77,8 @@ namespace WebsiteHomepage.Controllers
         public IActionResult Order(Customer customer)
         {
             var json = Request.Cookies["cart"];
-            busCart.Oder(customer, json);
+            var oderID = busCart.Oder(customer, json);
+            ViewData["oderID"] = oderID;
             var viewModel = new Checkout();
              viewModel.cartsViewModel = busCart.GetCart(json);
              XmlDocument xml = new XmlDocument();
@@ -84,6 +86,13 @@ namespace WebsiteHomepage.Controllers
             var element = xml.GetElementsByTagName("Exrate")[19].Attributes["Transfer"].Value;
             viewModel.usd = element.Replace(",", String.Empty);
             return View("Paypal" ,viewModel);
+        }
+
+        public IActionResult PayPal(string oderId)
+        {
+            busPurchaseOrder.DeliveringUpdateStatusOrder(oderId, 0);
+            Response.Cookies.Delete("cart");
+            return Redirect("/");
         }
     }
 }

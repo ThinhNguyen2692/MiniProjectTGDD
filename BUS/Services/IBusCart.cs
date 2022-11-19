@@ -13,6 +13,6 @@ namespace BUS.Services
         public string AddCart(string? json, CartModel cartModel);
         public CartsViewModel GetCart(string? json);
         public string DeleteCartitem(string json, int quantyticolorId);
-        public void Oder(Customer customer, string json);
+        public string Oder(Customer customer, string json);
     }
 }

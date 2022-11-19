@@ -49,9 +49,11 @@ namespace DAL
         /// <param name="OrderId"></param>
         public void Update(string OrderId, int stastus)
         {
-            var data = repository.GetAll(predicate: p => p.OrderId == OrderId).FirstOrDefault();
+            var data = repository.GetById(predicate: p => p.OrderId == OrderId);
             if (data == null) { _unitOfWork.SaveChanges(); return; }
-            data.OrderStatus = stastus;
+            var dataUpdate = data;
+            dataUpdate.OrderStatus = stastus;
+            repository.Update(data, dataUpdate);
             _unitOfWork.SaveChanges();
         }
 

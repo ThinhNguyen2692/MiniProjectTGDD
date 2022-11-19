@@ -37,7 +37,7 @@ namespace BUS
                 model.Status = (int) item.OrderStatus;
                 switch (model.Status)
                 {
-                    case 0: viewModel.ListProcessing.Add(model); break;
+                    case 0: case 4: viewModel.ListProcessing.Add(model); break;
                     case 1: viewModel.ListDelivering.Add(model); break;
                     case 2: viewModel.ListDelivered.Add(model); break;
                     case 3: viewModel.ListCancelled.Add(model); break;
@@ -70,7 +70,7 @@ namespace BUS
                   
                     foreach (var value in item.PurchaseOrderDetails)
                     {
-                        iDalVersionQuantity.UpdateOrderCanned(value.ColorId,value.OrderQuantity);
+                        iDalVersionQuantity.UpdateOrderCanned((int)value.ColorId,value.OrderQuantity);
                     }
                     break;
                 default:

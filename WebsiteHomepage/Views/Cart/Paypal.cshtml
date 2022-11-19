@@ -29,7 +29,7 @@
                          .then((response)=>console.log(response));
             console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
             const transaction = orderData.purchase_units[0].payments.captures[0];
-                    $('#form-check').submit();
+                    window.location.href = 'https://localhost:7237/cart/PayPal?oderId=@ViewData["oderID"]'
             // When ready to go live, remove the alert and show a success message within this page. For example:
             // const element = document.getElementById('paypal-button-container');
             // element.innerHTML = '<h3>Thank you for your payment!</h3>';

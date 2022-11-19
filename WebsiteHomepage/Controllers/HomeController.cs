@@ -57,10 +57,10 @@ namespace WebsiteHomepage.Controllers
         }
 
         [HttpGet]
-        [Route("DanhSanPham")]
-        public IActionResult ListProduct(string id, int page = 1)
+        [Route("Home/DanhSanPham")]
+        public IActionResult ListProduct(string idType, int page = 1)
         {
-            var viewModel = busShowProducts.GetListProduct(id).ToPagedList(page, 12);
+            var viewModel = busShowProducts.GetListProduct(idType).ToPagedList(page, 3);
             return View(viewModel);
         }
 

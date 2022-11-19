@@ -238,5 +238,16 @@ namespace BUS
             return viewModel;
         }
 
+        //public List<ProductShow> GetListProductSeach(string? Key, int filterPrice = 100000000, string filterBrand = "all", string filterType = "all")
+        //{
+        //    var viewModel = new List<ProductShow>();
+        //    var data = dAlProduct.GetProducts();
+        //    if(Key != null)
+        //    {
+        //        data = data.
+        //    }
+           
+        //}
+
     }
 }

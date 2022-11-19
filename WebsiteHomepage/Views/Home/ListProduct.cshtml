@@ -121,8 +121,7 @@
 									</ul>
 									<div class="pages d-flex flex-row align-items-center">
 										<div class="page_current">
-										@Html.PagedListPager((IPagedList)Model,page=>Url.Action("DanhSanPham", new{page}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
-									</div>
+										@Html.PagedListPager((IPagedList)Model,page=>Url.Action("DanhSanPham","Home", new{page, idType="Apple"}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
 
 								</div>
 
@@ -155,19 +154,10 @@
 											</div>
 
 										</div>
+										}
 									}
-									}
-
-
-
-
-
-
-
-								
-
 							</div>
-							@Html.PagedListPager((IPagedList)Model,page=>Url.Action("DanhSanPham", new{page}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
+							@Html.PagedListPager((IPagedList)Model,page=>Url.Action("DanhSanPham","Home", new{page, idType="Apple"}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
 						</div>
 					</div>
 				</div>

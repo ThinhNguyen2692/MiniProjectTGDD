@@ -132,7 +132,7 @@ namespace BUS
         }
 
 
-        public void Oder(Customer customer, string json)
+        public string Oder(Customer customer, string json)
         {
             var ViewModel = GetCart(json);
             var Oder = new PurchaseOrder();
@@ -189,9 +189,12 @@ namespace BUS
             {
                 dalPurchaseOrder.Add(Oder);
             }
+
+            return Oder.OrderId;
         }
 
 
+     
     
 
         public string RandomString(int length)

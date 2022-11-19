@@ -97,7 +97,9 @@ namespace DAL
 
             var data = repository.GetAll(v => v.Id == id).FirstOrDefault();
             if (data == null) return;
-            data.Quantity = data.Quantity + Quantity;
+            var dataUpdate = data;
+            dataUpdate.Quantity = data.Quantity + Quantity;
+            repository.Update(data, dataUpdate);
             _unitOfWork.SaveChanges();
         }
 
@@ -109,9 +111,11 @@ namespace DAL
         public void UpdateOrder(int id, int Quantity)
         {
 
-            var data = repository.GetAll(v => v.Id == id).FirstOrDefault();
+            var data = repository.GetById(v => v.Id == id);
             if (data == null) return;
-            data.Quantity = data.Quantity - Quantity;
+            var dataUpdate = data;
+            dataUpdate.Quantity = data.Quantity - Quantity;
+            repository.Update(data,dataUpdate);
             _unitOfWork.SaveChanges();
         }
 
