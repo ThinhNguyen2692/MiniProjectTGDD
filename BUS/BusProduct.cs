@@ -204,7 +204,6 @@ namespace BUS
                 promation.Id = item.GiftId;
                 promation.PromationName = item.GiftProductNavigation.VersionName;
                 promation.PromationPrice = (int)item.GiftProductNavigation.ProductPrice;
-                promation.productVersionId = item.GiftProductNavigation.VersionId;
                 promation.Status = item.GiftStatus;
                 promation.ProductImage = item.GiftProductNavigation.Product.ProductPhoto;
                 var gift = dal_ProductVersion.DalReadProduct(item.GiftProduct);

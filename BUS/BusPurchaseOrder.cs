@@ -70,13 +70,7 @@ namespace BUS
                   
                     foreach (var value in item.PurchaseOrderDetails)
                     {
-                        VersionQuantity versionQuantity = new VersionQuantity();
-                        //OrderProduct (mã sản phẩm khuyến mãi)
-                        versionQuantity.VersionId = value.OrderProduct;
-                        //mã màu (EventName)
-                        versionQuantity.ColorId = (int) value.ColorId;
-                        versionQuantity.Quantity = value.OrderQuantity;
-                        iDalVersionQuantity.UpdateOrderCanned(versionQuantity);
+                        iDalVersionQuantity.UpdateOrderCanned(value.ColorId,value.OrderQuantity);
                     }
                     break;
                 default:

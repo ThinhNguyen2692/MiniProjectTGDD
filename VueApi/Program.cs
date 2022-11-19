@@ -2,7 +2,6 @@ using BUS;
 using ModelProject.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "MyPolicy",

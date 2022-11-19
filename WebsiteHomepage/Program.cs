@@ -1,7 +1,15 @@
 using BUS;
 using ModelProject.Models;
 
-var builder = WebApplication.CreateBuilder(args); 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyPolicy",
+        policy =>
+        {
+            policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+        });
+});
 builder.Services.AddMemoryCache();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,7 +29,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseCors("MyPolicy");
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -14,6 +14,7 @@ namespace DAL
         public List<Customer> GetCustomers();
         public Customer UpdateCustomer(Customer customer);
         public Customer GetCustomerByphone(string NumberPhone);
+        public Customer AddCustomer(Customer customer);
     }
 
     public class Dal_Customer:IDalCustomer
@@ -49,8 +50,15 @@ namespace DAL
         public Customer GetCustomerByphone(string NumberPhone)
         {
             var data = repository.GetById(c => c.CustomerPhone == NumberPhone);
-
+            if (data == null) return null;
             return data;
+        }
+
+        public Customer AddCustomer(Customer customer)
+        {
+            repository.Add(customer);
+            _uniOfWork.SaveChanges();
+            return customer;
         }
     }
 }

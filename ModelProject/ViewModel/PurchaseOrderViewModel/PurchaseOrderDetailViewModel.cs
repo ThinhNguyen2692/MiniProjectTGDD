@@ -15,19 +15,7 @@ namespace ModelProject.ViewModel
         public string ProductPhoto { get; set; }
         public int Quantity { get; set; }
     }
-    public class PurchaseOrderDetail
-    {
-        public PurchaseOrderDetail() { }
-
-        public string ProductName { get; set; } 
-        public int ProductPrice { get; set; }
-        public string ProductPhoto { get; set; }
-        public int OrderPromotion { get; set; }
-        public int Quantity { get; set; }
-        public int OrderPrice { get; set; }
-        public List<GiftProduct> ListGiftProducts { get; set; }
-
-    }
+   
     public class PurchaseOrderDetailViewModel
     {
         public PurchaseOrderDetailViewModel() { }

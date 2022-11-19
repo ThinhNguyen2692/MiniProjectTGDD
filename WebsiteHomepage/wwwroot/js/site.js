@@ -1,9 +1,12 @@
-﻿$.ajax({
-  url: "/api/getWeather",
-  data: {
-    zipcode: 97201
-  },
-  success: function( result ) {
-    $( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
-  }
-});
+﻿function usd() {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx?b=10",
+        dataType: 'json',
+        success: function (data) {
+
+            console.log(data);
+        }
+    });
+}

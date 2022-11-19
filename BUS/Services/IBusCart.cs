@@ -1,4 +1,5 @@
-﻿using ModelProject.ViewModel;
+﻿using ModelProject.Models;
+using ModelProject.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace BUS.Services
         public string AddCart(string? json, CartModel cartModel);
         public CartsViewModel GetCart(string? json);
         public string DeleteCartitem(string json, int quantyticolorId);
+        public void Oder(Customer customer, string json);
     }
 }

@@ -23,9 +23,6 @@
 	<link rel="stylesheet" type="text/css" href="~/template/styles/categories_responsive.css" asp-append-version="true">
 	<link rel="stylesheet" type="text/css" href="~/template/styles/main_styles.css" asp-append-version="true">
 	<link rel="stylesheet" type="text/css" href="~/template/styles/magnific-popup.css" asp-append-version="true">
-
-
-
 	@RenderSection("css", false);
 	@RenderSection("cssDetail", false);
 </head>
@@ -42,7 +39,6 @@
         </main>
     </div>
 		<!-- Footer -->
-
 		<footer class="footer">
 			<div class="container">
 				<div class="row">
@@ -76,9 +72,7 @@
 				</div>
 			</div>
 		</footer>
-			
 	</div>
-
 	<script src="~/template/js/jquery-3.2.1.min.js"></script>
     <script src="~/template/styles/bootstrap4/popper.js"></script>
     <script src="~/template/styles/bootstrap4/bootstrap.min.js"></script>
@@ -88,13 +82,13 @@
     <script src="~/template/js/custom.js"></script>
 	<script src="~/template/js/single_custom.js"></script>
 	<script src="~/template/js/categories_custom.js"></script>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
 	@RenderSection("jsDetail", false);
 	@RenderSection("js", false);
+	@RenderSection("jsCheckOut", false);
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

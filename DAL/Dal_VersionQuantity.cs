@@ -16,8 +16,9 @@ namespace DAL
         public List<VersionQuantity> ReadQuantity(string id);
       
         public bool CheckQuantity(List<VersionQuantity> versionQuantities);
-        public void UpdateOrderCanned(VersionQuantity versionQuantity);
+        public void UpdateOrderCanned(int id, int Quantity);
         public void Delete(int id);
+        public void UpdateOrder(int id, int Quantity);
         }
     public class Dal_VersionQuantity : IDalVersionQuantity
     {
@@ -91,12 +92,12 @@ namespace DAL
         /// </summary>
         /// <param name="quantityProductVerSion">chứa thông tin số lượng sản phẩm</param>
         /// <returns></returns>
-        public void UpdateOrderCanned(VersionQuantity versionQuantity)
+        public void UpdateOrderCanned(int id, int Quantity)
         {
 
-            var data = repository.GetAll(v => v.VersionId == versionQuantity.VersionId && v.ColorId == versionQuantity.ColorId).FirstOrDefault();
+            var data = repository.GetAll(v => v.Id == id).FirstOrDefault();
             if (data == null) return;
-            data.Quantity = data.Quantity + versionQuantity.Quantity;
+            data.Quantity = data.Quantity + Quantity;
             _unitOfWork.SaveChanges();
         }
 
@@ -105,12 +106,12 @@ namespace DAL
         /// </summary>
         /// <param name="quantityProductVerSion">chứa thông tin số lượng sản phẩm</param>
         /// <returns></returns>
-        public void UpdateOrder(VersionQuantity versionQuantity)
+        public void UpdateOrder(int id, int Quantity)
         {
 
-            var data = repository.GetAll(v => v.VersionId == versionQuantity.VersionId && v.ColorId == versionQuantity.ColorId).FirstOrDefault();
+            var data = repository.GetAll(v => v.Id == id).FirstOrDefault();
             if (data == null) return;
-            data.Quantity = data.Quantity - versionQuantity.Quantity;
+            data.Quantity = data.Quantity - Quantity;
             _unitOfWork.SaveChanges();
         }
 

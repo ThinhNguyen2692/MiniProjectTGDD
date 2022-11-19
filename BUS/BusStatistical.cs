@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BUS.Services;
 using DAL;
 using ModelProject.ViewModel;
+using ModelProject.Models;
 
 namespace BUS
 {
@@ -51,6 +52,7 @@ namespace BUS
                 switch (item.OrderStatus)
                 {
                     case 0:
+                    case 4:
                         viewModel.purChaseOderStatisticalsProcessing.PurChaseOderQuantity++;
                         viewModel.purChaseOderStatisticalsProcessing.PurChaseOderprice += item.TotalMoney;
                         break;

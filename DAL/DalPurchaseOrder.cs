@@ -16,6 +16,7 @@ namespace DAL
         public void Update(string OrderId, int stastus);
         public List<PurchaseOrder> GetPurchaseOrdersMonth();
         public List<PurchaseOrder> GetPurchaseOrdersMonthProduct();
+        public void Add(PurchaseOrder order);
     }
     public class DalPurchaseOrder:IDalPurchaseOrder
     {
@@ -66,6 +67,12 @@ namespace DAL
             DateTime dateTime = DateTime.Now;
             var data = repository.GetAll(predicate: p => p.SetupTime.Value.Month == dateTime.Month || p.SetupTime.Value.Year == dateTime.Year || p.OrderStatus == 0 || p.OrderStatus == 1, include: p => p.Include(p => p.PurchaseOrderDetails)).ToList();
             return data;
+        }
+
+        public void Add(PurchaseOrder order)
+        {
+            repository.Add(order);
+            _unitOfWork.SaveChanges();
         }
 
     }

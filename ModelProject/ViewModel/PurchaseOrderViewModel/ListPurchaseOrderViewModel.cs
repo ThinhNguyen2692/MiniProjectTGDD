@@ -41,6 +41,7 @@ namespace ModelProject.ViewModel
                 case 1: return "Đang giao hàng"; 
                 case 2: return "Giao thành công"; 
                 case 3: return "Đã hủy";
+                case 4: return "Chưa thanh toán";
                 default: return "";
             }
 
