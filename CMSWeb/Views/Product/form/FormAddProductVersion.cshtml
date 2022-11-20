@@ -8,6 +8,7 @@
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
                 @using (Html.BeginForm("AddVerSionProduct", "Product", FormMethod.Post, new { @class = "forms-sample", id = "form-Product", enctype = "multipart/form-data" }))
                 {
+                    @Html.AntiForgeryToken()
                     
                      <div class="form-group">
                         <label for="exampleInputUsername1">Mã sản phẩm</label>

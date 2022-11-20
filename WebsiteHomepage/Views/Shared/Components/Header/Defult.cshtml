@@ -24,7 +24,7 @@
                                     @foreach (var item in Model.showBrandsViewModels)
                                     {
                                         <li>
-                                            <a asp-action="ListProduct" asp-controller="Home" asp-route-id="@item.BrandId">
+                                            <a asp-action="ListProduct" asp-controller="Home" asp-route-idType="@item.BrandId">
                                                 <img style="display: block;max-width:230px; max-height:95px;width: auto;height: auto;" src="@item.BrandPhoto" />
                                             </a>
                                         </li>
@@ -39,7 +39,7 @@
                                 <ul class="currency_selection">
                                     @foreach (var item in Model.listProductTypeViewModels)
                                     {
-                                        <li><a asp-action="ListProduct" asp-controller="Home" asp-route-id="@item.TypeId">@item.TypeName</a></li>
+                                        <li><a asp-action="ListProduct" asp-controller="Home" asp-route-idType="@item.TypeId">@item.TypeName</a></li>
                                     }
 
                                 </ul>
@@ -54,11 +54,10 @@
 
                         </ul>
                         <ul class="navbar_menu">
-                            <form class="form-inline">
-                                <input list="browsers" style="width: 228px; display: inline;" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <form class="form-inline" method="get" asp-controller="Home" asp-action="GetDataSeach">
+                                <input list="browsers" style="width: 228px; display: inline;" class="form-control mr-sm-2" type="search" name="key" placeholder="Search" aria-label="Search">
                                 <datalist id="browsers">
-                                   
-                                 
+
                                 </datalist>
                                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                             </form>

@@ -18,7 +18,7 @@
                 <h4 class="card-title">Nhập ngành hàng mới</h4>
                 @using(Html.BeginForm("AddType","Type", FormMethod.Post,new {@class="forms-sample", id="form-add-type" }))
                 {
-                    
+                    @Html.AntiForgeryToken()
                     <div class="form-group">
                         <label>Mã ngành hàng</label>
                         @Html.TextBoxFor(m => m.typeId, new {@class="form-control TypeId"})

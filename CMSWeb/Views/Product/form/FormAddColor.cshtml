@@ -17,7 +17,7 @@
                 <h4 class="card-title">Nhập thông tin sản phẩm mới</h4>
                 @using (Html.BeginForm("AddProductColor", "Product", FormMethod.Post, new {@class="forms-sample", id="form-color" ,enctype = "multipart/form-data" }))
                 {
-                    
+                       @Html.AntiForgeryToken()
                           @Html.HiddenFor(m => m.ProductId)
                            
                       <div class="form-group">

@@ -9,6 +9,8 @@
                 <h4 class="card-title">Thêm ảnh cho sản phẩm</h4>
                 @using (Html.BeginForm("AddPhoto", "Product", FormMethod.Post, new {@class="forms-sample", id="form-Product" ,enctype = "multipart/form-data" }))
                 {
+
+                       @Html.AntiForgeryToken()
                     <div class="form-group">
                         <label>Chọn hình: </label>
                         

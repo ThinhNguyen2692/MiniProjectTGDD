@@ -16,6 +16,7 @@
 
                 @using (Html.BeginForm("UpdateCustomer", "Customer", FormMethod.Post, new {  @class="forms-sample", id="form-brands" }))
                 {
+                  
                      <div class="form-group">
                         <label>Số điện thoại</label>
                       @Html.TextBoxFor(m => m.createCustomer.CustomerPhone, new {@class="form-control", @readonly="true"})

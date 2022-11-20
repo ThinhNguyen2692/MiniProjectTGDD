@@ -26,7 +26,7 @@
                 <h2 style="text-align:center;" class="card-title">Nhập thông tin thương hiệu mới</h2>
                 @using (Html.BeginForm("AddBrands", "Home", FormMethod.Post, new {id="form-brands" ,enctype = "multipart/form-data" }))
                 {
-                   
+                    @Html.AntiForgeryToken()
                     <div class="form-group">
                         <label>Mã thương hiệu</label>
                         @Html.TextBoxFor(m => m.BrandId, new{@class="form-control BrandId", placeholder="Nhập mã thương hiệu"})

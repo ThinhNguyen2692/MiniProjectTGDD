@@ -1,0 +1,27 @@
+﻿@using ModelProject.ViewModel;
+@model HeaderViewModel;
+
+
+	<div>
+		<label>Giá</label>
+		<input class="form-control" type="number" name="filterPrice" value="100000000">
+	</div>
+	<div>
+		<label>Thương hiệu</label>
+
+		<select class="form-control" name="filterBrands">
+			<option value="all" class="form-control">Tất cả</option>
+			@foreach (var item in Model.showBrandsViewModels){
+				<option value="@item.BrandId" class="form-control">@item.BrandName</option>
+			}
+		</select>
+	</div>
+	<div>
+		<label>Ngành hàng</label>
+		<select class="form-control" name="filterType">
+			<option value="all" class="form-control">Tất cả</option>
+			@foreach (var item in Model.listProductTypeViewModels){
+				<option value="@item.TypeId" class="form-control">@item.TypeName</option>
+			}
+		</select>
+	</div>

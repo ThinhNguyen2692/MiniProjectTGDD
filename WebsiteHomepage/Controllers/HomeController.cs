@@ -8,6 +8,7 @@ using BUS.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using X.PagedList;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebsiteHomepage.Controllers
 {
@@ -60,16 +61,23 @@ namespace WebsiteHomepage.Controllers
         [Route("Home/DanhSanPham")]
         public IActionResult ListProduct(string idType, int page = 1)
         {
+            ViewData["idType"] = idType;
+            ViewData["PageName"] = "ListProduct";
             var viewModel = busShowProducts.GetListProduct(idType).ToPagedList(page, 3);
             return View(viewModel);
         }
 
         [HttpGet]
         [Route("GetDataSeach")]
-        public ProductShow GetDataSeach()
+        public IActionResult GetDataSeach(int page = 1, string? key = null, int filterPrice = 100000000, string filterBrands = "all", string filterType = "all")
         {
-
-            return new ProductShow();
+            ViewData["PageName"] = "GetDataSeach";
+            ViewData["Key"] = key == null ? " ": key;
+            ViewData["filterPrice"] = filterPrice;
+            ViewData["filterBrands"] = filterBrands;
+            ViewData["filterType"] = filterType;
+            var viewmodel = busShowProducts.GetListProductSeach(key, filterPrice, filterBrands, filterType).ToPagedList(page, 3); ;
+            return View("ListProduct", viewmodel);
         }
 
 

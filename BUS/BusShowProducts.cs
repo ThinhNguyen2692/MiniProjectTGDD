@@ -238,16 +238,54 @@ namespace BUS
             return viewModel;
         }
 
-        //public List<ProductShow> GetListProductSeach(string? Key, int filterPrice = 100000000, string filterBrand = "all", string filterType = "all")
-        //{
-        //    var viewModel = new List<ProductShow>();
-        //    var data = dAlProduct.GetProducts();
-        //    if(Key != null)
-        //    {
-        //        data = data.
-        //    }
+        public List<ProductShow> GetListProductSeach(string? Key, int filterPrice = 100000000, string filterBrand = "all", string filterType = "all")
+        {
            
-        //}
+            var data = GetListProduct();
+            data = data.Where(p => p.ProductPrice < filterPrice).ToList();
+            if (Key != null)    
+            {
+                data = data.Where(p => p.ProuctName.Contains(Key)).ToList();
+                
+            }
+            if (filterBrand != "all") data = data.Where(p => p.ProductBrand == filterBrand).ToList();
+            if (filterType != "all") data = data.Where(p => p.ProductType == filterType).ToList();
+
+            return data;
+
+        }
+
+
+        public List<ProductShow> GetListProduct()
+        {
+            var viewModel = new List<ProductShow>();
+            var data = dAlProduct.GetProducts();
+            foreach (var item in data)
+            {
+                foreach (var value in item.ProductVersions)
+                {
+                    var model = new ProductShow();
+                    model.ProductId = value.ProductId;
+                    model.ProuctName = value.VersionName;
+                    model.VersionId = value.VersionId;
+                    model.ProductType = item.ProductType;
+                    model.ProductBrand = item.ProductBrand;
+                    model.ProductPrice = value.ProductPrice;
+                    model.ProductStatus = value.ProductStatus;
+                    model.ProductDescription = item.ProductDescription;
+                    model.ProductPhoto = item.ProductPhoto;
+                    foreach (var item1 in item.EventDetails)
+                    {
+                        model.ProductSale += item1.Event.Promotion;
+                    }
+                    double sale = (double)model.ProductSale / 100;
+                    sale = (double)model.ProductPrice * sale;
+                    model.ProductPriceSale = (int)sale;
+                    viewModel.Add(model);
+                }
+            }
+            return viewModel;
+        }
 
     }
 }

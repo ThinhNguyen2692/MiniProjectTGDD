@@ -7,6 +7,7 @@
                 <h4 class="card-title">Nhập thông tin thông số kỹ thuật  pr</h4>
                 @using(Html.BeginForm("AddProperty","Type", FormMethod.Post,new { @class="forms-sample",enctype="multipart/form-data", id="form-add-properties" }))
                 {
+                    @Html.AntiForgeryToken()
                  <div class="form-group">
                         <label for="exampleInputUsername1">Mã thông số</label>
                         @Html.TextBoxFor(m => m.SpecificationId, new{@class="form-control", @readonly="True"} )

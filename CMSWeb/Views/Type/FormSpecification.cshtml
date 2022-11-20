@@ -9,6 +9,7 @@
 
                 @using (Html.BeginForm("AddSpecification", "type", FormMethod.Post, new { @class = "forms-sample", id = "form-add-Specification" }))
                 {
+                    @Html.AntiForgeryToken()
                     @Html.HiddenFor(m => m.typeId)
 
                     <div class="form-group">
