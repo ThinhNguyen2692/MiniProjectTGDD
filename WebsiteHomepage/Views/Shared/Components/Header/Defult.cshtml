@@ -16,7 +16,7 @@
                     </div>
                     <nav class="navbar">
                         <ul class="navbar_menu">
-                            <li><a href="/">Trang chủ</a></li>
+                            <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
                             <li class="currency li-header">
                                 Thương hiệu
                                 <i class="fa fa-angle-down"></i>
@@ -24,7 +24,8 @@
                                     @foreach (var item in Model.showBrandsViewModels)
                                     {
                                         <li>
-                                            <a asp-action="ListProduct" asp-controller="Home" asp-route-idType="@item.BrandId">
+                                           
+                                            <a asp-action="ListProduct" asp-controller="Home" asp-route-id="@item.BrandId">
                                                 <img style="display: block;max-width:230px; max-height:95px;width: auto;height: auto;" src="@item.BrandPhoto" />
                                             </a>
                                         </li>
@@ -39,7 +40,8 @@
                                 <ul class="currency_selection">
                                     @foreach (var item in Model.listProductTypeViewModels)
                                     {
-                                        <li><a asp-action="ListProduct" asp-controller="Home" asp-route-idType="@item.TypeId">@item.TypeName</a></li>
+
+                                        <li> @Html.ActionLink(item.TypeName,"ListProduct", "Home", new {id = item.TypeId}, null)</li>
                                     }
 
                                 </ul>

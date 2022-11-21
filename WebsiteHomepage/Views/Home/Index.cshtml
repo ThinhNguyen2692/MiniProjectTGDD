@@ -73,7 +73,7 @@
 															<div class="favorite"></div>
 															<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>@item.ProductSale %</span></div>
 															<div class="product_info">
-														<h6 class="product_name"><a asp-action="ProductDetail" asp-controller="Home" asp-route-idProduct="@item.VersionId">@item.VersionName</a></h6>
+												<h6 class="product_name"> @Html.ActionLink(item.VersionName, "ProductDetail", "Home", new {id = item.ProductTypeName, name=item.VersionId}, null)</h6>
 																<div class="product_price">@item.ProductPrice</div>
 															</div>
 														</div>
@@ -117,11 +117,11 @@
 											<div class="product-item women">
 												<div class="product product_filter">
 													<div class="product_image">
-														<img style="width:221px; height: 221px;" src="@item.ProductPhoto" alt="@item.VersionName">
+														<img style="width:221px; height: 221px;" src="@item.ProductPhoto" alt="@item.ProuctName">
 													</div>
 													<div class="favorite"></div>
 													<div class="product_info">
-														<h6 class="product_name"><a asp-action="ProductDetail" asp-controller="Home" asp-route-idProduct="@item.VersionId">@item.ProuctName</a></h6>
+												<h6 class="product_name">  @Html.ActionLink(item.ProuctName,"ProductDetail","Home",new {id=item.VersionId, name=item.RemoveVietnameseTone(item.ProuctName)}, null)</h6>
 														<div class="product_price">@item.ProductPrice</div>
 													</div>
 												</div>
@@ -189,7 +189,7 @@
 													<div class="favorite"></div>
 													<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>@item.ProductSale %</span></div>
 													<div class="product_info">
-												<h6 class="product_name"><a asp-action="ProductDetail" asp-controller="Home" asp-route-idProduct="@item.VersionId">@item.ProuctName</a></h6>
+												<h6 class="product_name"> @Html.ActionLink(item.ProuctName,"ProductDetail","Home",new {id=item.VersionId, name=item.RemoveVietnameseTone(item.ProuctName)}, null)</h6>
 														<div class="product_price">@item.ProductPrice</div>
 													</div>
 												</div>

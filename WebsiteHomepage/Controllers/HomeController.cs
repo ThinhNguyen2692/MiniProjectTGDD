@@ -48,27 +48,28 @@ namespace WebsiteHomepage.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
-        [Route("ProductDetail")]
-        public IActionResult ProductDetail(string idProduct)
+
+        [ActionName("ProductDetail")]
+        [Route("/{id}/{name}")]
+        public IActionResult ProductDetail(string id, string name)
         {
-            var viewModel = busShowProducts.GetProductDetail(idProduct);
+            var viewModel = busShowProducts.GetProductDetail(id);
             if(viewModel == null) return View("Error");
             return View(viewModel);
         }
 
         [HttpGet]
-        [Route("Home/DanhSanPham")]
-        public IActionResult ListProduct(string idType, int page = 1)
+        [Route("/{id}")]
+        public IActionResult ListProduct(string id, int page = 1)
         {
-            ViewData["idType"] = idType;
+            ViewData["idType"] = id;
             ViewData["PageName"] = "ListProduct";
-            var viewModel = busShowProducts.GetListProduct(idType).ToPagedList(page, 3);
+            var viewModel = busShowProducts.GetListProduct(id).ToPagedList(page, 3);
             return View(viewModel);
         }
 
         [HttpGet]
-        [Route("GetDataSeach")]
+        [Route("san-pham-dientu")]
         public IActionResult GetDataSeach(int page = 1, string? key = null, int filterPrice = 100000000, string filterBrands = "all", string filterType = "all")
         {
             ViewData["PageName"] = "GetDataSeach";

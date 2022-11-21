@@ -81,7 +81,7 @@
 											{
 													@Html.PagedListPager((IPagedList)Model,page=>Url.Action(PageName,"Home", new{page, key=ViewData["Key"].ToString(), filterPrice=ViewData["filterPrice"].ToString(),filterBrands=ViewData["filterBrands"].ToString(),filterType=ViewData["filterType"].ToString()}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
 											}else{
-													@Html.PagedListPager((IPagedList)Model,page=>Url.Action("DanhSanPham","Home", new{page, idType=ViewData["idType"].ToString()}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
+													@Html.PagedListPager((IPagedList)Model,page=>Url.Action(PageName,"Home", new{page, idType=ViewData["idType"].ToString()}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
 											}
 											}
 																				</div>
@@ -106,7 +106,7 @@
 																<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"> <span>@item.ProductSale%</span></div>
 												}
 															<div class="product_info">
-																<h6 class="product_name"><a asp-action="ProductDetail" asp-controller="Home" asp-route-idProduct="@item.VersionId">@item.ProuctName</a></h6>
+														<h6 class="product_name"> @Html.ActionLink(item.ProuctName,"ProductDetail","Home",new {id=item.VersionId, name=item.RemoveVietnameseTone(item.ProuctName)}, null)</h6>
 																<div class="product_price">@String.Format("{0:0,00}", item.ProductPrice - item.ProductPriceSale) @if (item.ProductPriceSale != 0)
 														{
 																		<span> @String.Format("{0:0,00}", item.ProductPrice)</span>
@@ -126,7 +126,7 @@
 									}
 									else
 									{
-													@Html.PagedListPager((IPagedList)Model,page=>Url.Action("DanhSanPham","Home", new{page, idType=ViewData["idType"].ToString()}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
+													@Html.PagedListPager((IPagedList)Model,page=>Url.Action(PageName,"Home", new{id=ViewData["idType"].ToString(),page}), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
 									}
 								}
 							</div>

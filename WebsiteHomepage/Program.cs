@@ -32,6 +32,11 @@ app.UseRouting();
 app.UseCors("MyPolicy");
 app.UseAuthorization();
 
+//app.MapControllerRoute(
+//    name: "Home",
+//    pattern: ""
+//);
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
