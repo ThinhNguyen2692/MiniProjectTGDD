@@ -1,6 +1,10 @@
 using BUS;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 using ModelProject.Models;
+using System.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -14,6 +18,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         m.LoginPath = "/login/index";
         m.ExpireTimeSpan = TimeSpan.FromSeconds(300);
     });
+
+
 var app = builder.Build();
 var cookiePolicyOptions = new CookiePolicyOptions
 {
