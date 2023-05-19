@@ -33,11 +33,7 @@ namespace DAL
 
         public bool AddEvent(Event EventItem)
         {
-            var data = repository.ListIncludes(e => e.EventDetails).FirstOrDefault();
-            if(data != null) {
-
-                return false;
-            }
+             
             repository.Add(EventItem);
             _unitOfWork.SaveChanges();
             return true;
@@ -52,7 +48,7 @@ namespace DAL
             var data = repositoryEventDetail.GetAll(predicate: e=> e.Id == EventId).FirstOrDefault();
             if (data == null) return;
             repositoryEventDetail.Delete(data);
-            _unitOfWork.SaveChanges();
+            _unitOfWork.SaveChanges();  
         }
 
         public void RemoveEvent(List<EventDetail> EventDetail)

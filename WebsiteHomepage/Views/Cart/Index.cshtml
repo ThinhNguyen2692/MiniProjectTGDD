@@ -47,37 +47,37 @@
 					<tbody>
 						
 						@for (var i = 0; i < Model.cartViewModels.Count; i++)
-						{
+							{
 								<input name="CartModels[@i].ProductId" type="hidden" value="@Model.cartViewModels[i].ProductShow.VersionId">
 								<input name="CartModels[@i].QuantityColorId" type="hidden" value="@Model.cartViewModels[i].quantityProductVerSion.idQuantity">
 								<tr>
-							<td class="cart__product__item">
-									<img style="width:150px; height: 150px;" src="@Model.cartViewModels[i].quantityProductVerSion.ColorPath" alt="@Model.cartViewModels[i].ProductShow.VersionName">
-								<div class="cart__product__item__title">
-										<h6>@Model.cartViewModels[i].ProductShow.VersionName</h6>
-								</div>
-							</td>
-								<td class="cart__price">@Model.cartViewModels[i].ProductShow.ProductPrice</td>
-							<td class="cart__total">@Model.cartViewModels[i].ProductShow.ProductSale</td>
-								<td class="cart__quantity">
-									<div class="pro-qty">
+									<td class="cart__product__item">
+										<img style="width:150px; height: 150px;" src="@Model.cartViewModels[i].quantityProductVerSion.ColorPath" alt="@Model.cartViewModels[i].ProductShow.VersionName">
+										<div class="cart__product__item__title">
+											<h6>@Model.cartViewModels[i].ProductShow.VersionName</h6>
+										</div>
+									</td>
+									<td class="cart__price">@Model.cartViewModels[i].ProductShow.ProductPrice</td>
+									<td class="cart__total">@Model.cartViewModels[i].ProductShow.ProductSale</td>
+									<td class="cart__quantity">
+										<div class="pro-qty">
 											@if (Model.cartViewModels[i].status == 1)
 											{
 												<span>Không đủ @Model.cartViewModels[i].quantityProductVerSion.Quantity</span>
 											}
-											
-										<span class="dec qtybtn">-</span>
+
+											<span class="dec qtybtn">-</span>
 
 											<input name="CartModels[@i].Quantity" type="text" value="@Model.cartViewModels[i].quantityProductVerSion.Quantity">
-										<span class="inc qtybtn">+</span>
-									</div>
-								</td>
-								<td class="cart__total">@Model.cartViewModels[i].money.TotalMoney</td>
-								<td class="cart__total">@Model.cartViewModels[i].money.IntoMoney</td>
-							<td class="cart__close"><a asp-controller="cart" asp-action="DeleteCartitem" asp-route-quantityColorId="@Model.cartViewModels[i].quantityProductVerSion.idQuantity">xóa</a></td>
-						</tr>
-						}
-						
+											<span class="inc qtybtn">+</span>
+										</div>
+									</td>
+									<td class="cart__total">@Model.cartViewModels[i].money.TotalMoney</td>
+									<td class="cart__total">@Model.cartViewModels[i].money.IntoMoney</td>
+									<td class="cart__close"><a asp-controller="cart" asp-action="DeleteCartitem" asp-route-quantityColorId="@Model.cartViewModels[i].quantityProductVerSion.idQuantity">xóa</a></td>
+								</tr>
+							}
+
 						
 					</tbody>
 				</table>
@@ -108,7 +108,8 @@
 					<li>Tổng <span>@String.Format("{0:0,00}", Model.money.TotalMoney)</span></li>
 					<li>Thanh toán <span>@String.Format("{0:0,00}", Model.money.IntoMoney)</span></li>
 				</ul>
-				<a href="#" class="primary-btn">Proceed to checkout</a>
+				<a href="#" class="primary-btn">Proceed to checkout</a>				
+				@Html.ActionLink("Thanh toán","CheckOut","Cart", null,new{@class="primary-btn"})
 			</div>
 		</div>
 	</div>

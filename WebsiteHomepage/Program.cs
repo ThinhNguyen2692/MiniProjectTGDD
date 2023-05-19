@@ -1,5 +1,8 @@
 using BUS;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ModelProject.Models;
+using ModelProject.VNPay;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -11,9 +14,12 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.AddMemoryCache();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 Setting.ConnectionStrings = builder.Configuration.GetConnectionString("MiniProjectTGDD");
+builder.Services.Configure<VNPaySettingModel>(builder.Configuration.GetSection(nameof(VNPaySettingModel)));
+builder.Services.AddSingleton<VNPaySettingModel>();
 builder.Services.serviceDescriptors(builder.Configuration);
 var app = builder.Build();
 
@@ -25,6 +31,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

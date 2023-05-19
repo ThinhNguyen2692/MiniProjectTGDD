@@ -130,8 +130,6 @@ namespace BUS
             json = JsonSerializer.Serialize(listCartModel);
             return json;
         }
-
-
         public string Oder(Customer customer, string json)
         {
             var ViewModel = GetCart(json);
@@ -176,7 +174,6 @@ namespace BUS
                     oderDetailItem.GiftDetails.Add(gift);
                 }
                 Oder.PurchaseOrderDetails.Add(oderDetailItem);
-
             }
 
             var customerData = dalCustomer.GetCustomerByphone(customer.CustomerPhone);
@@ -192,11 +189,6 @@ namespace BUS
 
             return Oder.OrderId;
         }
-
-
-     
-    
-
         public string RandomString(int length)
         {
             Random random = new Random();
